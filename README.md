@@ -1,10 +1,44 @@
-# LET'S PRACTICE! — maths worksheets
+# Let's Practice — learning should be accessible to everyone ❤️
 
-Free printable maths worksheets for Year 1 (ages 5–7): 18 tasks on 4 pages plus an answer page for parents.
+**Website: https://isergey256.github.io/lets-practice-worksheets/** · [Читать по-русски](README.ru.md)
 
-**Website: https://isergey256.github.io/lets-practice-worksheets/**
+Let's Practice is a free educational platform built on a simple idea: good learning materials should be available to every
+child, whatever their family can afford. The source code is open and available here on GitHub.
 
-Choose a level and a worksheet number, then press “Print worksheet”. To get a PDF, choose “Save as PDF” in the print dialog.
+Today even simple practice sheets often sit behind subscriptions and paywalls. Why should parents pay to print a few
+maths exercises for their child?
+
+**No sign-up, no subscriptions, no ads, no hidden payments.**
+The goal: open the site → choose a year → a subject → a topic → get the tasks → print. That's all.
+(Today you choose a stage or a level; subjects and topics will follow.)
+
+**What is planned**
+- Ages: from preschool (Reception) up to Year 11.
+- Subjects: maths, languages and other school subjects.
+- Fresh variations of every exercise for regular practice, at different levels of difficulty.
+- Printable worksheets for home and the classroom.
+- An interface any parent understands without instructions.
+- First the curriculum of England, other countries later.
+
+Today there is the first version: maths for Reception and Year 1. This is only the beginning.
+
+**Free for everyone:** children and parents, teachers and tutors, state and private schools — everyone who learns or helps
+others learn. The license allows free educational use and forbids reselling the product or its materials without permission.
+Use it, learn with it, share it — just don't turn free education into another paid product.
+
+**How it started.** I needed maths exercises for my child that I could make and print quickly. Instead of searching
+through different sites, I built my own generator. The first version took about an hour with Claude AI — one more example
+of how today's tools let one person quickly build something useful.
+
+**The main principle.** Education is not a luxury. Not every family can pay for dozens of learning subscriptions, but every
+child should be able to learn, practise and grow. Let Let's Practice be a small contribution to making learning simpler
+and more accessible.
+
+*Free for learning. Not for resale.* The project is at an early stage; new subjects, tasks and features will be added step by step.
+
+## How to use
+
+Choose a stage or a level and a worksheet number, then press “Print worksheet”. To get a PDF, choose “Save as PDF” in the print dialog.
 Everything runs in your browser: nothing to install, nothing is sent anywhere.
 
 ## Languages
