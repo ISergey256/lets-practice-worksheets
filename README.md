@@ -71,4 +71,16 @@ On Windows you can also double-click `start_site.bat`.
 - `scripts/check_layout.py`: renders worksheets in every language and checks that every page fits A4.
 - `fonts/`: Nunito, plus M PLUS Rounded 1c for Greek letters (both under the SIL Open Font License, see `fonts/OFL-*.txt`). `scripts/fetch_fonts.py` downloads them again.
 
-License: MIT.
+## License: free for learning, not for resale
+
+Let's Practice is free for children, families, teachers, tutors, nurseries, and schools — public and private.
+
+You can generate, print, and share worksheets for free, including in paid lessons, and run the project on your own computer or
+school network. You can also study the source code and share non-commercial modifications with attribution.
+
+**You may not sell the project or a copy of it, offer it as a paid or ad-funded service, or sell its worksheets without written permission.**
+
+See [LICENSE.md](LICENSE.md) for the full terms. This is a source-available license, not an OSI open-source license.
+The fonts keep their own SIL Open Font License.
+
+Our principle: **education should be accessible, not locked behind a paywall.**
