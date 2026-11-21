@@ -197,6 +197,11 @@
   </div>
 
   <footer>
+    <div class="about" id="thanks" hidden>
+      <b data-t="thanksTitle"></b>
+      <p id="thanks-list"></p>
+      <p><a href="https://github.com/ISergey256/lets-practice-worksheets/blob/main/CONTRIBUTORS.md" data-t="joinUs"></a></p>
+    </div>
     <div class="about">
       <b data-t="aboutTitle"></b>
       <p data-t="about1"></p>
@@ -224,6 +229,7 @@ const UI = {
     year: "Year", subject: "Subject", maths: "Maths", soon: "soon", english: "English", science: "Science", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
     helpTitle: "Help make it better", suggest: "Suggest a task", report: "Report a problem", ghNote: "Opens GitHub (a free account is needed).", why: "Why black and white?",
     partWord: "part",
+    thanksTitle: "Made with the help of", joinUs: "Want to help? Your name can be here.", roles: {"idea": "idea and development", "teacher": "teaching advice", "translation": "translations", "code": "code", "testing": "testing with children", "design": "design"},
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -248,6 +254,7 @@ const UI = {
     year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", english: "Англійська", science: "Природознавство", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
     helpTitle: "Допоможіть зробити краще", suggest: "Запропонувати завдання", report: "Повідомити про помилку", ghNote: "Відкриється GitHub (потрібен безкоштовний акаунт).", why: "Чому все чорно-біле?",
     partWord: "частина",
+    thanksTitle: "Над проєктом працювали", joinUs: "Хочете допомогти? Тут може бути ваше ім’я.", roles: {"idea": "ідея та розробка", "teacher": "поради вчителя", "translation": "переклади", "code": "код", "testing": "перевірка з дітьми", "design": "дизайн"},
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -272,6 +279,7 @@ const UI = {
     year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", english: "Английский", science: "Естествознание", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
     helpTitle: "Помогите сделать лучше", suggest: "Предложить задание", report: "Сообщить об ошибке", ghNote: "Откроется GitHub (нужен бесплатный аккаунт).", why: "Почему всё чёрно-белое?",
     partWord: "часть",
+    thanksTitle: "Над проектом работали", joinUs: "Хотите помочь? Здесь может быть ваше имя.", roles: {"idea": "идея и разработка", "teacher": "советы учителя", "translation": "переводы", "code": "код", "testing": "проверка с детьми", "design": "дизайн"},
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -296,6 +304,7 @@ const UI = {
     year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", english: "Αγγλικά", science: "Φυσικές επιστήμες", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
     helpTitle: "Βοηθήστε να γίνει καλύτερο", suggest: "Προτείνετε άσκηση", report: "Αναφέρετε πρόβλημα", ghNote: "Ανοίγει το GitHub (χρειάζεται δωρεάν λογαριασμός).", why: "Γιατί όλα είναι ασπρόμαυρα;",
     partWord: "μέρος",
+    thanksTitle: "Συνεισφέρουν", joinUs: "Θέλετε να βοηθήσετε; Εδώ μπορεί να είναι το όνομά σας.", roles: {"idea": "ιδέα και ανάπτυξη", "teacher": "συμβουλές εκπαιδευτικού", "translation": "μεταφράσεις", "code": "κώδικας", "testing": "δοκιμές με παιδιά", "design": "σχεδιασμός"},
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -320,6 +329,7 @@ const UI = {
     year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", english: "Englisch", science: "Sachkunde", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
     helpTitle: "Helfen Sie mit", suggest: "Aufgabe vorschlagen", report: "Fehler melden", ghNote: "Öffnet GitHub (ein kostenloses Konto ist nötig).", why: "Warum alles schwarz-weiß ist",
     partWord: "Teil",
+    thanksTitle: "Mitgewirkt haben", joinUs: "Möchten Sie helfen? Hier kann Ihr Name stehen.", roles: {"idea": "Idee und Entwicklung", "teacher": "Rat von Lehrkräften", "translation": "Übersetzungen", "code": "Code", "testing": "Tests mit Kindern", "design": "Gestaltung"},
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -344,6 +354,7 @@ const UI = {
     year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", english: "Anglais", science: "Sciences", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
     helpTitle: "Aidez à l’améliorer", suggest: "Proposer un exercice", report: "Signaler un problème", ghNote: "Ouvre GitHub (un compte gratuit est nécessaire).", why: "Pourquoi tout est en noir et blanc ?",
     partWord: "partie",
+    thanksTitle: "Ont contribué", joinUs: "Envie d’aider ? Votre nom peut figurer ici.", roles: {"idea": "idée et développement", "teacher": "conseils d’enseignant", "translation": "traductions", "code": "code", "testing": "tests avec des enfants", "design": "design"},
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -368,6 +379,7 @@ const UI = {
     year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", english: "Inglés", science: "Ciencias", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
     helpTitle: "Ayude a mejorarlo", suggest: "Proponer un ejercicio", report: "Informar de un problema", ghNote: "Abre GitHub (hace falta una cuenta gratuita).", why: "¿Por qué todo es en blanco y negro?",
     partWord: "parte",
+    thanksTitle: "Han colaborado", joinUs: "¿Quiere ayudar? Su nombre puede estar aquí.", roles: {"idea": "idea y desarrollo", "teacher": "consejos docentes", "translation": "traducciones", "code": "código", "testing": "pruebas con niños", "design": "diseño"},
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -506,7 +518,7 @@ function translateUI() {
   document.documentElement.lang = state.ui;
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
-  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks();
+  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -796,6 +808,21 @@ function updateFeedbackLinks() {
     `<!-- Please do not attach photos of children or worksheets with a child's name. -->`;
   $("report").href = `${REPO}/issues/new?labels=bug&title=${encodeURIComponent("Problem: ")}&body=${encodeURIComponent(body)}`;
   $("why-link").href = `${REPO}/blob/main/${["ru", "uk"].includes(state.ui) ? "DESIGN.ru.md" : "DESIGN.md"}`;
+}
+
+/* ================================================================ contributors (site/contributors.json) */
+let contributors = [];
+fetch("contributors.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => { contributors = d.people || []; renderThanks(); })
+  .catch(() => {});
+function renderThanks() {
+  $("thanks").hidden = !contributors.length;
+  const roles = UI[state.ui].roles, el = $("thanks-list");
+  el.replaceChildren(...contributors.flatMap((c, i) => {
+    const name = c.github ? Object.assign(document.createElement("a"), { href: `https://github.com/${c.github}`, textContent: c.name })
+      : Object.assign(document.createElement("b"), { textContent: c.name });
+    return [...(i ? [document.createTextNode(" · ")] : []), name,
+      document.createTextNode(` — ${(c.roles || []).map((r) => roles[r] || r).join(", ")}`)];
+  }));
 }
 
 /* ================================================================ recent */

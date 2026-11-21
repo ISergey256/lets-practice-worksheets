@@ -86,3 +86,10 @@ By opening a pull request you confirm that:
 ## 6. Be kind
 
 This project is for children. Be patient and respectful in issues and reviews; criticise ideas, not people.
+
+## 7. Recognition
+
+Everyone who helps — teachers, translators, families who test the sheets, developers, designers — can be listed in
+[CONTRIBUTORS.md](CONTRIBUTORS.md) and on the website. Add yourself in your pull request (a line in `CONTRIBUTORS.md`
+and an entry in `site/contributors.json`), or ask in your issue. Only the name or nickname you choose; never e-mail
+addresses or children's names.

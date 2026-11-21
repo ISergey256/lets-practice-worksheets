@@ -1,0 +1,6 @@
+{
+  "_comment": "People who helped Let's Practice. Add yourself in your pull request (see CONTRIBUTING.md, section 7). Roles: idea, teacher, translation, code, testing, design. Only the name or nickname you choose; never e-mail addresses or children's names.",
+  "people": [
+    {"name": "Serhii Matiushenko", "github": "ISergey256", "roles": ["idea"]}
+  ]
+}

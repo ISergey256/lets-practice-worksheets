@@ -23,7 +23,7 @@ SITE = g.ROOT / "site"
 MAX_SEED = 999_999
 OUT_FILE = re.compile(r"^Worksheet_(L[123]|R|Y1A|T[0-9a-f]{8})_\d{1,6}_[a-z]{2}(_answers_[a-z]{2})?\.pdf$")
 FONT_FILE = re.compile(r"^[\w-]+\.(css|woff2|txt)$")
-TYPES = {".html": "text/html; charset=utf-8", ".pdf": "application/pdf", ".css": "text/css; charset=utf-8",
+TYPES = {".html": "text/html; charset=utf-8", ".json": "application/json; charset=utf-8", ".pdf": "application/pdf", ".css": "text/css; charset=utf-8",
          ".woff2": "font/woff2", ".txt": "text/plain; charset=utf-8"}
 
 pdf_lock = threading.Lock()  # one Chromium at a time is plenty for a home printer
@@ -74,6 +74,8 @@ class Handler(BaseHTTPRequestHandler):
         path, q = unquote(u.path), {k: v[0] for k, v in parse_qs(u.query).items()}
         if path in ("/", "/index.html"):
             return self.send_file(SITE / "index.html")
+        if path == "/contributors.json":
+            return self.send_file(SITE / "contributors.json")
         if path == "/api/info":
             return self.send_json({"langs": i18n.LANGS, "pdf": True})
         if path == "/api/build":
