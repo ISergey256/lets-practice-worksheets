@@ -99,5 +99,10 @@
     "en": "Every task now has an id, so a problem can be reported precisely.",
     "uk": "Кожне завдання тепер має позначку, щоб точно повідомити про помилку.",
     "ru": "У каждого задания теперь есть метка, чтобы точно сообщить об ошибке."
+  },
+  "\"Show task labels\": report a problem with the exact task": {
+    "en": "\"Show task labels\": tap the task with a problem and send its details, or report it on GitHub in one click.",
+    "uk": "«Показати позначки завдань»: торкніться завдання з помилкою й надішліть його дані або повідомте на GitHub одним натиском.",
+    "ru": "«Показать метки заданий»: нажмите на задание с ошибкой и отправьте его данные или сообщите на GitHub в один клик."
   }
 }

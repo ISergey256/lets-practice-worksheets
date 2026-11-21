@@ -100,6 +100,7 @@
   .debug { border:2.5px dashed var(--ink); border-radius:12px; padding:8px 10px; margin:-6px 0 14px; background:#fff; }
   .dbg-head { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; font-size:13px; font-weight:800; }
   .dbg-head span { color:var(--muted); margin-right:auto; }
+  .debug a.chip { text-decoration:none; color:inherit; display:inline-flex; align-items:center; }
   .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-6px 0 14px; }
   .listen { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .listen .chip { display:inline-flex; align-items:center; gap:5px; }
@@ -193,7 +194,9 @@
         <div class="printrow">
           <a class="btn" id="suggest" target="_blank" rel="noopener" data-t="suggest"></a>
           <a class="btn" id="report" target="_blank" rel="noopener" data-t="report"></a>
+          <button class="btn" id="labels-toggle" type="button" aria-pressed="false" data-t="labelsBtn"></button>
         </div>
+        <p class="hint" data-t="labelsHint"></p>
         <p class="hint" data-t="ghNote"></p>
       </div>
 
@@ -213,10 +216,12 @@
         </div>
       </div>
       <div class="debug" id="debug" hidden>
-        <div class="dbg-head"><b>Debug</b><span id="dbg-ver"></span>
-          <button class="chip" type="button" id="dbg-sheet">Copy sheet</button>
-          <button class="chip" type="button" id="dbg-off">Turn off</button></div>
+        <div class="dbg-head"><b data-t="dbgTitle"></b><span id="dbg-ver"></span></div>
         <div id="dbg-tasks" class="recent"></div>
+        <div class="dbg-head" style="margin:8px 0 0">
+          <a class="chip" id="dbg-report" target="_blank" rel="noopener" data-t="dbgReport"></a>
+          <button class="chip" type="button" id="dbg-sheet" data-t="dbgCopy"></button>
+          <button class="chip" type="button" id="dbg-off" data-t="dbgHide"></button></div>
       </div>
       <div class="tools" id="tools" hidden>
         <div class="listen" id="listen" hidden><span class="lab2" data-t="listen"></span><span id="listen-btns" class="listen"></span></div>
@@ -269,6 +274,7 @@ const UI = {
     thanksTitle: "Made with the help of", joinUs: "Want to help? Your name can be here.", roles: {"idea": "idea and development", "teacher": "teaching advice", "translation": "translations", "code": "code", "testing": "testing with children", "design": "design"},
     listen: "Listen to the task", noVoice: "This device has no voice for this language.", cream: "Cream background", harder: "Next: a bit harder",
     historyTitle: "How the project grew", historyAll: "Show all changes", historyNote: "Every change is public on GitHub.",
+    labelsBtn: "Show task labels", labelsHint: "Each task gets a label. Tap the task with a problem: its details are copied and can be sent.", dbgTitle: "Which task has a problem? Tap it: the details are copied.", dbgReport: "Report on GitHub", dbgCopy: "Copy sheet details", dbgHide: "Hide labels", copied: "Copied. Paste it into your message.",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -296,6 +302,7 @@ const UI = {
     thanksTitle: "Над проєктом працювали", joinUs: "Хочете допомогти? Тут може бути ваше ім’я.", roles: {"idea": "ідея та розробка", "teacher": "поради вчителя", "translation": "переклади", "code": "код", "testing": "перевірка з дітьми", "design": "дизайн"},
     listen: "Послухати завдання", noVoice: "На цьому пристрої немає голосу для цієї мови.", cream: "Кремовий фон", harder: "Далі: трохи складніше",
     historyTitle: "Як ріс проєкт", historyAll: "Показати всі зміни", historyNote: "Кожна зміна відкрита на GitHub.",
+    labelsBtn: "Показати позначки завдань", labelsHint: "Кожне завдання отримає позначку. Торкніться завдання з помилкою: дані скопіюються, їх можна надіслати.", dbgTitle: "У якому завданні помилка? Торкніться його: дані скопіюються.", dbgReport: "Повідомити на GitHub", dbgCopy: "Копіювати дані листа", dbgHide: "Сховати позначки", copied: "Скопійовано. Вставте у повідомлення.",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -323,6 +330,7 @@ const UI = {
     thanksTitle: "Над проектом работали", joinUs: "Хотите помочь? Здесь может быть ваше имя.", roles: {"idea": "идея и разработка", "teacher": "советы учителя", "translation": "переводы", "code": "код", "testing": "проверка с детьми", "design": "дизайн"},
     listen: "Послушать задание", noVoice: "На этом устройстве нет голоса для этого языка.", cream: "Кремовый фон", harder: "Дальше: чуть сложнее",
     historyTitle: "Как рос проект", historyAll: "Показать все изменения", historyNote: "Каждое изменение открыто на GitHub.",
+    labelsBtn: "Показать метки заданий", labelsHint: "У каждого задания появится метка. Нажмите на задание с ошибкой: данные скопируются, их можно отправить.", dbgTitle: "В каком задании ошибка? Нажмите на него: данные скопируются.", dbgReport: "Сообщить на GitHub", dbgCopy: "Копировать данные листа", dbgHide: "Скрыть метки", copied: "Скопировано. Вставьте в сообщение.",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -350,6 +358,7 @@ const UI = {
     thanksTitle: "Συνεισφέρουν", joinUs: "Θέλετε να βοηθήσετε; Εδώ μπορεί να είναι το όνομά σας.", roles: {"idea": "ιδέα και ανάπτυξη", "teacher": "συμβουλές εκπαιδευτικού", "translation": "μεταφράσεις", "code": "κώδικας", "testing": "δοκιμές με παιδιά", "design": "σχεδιασμός"},
     listen: "Άκου την άσκηση", noVoice: "Αυτή η συσκευή δεν έχει φωνή για αυτή τη γλώσσα.", cream: "Κρεμ φόντο", harder: "Επόμενο: λίγο πιο δύσκολο",
     historyTitle: "Πώς μεγάλωσε το έργο", historyAll: "Όλες οι αλλαγές", historyNote: "Κάθε αλλαγή είναι δημόσια στο GitHub.",
+    labelsBtn: "Εμφάνιση ετικετών ασκήσεων", labelsHint: "Κάθε άσκηση παίρνει ετικέτα. Πατήστε την άσκηση με το πρόβλημα: τα στοιχεία αντιγράφονται.", dbgTitle: "Σε ποια άσκηση είναι το πρόβλημα; Πατήστε την: τα στοιχεία αντιγράφονται.", dbgReport: "Αναφορά στο GitHub", dbgCopy: "Αντιγραφή στοιχείων φύλλου", dbgHide: "Απόκρυψη ετικετών", copied: "Αντιγράφηκε. Επικολλήστε το στο μήνυμά σας.",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -377,6 +386,7 @@ const UI = {
     thanksTitle: "Mitgewirkt haben", joinUs: "Möchten Sie helfen? Hier kann Ihr Name stehen.", roles: {"idea": "Idee und Entwicklung", "teacher": "Rat von Lehrkräften", "translation": "Übersetzungen", "code": "Code", "testing": "Tests mit Kindern", "design": "Gestaltung"},
     listen: "Aufgabe anhören", noVoice: "Dieses Gerät hat keine Stimme für diese Sprache.", cream: "Cremefarbener Hintergrund", harder: "Weiter: etwas schwerer",
     historyTitle: "Wie das Projekt gewachsen ist", historyAll: "Alle Änderungen zeigen", historyNote: "Jede Änderung ist auf GitHub öffentlich.",
+    labelsBtn: "Aufgaben-Kennzeichen zeigen", labelsHint: "Jede Aufgabe bekommt ein Kennzeichen. Tippen Sie auf die Aufgabe mit dem Fehler: die Angaben werden kopiert.", dbgTitle: "Welche Aufgabe hat einen Fehler? Antippen: die Angaben werden kopiert.", dbgReport: "Auf GitHub melden", dbgCopy: "Blatt-Angaben kopieren", dbgHide: "Kennzeichen ausblenden", copied: "Kopiert. Fügen Sie es in Ihre Nachricht ein.",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -404,6 +414,7 @@ const UI = {
     thanksTitle: "Ont contribué", joinUs: "Envie d’aider ? Votre nom peut figurer ici.", roles: {"idea": "idée et développement", "teacher": "conseils d’enseignant", "translation": "traductions", "code": "code", "testing": "tests avec des enfants", "design": "design"},
     listen: "Écouter la consigne", noVoice: "Cet appareil n’a pas de voix pour cette langue.", cream: "Fond crème", harder: "Suivant : un peu plus dur",
     historyTitle: "Comment le projet a grandi", historyAll: "Voir toutes les modifications", historyNote: "Chaque modification est publique sur GitHub.",
+    labelsBtn: "Afficher les repères des exercices", labelsHint: "Chaque exercice reçoit un repère. Touchez l’exercice qui pose problème : ses détails sont copiés.", dbgTitle: "Quel exercice pose problème ? Touchez-le : les détails sont copiés.", dbgReport: "Signaler sur GitHub", dbgCopy: "Copier les détails de la fiche", dbgHide: "Masquer les repères", copied: "Copié. Collez-le dans votre message.",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -431,6 +442,7 @@ const UI = {
     thanksTitle: "Han colaborado", joinUs: "¿Quiere ayudar? Su nombre puede estar aquí.", roles: {"idea": "idea y desarrollo", "teacher": "consejos docentes", "translation": "traducciones", "code": "código", "testing": "pruebas con niños", "design": "diseño"},
     listen: "Escuchar la tarea", noVoice: "Este dispositivo no tiene voz para este idioma.", cream: "Fondo crema", harder: "Siguiente: un poco más difícil",
     historyTitle: "Cómo ha crecido el proyecto", historyAll: "Ver todos los cambios", historyNote: "Cada cambio es público en GitHub.",
+    labelsBtn: "Mostrar etiquetas de las tareas", labelsHint: "Cada tarea tendrá una etiqueta. Toque la tarea con el problema: sus datos se copian.", dbgTitle: "¿Qué tarea tiene un problema? Tóquela: los datos se copian.", dbgReport: "Informar en GitHub", dbgCopy: "Copiar datos de la hoja", dbgHide: "Ocultar etiquetas", copied: "Copiado. Péguelo en su mensaje.",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -795,7 +807,7 @@ let viewNo = 0;
 async function renderView() {
   if (!state.sheet) return;
   renderTools();
-  if (debugOn()) setTimeout(renderDebug, 1200);  // after the preview frames have loaded
+  setTimeout(renderDebug, debugOn() ? 1200 : 0);  // after the preview frames have loaded (or hide the panel)
   $("tabs").querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === state.tab));
   const no = ++viewNo;
   if (state.tab === "cheats") {
@@ -826,8 +838,9 @@ function showPages(bodies, labelOf, lang) {
   wrap.querySelectorAll(".pg").forEach((p) => scalers.observe(p));
 }
 
-/* ================================================================ debug mode (only for the author; not linked anywhere)
-   Turn on with ?debug=1 in the address (remembered on this device), off with ?debug=0 or "Turn off".
+/* ================================================================ task labels for problem reports ("debug mode")
+   Anyone can turn it on with "Show task labels" (remembered on this device), or with ?debug=1 in the address;
+   off with "Hide labels" or ?debug=0.
    It shows the id of every task on the preview and copies a reference that opens exactly the same sheet.
    It changes nothing and sends nothing anywhere. */
 {
@@ -842,11 +855,11 @@ function sheetLink() {
 function debugRef(extra) {
   const ver = (typeof changes !== "undefined" && changes[0]) ? changes[0].hash.slice(0, 7) : "local";
   return [`Let's Practice debug`, sheetLink(), `sheet ${String(state.level)} · No. ${state.seed} · lang ${state.lang} / answers ${state.alang} · site ${state.ui}`,
-          `tab ${state.tab}${extra ? " · " + extra : ""}`, `version ${ver} · screen ${innerWidth}x${innerHeight} · ${navigator.userAgent.slice(0, 120)}`].join("\n");
+          `tab ${state.tab}${extra ? " · " + extra : ""}`, `version ${ver} · screen ${innerWidth}x${innerHeight} · ${matchMedia("(pointer:coarse)").matches ? "touch screen" : "mouse"}`].join("\n");
 }
 function copyText(text) {
   (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(
-    () => toast("Copied"), () => { window.prompt("Copy:", text); });
+    () => toast(t("copied")), () => { window.prompt("Copy:", text); });
 }
 function debugTags(fr) {
   if (!debugOn()) return;
@@ -868,7 +881,8 @@ function debugTags(fr) {
 function renderDebug() {
   $("debug").hidden = !debugOn() || !state.sheet;
   if ($("debug").hidden) return;
-  $("dbg-ver").textContent = `${String(state.level).slice(0, 40)} · No. ${state.seed}`;
+  $("dbg-ver").textContent = `No. ${state.seed}`;
+  setReportRef(debugRef(""));
   const items = [];
   document.querySelectorAll(".pg iframe").forEach((fr, pi) => {
     try {
@@ -878,16 +892,31 @@ function renderDebug() {
     } catch {}
   });
   $("dbg-tasks").innerHTML = items.map((x, i) =>
-    `<button class="chip" type="button" data-dbg="${i}">${x.n} · ${x.id} · p${x.page}</button>`).join("");
+    `<button class="chip" type="button" data-dbg="${i}"><b style="font-size:16px">${x.n}</b> <small style="opacity:.65">${x.id}</small></button>`).join("");
   $("dbg-tasks").dataset.items = JSON.stringify(items);
 }
 $("dbg-tasks").addEventListener("click", (e) => {
   const b = e.target.closest("[data-dbg]"); if (!b) return;
   const x = JSON.parse($("dbg-tasks").dataset.items)[+b.dataset.dbg];
-  copyText(debugRef(`page ${x.page} · task ${x.n} (${x.id})`));
+  const ref = debugRef(`page ${x.page} · task ${x.n} (${x.id})`);
+  copyText(ref); setReportRef(ref);
+  $("dbg-tasks").querySelectorAll("[data-dbg]").forEach((c) => c.setAttribute("aria-pressed", c === b));
 });
+function setReportRef(ref) {  // a GitHub issue that already contains the exact sheet and task
+  const body = "```\n" + ref + "\n```\n\n**What is wrong?**\n\n\n**What should it be?**\n\n" +
+    "<!-- Please do not attach photos of children or worksheets with a child's name. -->";
+  $("dbg-report").href = `${REPO}/issues/new?labels=bug&title=${encodeURIComponent("Problem: ")}&body=${encodeURIComponent(body)}`;
+}
+function setLabels(on) {
+  if (on) localStorage.debug = "1"; else delete localStorage.debug;
+  $("labels-toggle").setAttribute("aria-pressed", on);
+  if (state.sheet) renderView();
+  if (on) setTimeout(() => $("debug").scrollIntoView({ behavior: "smooth", block: "start" }), 1400);
+}
+$("labels-toggle").addEventListener("click", () => setLabels(!debugOn()));
+$("labels-toggle").setAttribute("aria-pressed", debugOn());
 $("dbg-sheet").addEventListener("click", () => copyText(debugRef("")));
-$("dbg-off").addEventListener("click", () => { delete localStorage.debug; location.reload(); });
+$("dbg-off").addEventListener("click", () => setLabels(false));
 
 /* ================================================================ screen tools: listen, cream, a bit harder */
 const CREAM = "#fbf6e6";

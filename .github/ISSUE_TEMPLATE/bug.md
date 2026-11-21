@@ -13,3 +13,5 @@ labels: bug
 **Browser and device** (only if the site itself does not work):
 
 <!-- Please do not attach photos of children or worksheets with a child's name. -->
+
+<!-- Tip: on the site, press "Show task labels", tap the task with the problem and paste the copied text here. -->
