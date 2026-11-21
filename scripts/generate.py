@@ -73,9 +73,10 @@ body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line
 .row{display:flex;justify-content:center;gap:2px}
 .sent{font-size:19px;font-weight:700;line-height:1.5;margin:0}
 .blank{display:inline-block;width:120px;border-bottom:2.5px solid #111}
-.a{display:flex;gap:12px;align-items:baseline;font-size:16px;font-weight:600;line-height:1.4;padding:7px 0;border-bottom:1.5px solid #bbb}
+.a{display:flex;gap:12px;align-items:baseline;font-size:16px;font-weight:600;line-height:1.4;padding:5px 0;border-bottom:1.5px solid #bbb}
 .a .n{width:28px;height:28px;font-size:15px;transform:translateY(6px)}
 .a b{font-weight:900}
+.a .tag{flex:none;align-self:center;font-size:11.5px;font-weight:800;border:1.5px solid #111;border-radius:10px;padding:0 7px;white-space:nowrap}
 """
 
 S = 'fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"'
@@ -95,6 +96,12 @@ def sec(num, title, body, sub="", grow=False):
 def box(w=46, h=None, r=10):
     h = h or w
     return f'<span class="box" style="width:{w}px;height:{h}px;border-radius:{r}px"></span>'
+
+
+def filled(v, w=46):
+    """An answer box with the number already written in (a worked example)."""
+    return (f'<span class="box" style="width:{w}px;height:{w}px;display:inline-flex;align-items:center;'
+            f'justify-content:center;font-size:22px;font-weight:800">{v}</span>')
 
 
 def num(v):
@@ -535,7 +542,7 @@ def task_lengths(rng, lvl, L):
         x = gap * i + (gap - 36) / 2
         for j in range(t):
             towers.append(f'<rect x="{x:.0f}" y="{194 - 32 * j}" width="32" height="32"/>')
-    tw_svg = (f'<svg width="300" height="236" viewBox="0 0 300 236"><g {S}>{"".join(towers)}</g>'
+    tw_svg = (f'<svg width="270" height="212" viewBox="0 0 300 236"><g {S}>{"".join(towers)}</g>'
               '<line x1="4" y1="227" x2="296" y2="227" stroke="#111" stroke-width="3"/></svg>')
     pen_svg = f'<svg width="340" height="{ph}" viewBox="0 0 340 {ph}"><g transform="translate(10,0)" {S}>{"".join(pencils)}</g></svg>'
     q1 = L.w["pencil_short"] if short_q else L.w["pencil_long"]
@@ -555,9 +562,11 @@ def task_lengths(rng, lvl, L):
 # ---------------------------------------------------------------- task 13: number bonds
 def task_bonds(rng, lvl, L):
     n = {1: rng.choice([5, 6, 7]), 2: rng.choice([8, 9, 10]), 3: rng.choice([10, 11, 12])}[lvl]
-    cells = "".join(f'<div class="bond">{box(40)}+{box(40)}= {n}</div>' for _ in range(n + 1))
+    # the first bond (0 + n) is filled in as a model, so the child sees where to start and why there are n + 1 rows
+    cells = (f'<div class="bond">{filled(0, 40)}+{filled(n, 40)}= {n}</div>'
+             + "".join(f'<div class="bond">{box(40)}+{box(40)}= {n}</div>' for _ in range(n)))
     body = f'<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));row-gap:12px;column-gap:8px">{cells}</div>'
-    return (sec(13, text(L.w["t13"], n=n), body),
+    return (sec(13, text(L.w["t13"], n=n), body, sub=L.w["t13_sub"]),
             "<b>" + ", ".join(f"{i}+{n - i}" for i in range(n + 1)) + "</b>")
 
 
@@ -577,7 +586,9 @@ def task_steps(rng, lvl, L):
     miss = sorted(rng.sample(range(2, 10), k))
     cells = "".join(box(48) if i in miss else num(v) for i, v in enumerate(vals))
     body = f'<div style="display:flex;justify-content:space-between;padding:0 4px">{cells}</div>'
-    return sec(14, text(L.w["t14"], s=step), body), f"<b>{join_list(vals[i] for i in miss)}</b>"
+    # curriculum depends on the step: 1s within 20 = Y1 spring, 2s / 5s / 10s = Y1 summer, 3s = Year 2
+    period = {1: "Y1Sp", 2: "Y1Su", 5: "Y1Su", 10: "Y1Su", 3: "Y2"}[step]
+    return sec(14, text(L.w["t14"], s=step), body), f"<b>{join_list(vals[i] for i in miss)}</b>", period
 
 
 # ---------------------------------------------------------------- task 15: equations
@@ -831,6 +842,35 @@ def task_ordinals(rng, lvl, L):
             f'{L.a["left_right"]}: <b>{", ".join(order)}</b>')
 
 
+# ---------------------------------------------------------------- curriculum (England, National Curriculum + White Rose)
+# When each task is taught, per level (the level changes the number range): Y1A / Y1Sp / Y1Su = Year 1 autumn /
+# spring / summer term, Y2 = Year 2. Shown as a tag on the answer page so parents see what the task checks.
+CURRICULUM = {
+    1: ("Y1A", "Y1Sp", "Y1Sp"),    # count objects: within 10 autumn, within 20 spring
+    2: ("Y1A", "Y1Sp", "Y1Sp"),    # estimate, then count (estimating is enrichment)
+    3: ("Y2", "Y2", "Y2"),         # odd and even numbers
+    4: ("Y1A", "Y1Sp", "Y1Su"),    # number line: to 10 / to 20 / to 100
+    5: ("Y1A", "Y1Sp", "Y1Su"),    # compare with < > =
+    6: ("Y1A", "Y1Sp", "Y2"),      # numbers in words: to 20 is Year 1, to 100 is Year 2
+    7: ("Y2", "Y2", "Y2"),         # 3D shapes: naming is Y1 autumn, counting faces and edges is Year 2
+    8: ("Y1A", "Y1A", "Y1A"),      # name and count 2D shapes
+    9: ("Y2", "Y2", "Y2"),         # count sides, pentagon / hexagon
+    10: ("Y1Su", "Y1Su", "Y2"),    # halves, quarters (Y1); thirds and three quarters (Y2)
+    11: ("Y1Su", "Y1Su", "Y2"),    # equal parts
+    12: ("Y1Sp", "Y1Sp", "Y1Sp"),  # length and height
+    13: ("Y1A", "Y1A", "Y1Sp"),    # number bonds within 10 / to 12
+    14: ("Y1Su", "Y1Su", "Y1Su"),  # counting in steps (task_steps returns the exact period for its step)
+    15: ("Y1A", "Y1Sp", "Y2"),     # add and subtract within 10 / 20 / crossing ten up to 30
+    16: ("Y1A", "Y1Sp", "Y2"),     # number walls (addition; the format itself is enrichment)
+    17: ("Y1Su", "Y1Su", "Y1Su"),  # position and direction
+    18: ("Y1Su", "Y1Su", "Y1Su"),  # ordinal numbers
+}
+
+
+def curriculum(task_no, level):
+    return CURRICULUM[task_no][level - 1]
+
+
 # ---------------------------------------------------------------- assemble
 def page(content, extra_style=""):
     return f'<div class="page" style="{extra_style}">{content}</div>'
@@ -864,12 +904,15 @@ def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
         page("".join(x[0] for x in t[11:15])),
         page("".join(x[0] for x in t[15:18])),
     ]
-    ans = "".join(f'<div class="a"{" style=&quot;border-bottom:none&quot;" if i == 17 else ""}><span class="n">{i + 1}</span><span>{a}</span></div>'
-                  for i, (_, a) in enumerate(t))
+    # a task may return a third value: its own curriculum period (when it depends on what was generated)
+    ans = "".join(f'<div class="a"{' style="border-bottom:none"' if i == 17 else ""}><span class="n">{i + 1}</span>'
+                  f'<span style="flex:1">{x[1]}</span>'
+                  f'<span class="tag">{L.a["period"][x[2] if len(x) > 2 else curriculum(i + 1, level)]}</span></div>'
+                  for i, x in enumerate(t))
     a = L.a
     answers = page(f'<h1 style="margin:0 0 2px;font-size:32px;font-weight:900">{a["answers"]}</h1>'
                    f'<p style="margin:0 0 8px;font-size:15px;font-weight:600">'
-                   f'{text(a["sub"], seed=seed, level=level, lname=a["levels"][level])}</p>' + ans,
+                   f'{text(a["sub"], seed=seed, level=level, lname=a["levels"][level])}<br>{a["legend"]}</p>' + ans,
                    "padding:40px 52px;gap:0")
     return pages, answers
 
