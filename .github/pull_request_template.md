@@ -9,6 +9,7 @@
 ## Checklist
 
 - [ ] Follows the [project principles](https://github.com/ISergey256/lets-practice-worksheets/blob/main/CONTRIBUTING.md#1-project-principles-a-pull-request-that-breaks-one-of-them-will-not-be-merged): free, no tracking, simple, black and white, own work.
+- [ ] Follows [STANDARDS.md](https://github.com/ISergey256/lets-practice-worksheets/blob/main/STANDARDS.md) (rule numbers I checked: …).
 - [ ] Every new task has exactly one correct answer, shown on the answer page, and a curriculum tag.
 - [ ] All new texts are in `scripts/i18n.py` (texts I could not translate are in English and listed below as "needs translation").
 - [ ] I did not change the order of random calls in existing tasks.

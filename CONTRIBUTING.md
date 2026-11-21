@@ -20,6 +20,9 @@ Issues and pull requests can be written in English, Ukrainian or Russian.
    copyrighted sources. Using the official curriculum documents (gov.uk, Open Government Licence) as a reference is fine.
 7. **No children's personal data.** Never attach photos of real children or worksheets with names.
 
+Every task, page and card must also follow the numbered rules of [STANDARDS.md](STANDARDS.md)
+(text sizes, icons, worked example, easy → harder, page limits …). Open items are listed in [ROADMAP.md](ROADMAP.md).
+
 ## 2. What is welcome
 
 - Bug reports and fixes (wrong answers, ambiguous tasks, layout problems, broken site).

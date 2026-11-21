@@ -108,7 +108,7 @@ On Windows you can also double-click `start_site.bat`.
 
 ## Why it looks like this
 
-Black and white, a worked example on grey, one icon per action, little on a page: every choice has a reason, with research where there is research — including for children with ADHD, autism and dyslexia. See [DESIGN.md](DESIGN.md).
+Black and white, a worked example on grey, one icon per action, little on a page: every choice has a reason, with research where there is research — including for children with ADHD, autism and dyslexia. See [DESIGN.md](DESIGN.md). The rules every task must follow are in [STANDARDS.md](STANDARDS.md); what does not follow them yet is in [ROADMAP.md](ROADMAP.md).
 
 ## Contributing
 
