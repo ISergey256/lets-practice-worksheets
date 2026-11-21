@@ -105,6 +105,13 @@ On Windows you can also double-click `start_site.bat`.
 - `scripts/check_layout.py`: renders worksheets in every language and checks that every page fits A4.
 - `fonts/`: Nunito, plus M PLUS Rounded 1c for Greek letters (both under the SIL Open Font License, see `fonts/OFL-*.txt`). `scripts/fetch_fonts.py` downloads them again.
 
+## Contributing
+
+Help is welcome: bug reports, new tasks and topics, translations by native speakers, accessibility.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) first — it lists the project principles (free, no tracking, simple,
+printable, own work), how to make a change and the checks every pull request must pass.
+Issues and pull requests can be written in English, Ukrainian or Russian.
+
 ## License: free for learning, not for resale
 
 Let's Practice is free for children, families, teachers, tutors, nurseries, and schools — public and private.

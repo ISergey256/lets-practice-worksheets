@@ -1,0 +1,27 @@
+name: Check pull request
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Texts in every language
+        run: python scripts/i18n.py
+      - name: Every level, language and cheat card builds
+        run: python scripts/build_site.py
+      - name: Install Chromium for the layout check
+        run: |
+          pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+      - name: Every page fits A4 in every language
+        run: python scripts/check_layout.py --seeds 101-103
