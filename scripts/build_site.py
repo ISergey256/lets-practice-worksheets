@@ -31,8 +31,8 @@ def check(seeds=100):
             for seed in range(seeds):
                 pages, answers = g.build(level, seed, lang, lang)
                 assert 1 <= len(pages) <= 4 and answers, (lang, level, seed, len(pages))  # STANDARDS L7
-    for lang in i18n.LANGS:  # cheat sheets: every card of both stages
-        for stage in ("R", "Y1A"):
+    for lang in i18n.LANGS:  # help cards: every card of both stages and of the review parts
+        for stage in ("R", "Y1A", "1a", "1b", "2a", "2b", "3a", "3b"):
             for seed in range(seeds // 5):
                 assert g.cheats(stage, seed, lang), (lang, stage, seed)
     print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets")

@@ -62,7 +62,7 @@ def topic_meta():
         for lvl in (1, 2, 3):
             period = g.curriculum(t, lvl)
             meta[f"v{t}{LEVEL_LETTER[lvl]}"] = {"year": year_of(period), "period": period, "strand": REVIEW_STRAND[t - 1],
-                                                "task": t, "level": lvl, "card": None}
+                                                "task": t, "level": lvl, "card": f"V{t}"}
     return meta
 
 

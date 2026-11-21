@@ -18,6 +18,7 @@ Want to help? Pick an item and open an issue first.
 - [x] **D8** — "Next: a bit harder →" on the site: the next ready-made sheet, or the same topics one level up.
 - [x] **A2** — on touch screens every control is at least 44 px.
 - [x] **A3** — "Cream background" switch for the on-screen preview (printing stays white).
+- [x] **C1** — help cards ("cheat sheets") for every topic, including the 18 Year 1 review tasks, in 7 languages.
 - [x] Read aloud: "Listen to the task" buttons use the device's own voices (nothing is sent anywhere);
       if the device has no voice for the language, the site says so.
 
@@ -32,7 +33,6 @@ Want to help? Pick an item and open an issue first.
 
 - [ ] **D4** — optional challenge item ★ at the end of a task.
 - [ ] **G4** — objects on cheat-sheet cards are 17–20 px; make them ≥ 22 px.
-- [ ] **C1** — cheat-sheet cards for the review topics.
 - [ ] Solve on a tablet: draw and type on the sheet on screen (for now the sheets are for printing).
 - [ ] Installable site that works offline (an icon on the home screen, no app store).
 
