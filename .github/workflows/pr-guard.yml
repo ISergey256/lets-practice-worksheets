@@ -1,0 +1,44 @@
+name: PR safety report
+
+# Read-only report for the maintainer: which risky files a pull request touches and which risky lines it adds.
+# It never fails the PR and never runs the PR's code. It is advice, not a guarantee: a PR can edit this file too,
+# so the maintainer always reads the diff (see CONTRIBUTING.md, section 8).
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Risky files and lines
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -u
+          files=$(git diff --name-only "$BASE" "$HEAD")
+          {
+            echo "## PR safety report"
+            echo
+            echo "### Sensitive files"
+            echo "$files" | grep -E '^\.github/|^scripts/(server|build_site|fetch_fonts|check_layout|measure_topics)\.py$|^site/index\.html$|^\.gitignore$|^LICENSE|^fonts/' | sed 's/^/- ⚠️ `/; s/$/`/' || echo "- none"
+            echo
+            echo "### Binary or unusual files"
+            git diff --numstat "$BASE" "$HEAD" | awk '$1=="-" {print "- ⚠️ `" $3 "` (binary)"}'
+            echo "$files" | grep -vE '\.(py|md|html|json|yml|yaml|css|txt)$|^fonts/|CODEOWNERS$|^\.gitignore$' | sed 's/^/- ⚠️ `/; s/$/` (new kind of file)/' || true
+            echo
+            echo "### Added lines to read carefully"
+            git diff -U0 "$BASE" "$HEAD" | grep -E '^\+[^+]' | grep -nEi 'https?://|eval\(|exec\(|subprocess|os\.system|__import__|importlib|pickle|marshal|base64|atob\(|fromCharCode|new Function|document\.write|innerHTML *=|fetch\(|XMLHttpRequest|WebSocket|sendBeacon|navigator\.|localStorage|cookie|curl |wget |pip install|npm |secrets\.|GITHUB_TOKEN|pull_request_target|[A-Za-z0-9+/]{120,}' \
+              | cut -c1-220 | sed 's/^/    /' || echo "- none"
+          } > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+          grep -q '⚠️' report.md && echo "::warning title=PR safety::This PR touches sensitive files or adds risky lines. Read the job summary." || true
+          grep -qE '^    ' report.md && echo "::warning title=PR safety::Risky-looking lines were added. Read the job summary." || true

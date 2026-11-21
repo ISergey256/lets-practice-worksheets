@@ -1,0 +1,5 @@
+# Every change needs a look from the maintainer; files that can run code or change the build first of all.
+*                 @ISergey256
+/.github/         @ISergey256
+/scripts/         @ISergey256
+/site/index.html  @ISergey256

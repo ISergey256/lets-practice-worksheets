@@ -93,3 +93,16 @@ Everyone who helps — teachers, translators, families who test the sheets, deve
 [CONTRIBUTORS.md](CONTRIBUTORS.md) and on the website. Add yourself in your pull request (a line in `CONTRIBUTORS.md`
 and an entry in `site/contributors.json`), or ask in your issue. Only the name or nickname you choose; never e-mail
 addresses or children's names.
+
+## 8. Safety rules for pull requests
+
+The site is used by children and families, so code changes are reviewed with extra care.
+
+- **No new dependencies, external scripts, trackers, fonts or CDNs** without an issue and the maintainer's "yes" first.
+  The site must not send data anywhere (no analytics, no cookies).
+- **Do not change `.github/` (workflows, templates, CODEOWNERS), `scripts/server.py` or the build scripts**
+  unless the issue asks for it. Such PRs are reviewed line by line and may be closed.
+- **No binary or minified files** (except fonts agreed in an issue), no obfuscated or encoded code.
+- Keep a PR small and about one thing; big mixed PRs are hard to check and will be asked to split.
+- Every PR gets an automatic "PR safety report" (which risky files and lines it touches). It is a help for the review,
+  not a replacement for it.
