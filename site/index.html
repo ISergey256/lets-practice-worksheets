@@ -164,7 +164,9 @@
   <footer>
     <span data-t="footer"></span><br>
     <span data-t="privacy"></span>
-    <span data-t="source"></span>: <a href="https://github.com/ISergey256/lets-practice-worksheets">github.com/ISergey256/lets-practice-worksheets</a>
+    <span data-t="source"></span>: <a href="https://github.com/ISergey256/lets-practice-worksheets">github.com/ISergey256/lets-practice-worksheets</a><br>
+    <b data-t="free"></b>
+    <a href="https://github.com/ISergey256/lets-practice-worksheets/blob/main/LICENSE.md" data-t="license"></a>
   </footer>
 </div>
 <iframe id="printframe" title="print" aria-hidden="true" tabindex="-1"></iframe>
@@ -177,6 +179,7 @@ const UI = {
     tagline: "Free printable maths worksheets for Year 1 (ages 5–7)", uiLang: "Site language",
     stages: { R: ["Reception", "ages 4–5 · no reading needed: spots, counting, patterns"], Y1A: ["Year 1 · Autumn", "ages 5–6 · numbers to 10, + and −, shapes"] }, review: "Year 1 review (all topics)", stageTitle: "{stage} · No. {seed}",
     cheats: "Cheat sheets", cheatsHint: "For a parent or teacher: tick the tasks the child needs help with. One card per task, two per page.", all: "All", none: "None", printCheats: "Print cheat sheets", tabCheats: "Cheat sheets", cheatsNone: "Tick at least one task.",
+    free: "Free for learning. Not for resale.", license: "License",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -196,6 +199,7 @@ const UI = {
     tagline: "Безкоштовні аркуші з математики для 1 класу (5–7 років)", uiLang: "Мова сайту",
     stages: { R: ["Reception", "4–5 років · без читання: цяточки, лічба, візерунки"], Y1A: ["Year 1 · осінь", "5–6 років · числа до 10, + і −, фігури"] }, review: "Повторення за Year 1 (усі теми)", stageTitle: "{stage} · №{seed}",
     cheats: "Шпаргалки", cheatsHint: "Для батьків або вчителя: позначте завдання, з якими дитині потрібна допомога. Одна картка на завдання, дві на сторінці.", all: "Усі", none: "Жодного", printCheats: "Друкувати шпаргалки", tabCheats: "Шпаргалки", cheatsNone: "Позначте хоча б одне завдання.",
+    free: "Безкоштовно для навчання. Не для продажу.", license: "Ліцензія",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -215,6 +219,7 @@ const UI = {
     tagline: "Бесплатные листы по математике для 1 класса (5–7 лет)", uiLang: "Язык сайта",
     stages: { R: ["Reception", "4–5 лет · можно без чтения: точки, счёт, узоры"], Y1A: ["Year 1 · осень", "5–6 лет · числа до 10, + и −, фигуры"] }, review: "Повторение за Year 1 (все темы)", stageTitle: "{stage} · №{seed}",
     cheats: "Шпаргалки", cheatsHint: "Для родителя или учителя: отметьте задания, с которыми ребёнку нужна помощь. Одна карточка на задание, две на странице.", all: "Все", none: "Ничего", printCheats: "Печать шпаргалок", tabCheats: "Шпаргалки", cheatsNone: "Отметьте хотя бы одно задание.",
+    free: "Бесплатно для обучения. Не для продажи.", license: "Лицензия",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -234,6 +239,7 @@ const UI = {
     tagline: "Δωρεάν φύλλα μαθηματικών για την Α΄ Δημοτικού (5–7 ετών)", uiLang: "Γλώσσα ιστότοπου",
     stages: { R: ["Reception", "4–5 ετών · χωρίς ανάγνωση: βούλες, μέτρηση, μοτίβα"], Y1A: ["Year 1 · φθινόπωρο", "5–6 ετών · αριθμοί έως 10, + και −, σχήματα"] }, review: "Επανάληψη Year 1 (όλα τα θέματα)", stageTitle: "{stage} · αρ. {seed}",
     cheats: "Βοηθητικές κάρτες", cheatsHint: "Για γονείς ή εκπαιδευτικούς: σημειώστε τις ασκήσεις όπου το παιδί χρειάζεται βοήθεια. Μία κάρτα ανά άσκηση, δύο ανά σελίδα.", all: "Όλες", none: "Καμία", printCheats: "Εκτύπωση καρτών", tabCheats: "Κάρτες", cheatsNone: "Σημειώστε τουλάχιστον μία άσκηση.",
+    free: "Δωρεάν για μάθηση. Όχι για μεταπώληση.", license: "Άδεια χρήσης",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -253,6 +259,7 @@ const UI = {
     tagline: "Kostenlose Mathe-Arbeitsblätter für die 1. Klasse (5–7 Jahre)", uiLang: "Sprache der Seite",
     stages: { R: ["Reception", "4–5 Jahre · ohne Lesen: Punkte, Zählen, Muster"], Y1A: ["Year 1 · Herbst", "5–6 Jahre · Zahlen bis 10, + und −, Formen"] }, review: "Year-1-Wiederholung (alle Themen)", stageTitle: "{stage} · Nr. {seed}",
     cheats: "Spickzettel", cheatsHint: "Für Eltern oder Lehrkräfte: Kreuzen Sie die Aufgaben an, bei denen das Kind Hilfe braucht. Eine Karte pro Aufgabe, zwei pro Seite.", all: "Alle", none: "Keine", printCheats: "Spickzettel drucken", tabCheats: "Spickzettel", cheatsNone: "Mindestens eine Aufgabe ankreuzen.",
+    free: "Kostenlos zum Lernen. Nicht zum Weiterverkauf.", license: "Lizenz",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -272,6 +279,7 @@ const UI = {
     tagline: "Fiches de maths gratuites à imprimer pour le CP (5–7 ans)", uiLang: "Langue du site",
     stages: { R: ["Reception", "4–5 ans · sans lire : points, comptage, motifs"], Y1A: ["Year 1 · automne", "5–6 ans · nombres jusqu’à 10, + et −, formes"] }, review: "Révision Year 1 (tous les thèmes)", stageTitle: "{stage} · n° {seed}",
     cheats: "Fiches d’aide", cheatsHint: "Pour le parent ou l’enseignant : cochez les exercices où l’enfant a besoin d’aide. Une carte par exercice, deux par page.", all: "Toutes", none: "Aucune", printCheats: "Imprimer les fiches d’aide", tabCheats: "Fiches d’aide", cheatsNone: "Cochez au moins un exercice.",
+    free: "Gratuit pour apprendre. Pas à revendre.", license: "Licence",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -291,6 +299,7 @@ const UI = {
     tagline: "Fichas de matemáticas gratis para imprimir, 1.º de primaria (5–7 años)", uiLang: "Idioma del sitio",
     stages: { R: ["Reception", "4–5 años · sin leer: puntos, contar, series"], Y1A: ["Year 1 · otoño", "5–6 años · números hasta 10, + y −, figuras"] }, review: "Repaso de Year 1 (todos los temas)", stageTitle: "{stage} · n.º {seed}",
     cheats: "Fichas de ayuda", cheatsHint: "Para la familia o el docente: marque los ejercicios en los que el niño necesita ayuda. Una tarjeta por ejercicio, dos por página.", all: "Todas", none: "Ninguna", printCheats: "Imprimir fichas de ayuda", tabCheats: "Fichas de ayuda", cheatsNone: "Marque al menos un ejercicio.",
+    free: "Gratis para aprender. No para revender.", license: "Licencia",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
