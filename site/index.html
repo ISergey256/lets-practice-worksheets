@@ -10,6 +10,7 @@
 <style>
   :root { --ink:#111; --paper:#fff; --bg:#f3f2ee; --muted:#666; --soft:#e7e5df; --r:18px; --b:2.5px solid var(--ink); }
   * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
   body { margin:0; font-family:'Nunito','M PLUS Rounded 1c', system-ui, sans-serif; color:var(--ink); background:var(--bg); font-weight:600; }
   button, input, select { font:inherit; color:inherit; }
   button { cursor:pointer; }
@@ -59,6 +60,12 @@
 
   .recent { display:flex; flex-wrap:wrap; gap:6px; }
   .picks { display:flex; flex-direction:column; gap:6px; }
+  .chip:disabled { opacity:.45; cursor:default; background:#fff; }
+  .strand { margin:12px 0 6px; font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .trow { display:flex; flex-direction:column; gap:4px; margin-bottom:6px; }
+  .ptag { margin-left:auto; flex:none; font-size:11.5px; font-weight:800; border:1.5px solid var(--ink); border-radius:10px; padding:0 7px; white-space:nowrap; }
+  .vchips { display:flex; gap:5px; padding-left:42px; flex-wrap:wrap; }
+  .vchips .chip { font-size:12.5px; padding:1px 9px; }
   .pick { display:flex; align-items:center; gap:10px; border:2px solid var(--ink); border-radius:12px; padding:6px 10px; background:#fff; font-size:14.5px; font-weight:800; text-align:left; width:100%; }
   .pick:hover { background:var(--soft); }
   .pick .tickbox { width:22px; height:22px; border:2.5px solid var(--ink); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; flex:none; font-size:15px; color:#fff; }
@@ -99,12 +106,28 @@
   <div class="layout">
     <aside class="card panel">
       <div class="block">
-        <p class="step"><span class="n">1</span><span data-t="level"></span></p>
-        <div class="levels" role="radiogroup" id="levels"></div>
+        <p class="step"><span class="n">1</span><span data-t="year"></span></p>
+        <div class="levels" role="radiogroup" id="years"></div>
       </div>
 
       <div class="block">
-        <p class="step"><span class="n">2</span><label for="seed" data-t="number"></label></p>
+        <p class="step"><span class="n">2</span><span data-t="subject"></span></p>
+        <div class="recent" id="subjects"></div>
+      </div>
+
+      <div class="block">
+        <p class="step"><span class="n">3</span><span data-t="practise"></span></p>
+        <div class="recent" id="modes" role="radiogroup"></div>
+        <div class="levels" id="presets" role="radiogroup" style="margin-top:10px"></div>
+        <div id="topic-picker" hidden style="margin-top:10px">
+          <p class="hint" style="margin:0" data-t="topicsHint"></p>
+          <p class="hint" style="margin:4px 0 8px;font-weight:900;color:var(--ink)" id="topic-count"></p>
+          <div id="topic-list"></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="step"><span class="n">4</span><label for="seed" data-t="number"></label></p>
         <div class="seedrow">
           <button class="nav" id="prev" type="button">‹</button>
           <input class="input" id="seed" type="number" min="0" max="999999" inputmode="numeric">
@@ -115,7 +138,7 @@
       </div>
 
       <div class="block">
-        <p class="step"><span class="n">3</span><span data-t="languages"></span></p>
+        <p class="step"><span class="n">5</span><span data-t="languages"></span></p>
         <div class="langs">
           <label for="lang" data-t="sheetLang"></label><select class="select" id="lang"></select>
           <label for="alang" data-t="answersLang"></label><select class="select" id="alang"></select>
@@ -123,7 +146,7 @@
       </div>
 
       <div class="block">
-        <p class="step"><span class="n">4</span><span data-t="print"></span></p>
+        <p class="step"><span class="n">6</span><span data-t="print"></span></p>
         <div class="printrow">
           <button class="btn dark big-btn" id="print-sheet" type="button" disabled data-t="printSheet"></button>
           <button class="btn big-btn" id="print-answers" type="button" disabled data-t="printAnswers"></button>
@@ -135,7 +158,7 @@
       </div>
 
       <div class="block" id="cheat-block" hidden>
-        <p class="step"><span class="n">5</span><span data-t="cheats"></span></p>
+        <p class="step"><span class="n">7</span><span data-t="cheats"></span></p>
         <p class="hint" style="margin:0 0 10px" data-t="cheatsHint"></p>
         <div class="picks" id="cheat-picks" role="group"></div>
         <div style="display:flex;gap:8px;margin-top:8px">
@@ -188,6 +211,7 @@ const UI = {
     cheats: "Cheat sheets", cheatsHint: "For a parent or teacher: tick the tasks the child needs help with. One card per task, two per page.", all: "All", none: "None", printCheats: "Print cheat sheets", tabCheats: "Cheat sheets", cheatsNone: "Tick at least one task.",
     free: "Free for learning. Not for resale.", license: "License",
     aboutTitle: "About the project", about1: "Let’s Practice is a free project: good learning materials should be available to every child, whatever their family can afford.", about2: "No sign-up, no subscriptions, no ads and no hidden payments. Choose, print, practise. We start with maths for ages 4–6 and will grow step by step up to Year 11 and other subjects.",
+    year: "Year", subject: "Subject", maths: "Maths", soon: "soon", english: "English", science: "Science", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -209,6 +233,7 @@ const UI = {
     cheats: "Шпаргалки", cheatsHint: "Для батьків або вчителя: позначте завдання, з якими дитині потрібна допомога. Одна картка на завдання, дві на сторінці.", all: "Усі", none: "Жодного", printCheats: "Друкувати шпаргалки", tabCheats: "Шпаргалки", cheatsNone: "Позначте хоча б одне завдання.",
     free: "Безкоштовно для навчання. Не для продажу.", license: "Ліцензія",
     aboutTitle: "Про проєкт", about1: "Let’s Practice — безкоштовний проєкт: якісні навчальні матеріали мають бути доступні кожній дитині, незалежно від можливостей родини.", about2: "Без реєстрації, підписок, реклами та прихованих платежів. Обрав — роздрукував — займаєшся. Починаємо з математики для дітей 4–6 років і поступово дійдемо до 11 класу та інших предметів.",
+    year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", english: "Англійська", science: "Природознавство", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -230,6 +255,7 @@ const UI = {
     cheats: "Шпаргалки", cheatsHint: "Для родителя или учителя: отметьте задания, с которыми ребёнку нужна помощь. Одна карточка на задание, две на странице.", all: "Все", none: "Ничего", printCheats: "Печать шпаргалок", tabCheats: "Шпаргалки", cheatsNone: "Отметьте хотя бы одно задание.",
     free: "Бесплатно для обучения. Не для продажи.", license: "Лицензия",
     aboutTitle: "О проекте", about1: "Let’s Practice — бесплатный проект: хорошие учебные материалы должны быть доступны каждому ребёнку, независимо от возможностей семьи.", about2: "Без регистрации, подписок, рекламы и скрытых платежей. Выбрал — распечатал — занимаешься. Начинаем с математики для детей 4–6 лет и постепенно дойдём до 11 класса и других предметов.",
+    year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", english: "Английский", science: "Естествознание", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -251,6 +277,7 @@ const UI = {
     cheats: "Βοηθητικές κάρτες", cheatsHint: "Για γονείς ή εκπαιδευτικούς: σημειώστε τις ασκήσεις όπου το παιδί χρειάζεται βοήθεια. Μία κάρτα ανά άσκηση, δύο ανά σελίδα.", all: "Όλες", none: "Καμία", printCheats: "Εκτύπωση καρτών", tabCheats: "Κάρτες", cheatsNone: "Σημειώστε τουλάχιστον μία άσκηση.",
     free: "Δωρεάν για μάθηση. Όχι για μεταπώληση.", license: "Άδεια χρήσης",
     aboutTitle: "Σχετικά με το έργο", about1: "Το Let’s Practice είναι ένα δωρεάν έργο: το καλό εκπαιδευτικό υλικό πρέπει να είναι διαθέσιμο σε κάθε παιδί, ανεξάρτητα από τις δυνατότητες της οικογένειας.", about2: "Χωρίς εγγραφή, συνδρομές, διαφημίσεις ή κρυφές χρεώσεις. Διαλέγεις, τυπώνεις, εξασκείσαι. Ξεκινάμε με μαθηματικά για παιδιά 4–6 ετών και σιγά σιγά θα φτάσουμε ως το Year 11 και σε άλλα μαθήματα.",
+    year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", english: "Αγγλικά", science: "Φυσικές επιστήμες", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -272,6 +299,7 @@ const UI = {
     cheats: "Spickzettel", cheatsHint: "Für Eltern oder Lehrkräfte: Kreuzen Sie die Aufgaben an, bei denen das Kind Hilfe braucht. Eine Karte pro Aufgabe, zwei pro Seite.", all: "Alle", none: "Keine", printCheats: "Spickzettel drucken", tabCheats: "Spickzettel", cheatsNone: "Mindestens eine Aufgabe ankreuzen.",
     free: "Kostenlos zum Lernen. Nicht zum Weiterverkauf.", license: "Lizenz",
     aboutTitle: "Über das Projekt", about1: "Let’s Practice ist ein kostenloses Projekt: Gute Lernmaterialien sollen jedem Kind zur Verfügung stehen, unabhängig vom Geldbeutel der Familie.", about2: "Keine Anmeldung, keine Abos, keine Werbung, keine versteckten Kosten. Auswählen, drucken, üben. Wir beginnen mit Mathe für 4- bis 6-Jährige und wachsen Schritt für Schritt bis Year 11 und zu weiteren Fächern.",
+    year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", english: "Englisch", science: "Sachkunde", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -293,6 +321,7 @@ const UI = {
     cheats: "Fiches d’aide", cheatsHint: "Pour le parent ou l’enseignant : cochez les exercices où l’enfant a besoin d’aide. Une carte par exercice, deux par page.", all: "Toutes", none: "Aucune", printCheats: "Imprimer les fiches d’aide", tabCheats: "Fiches d’aide", cheatsNone: "Cochez au moins un exercice.",
     free: "Gratuit pour apprendre. Pas à revendre.", license: "Licence",
     aboutTitle: "À propos du projet", about1: "Let’s Practice est un projet gratuit : de bons supports d’apprentissage doivent être accessibles à chaque enfant, quels que soient les moyens de sa famille.", about2: "Sans inscription, sans abonnement, sans publicité ni frais cachés. On choisit, on imprime, on s’entraîne. Nous commençons par les maths pour les 4–6 ans et grandirons pas à pas jusqu’à Year 11 et d’autres matières.",
+    year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", english: "Anglais", science: "Sciences", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -314,6 +343,7 @@ const UI = {
     cheats: "Fichas de ayuda", cheatsHint: "Para la familia o el docente: marque los ejercicios en los que el niño necesita ayuda. Una tarjeta por ejercicio, dos por página.", all: "Todas", none: "Ninguna", printCheats: "Imprimir fichas de ayuda", tabCheats: "Fichas de ayuda", cheatsNone: "Marque al menos un ejercicio.",
     free: "Gratis para aprender. No para revender.", license: "Licencia",
     aboutTitle: "Sobre el proyecto", about1: "Let’s Practice es un proyecto gratuito: los buenos materiales de aprendizaje deben estar al alcance de todos los niños, sean cuales sean las posibilidades de su familia.", about2: "Sin registro, sin suscripciones, sin anuncios ni pagos ocultos. Eliges, imprimes y practicas. Empezamos con matemáticas para niños de 4 a 6 años y creceremos poco a poco hasta Year 11 y otras asignaturas.",
+    year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", english: "Inglés", science: "Ciencias", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -339,14 +369,17 @@ const FONT_CSS = new URL("fonts/fonts.css", location.href).href;
 const PRINT_CSS = "@page{size:A4;margin:0}html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}" +
                   "@media print{.page{width:793px;height:1122px;break-after:page}.page:last-child{break-after:auto}}";
 const $ = (id) => document.getElementById(id);
-// "R" = Reception, "Y1A" = Year 1 autumn (icon-led sheets), 1 / 2 / 3 = Year 1 review by difficulty
-const LEVEL_IDS = ["R", "Y1A", 1, 2, 3];
-const parseLevel = (v) => (v === "R" || v === "Y1A" ? v : [1, 2, 3].includes(+v) ? +v : null);
+// level: "R" = Reception, "Y1A" = Year 1 autumn, 1 / 2 / 3 = Year 1 review by difficulty,
+// "T:r1_v4a" = a sheet of chosen topics (scripts/topics.py)
+const isTopics = (v) => typeof v === "string" && v.startsWith("T:");
+const parseLevel = (v) => (v === "R" || v === "Y1A" || isTopics(v) ? v : [1, 2, 3].includes(+v) ? +v : null);
 const isStage = (v) => typeof v === "string";
-const levelTag = (v) => (isStage(v) ? v : `L${v}`);
+const levelTag = (v) => (isTopics(v) ? `T-${v.slice(2)}` : isStage(v) ? v : `L${v}`);
+const yearOfLevel = (v) => (v === "R" ? "R" : isTopics(v) ? (topicYear(v.slice(2).split("_")[0]) || "Y1") : "Y1");
 const pick = (v, d) => (v in LANGS ? v : d);
 const state = {
   level: 2, seed: 101, tab: "sheet", sheet: null, ready: false,
+  year: "Y1", mode: "ready", sel: {}, lastPreset: {},
   ui: pick(localStorage.ui, "en"), lang: pick(localStorage.lang, "en"), alang: pick(localStorage.alang, "en"),
 };
 let backend = null;  // {build(level, seed, lang, alang) -> {pages, answers, css}, pdf?}
@@ -356,13 +389,14 @@ const t = (k, o) => fmt(UI[state.ui][k], o || {});
 
 /* ================================================================ url: #L2-123 or #L2-123-uk-ru */
 function readHash() {
-  const m = location.hash.match(/^#(L[123]|R|Y1A)-(\d{1,6})(?:-([a-z]{2})-([a-z]{2}))?$/);
+  const m = location.hash.match(/^#(L[123]|R|Y1A|T-[a-z0-9_]+)-(\d{1,6})(?:-([a-z]{2})-([a-z]{2}))?$/);
   if (!m) return false;
-  state.level = parseLevel(m[1].replace(/^L/, "")); state.seed = +m[2];
+  state.level = parseLevel(m[1].startsWith("T-") ? `T:${m[1].slice(2)}` : m[1].replace(/^L/, "")); state.seed = +m[2];
   if (m[3]) { state.lang = pick(m[3], "en"); state.alang = pick(m[4], "en"); }
   return true;
 }
 function writeHash() {
+  if (state.level === null) return;
   const langs = state.lang === "en" && state.alang === "en" ? "" : `-${state.lang}-${state.alang}`;
   history.replaceState(null, "", `#${levelTag(state.level)}-${state.seed}${langs}`);
 }
@@ -383,6 +417,14 @@ async function localBackend() {
       if (!res.ok) throw new Error(data.error || res.status);
       return data;
     },
+    async catalog(lang) {
+      const res = await fetch(`api/topics?lang=${lang}`);
+      return res.json();
+    },
+    async cheatTitles(level, lang) {
+      const res = await fetch(`api/cheat_titles?${new URLSearchParams({ level, lang })}`);
+      return (await res.json()).titles;
+    },
     async cheats(level, seed, lang, which) {
       const q = new URLSearchParams({ level, seed, lang, which: which.join(",") });
       const res = await fetch(`api/cheats?${q}`);
@@ -401,10 +443,10 @@ async function pyodideBackend() {
   });
   const py = await loadPyodide({ indexURL: PYODIDE });
   py.FS.mkdirTree("/app");
-  for (const f of ["generate.py", "i18n.py", "stages.py", "cheats.py"]) {
+  for (const f of ["generate.py", "i18n.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"]) {
     py.FS.writeFile(`/app/${f}`, await (await fetch(f, { cache: "no-cache" })).text());
   }
-  py.runPython("import sys, json; sys.path.insert(0, '/app'); import generate as g");
+  py.runPython("import sys, json; sys.path.insert(0, '/app'); import generate as g, topics");
   const css = py.runPython("g.CSS");
   return {
     pdf: false,
@@ -412,6 +454,14 @@ async function pyodideBackend() {
       py.globals.set("_a", py.toPy([level, seed, lang, alang]));
       const [pages, answers] = JSON.parse(py.runPython("json.dumps(g.build(*_a))"));
       return { pages, answers, css };
+    },
+    async catalog(lang) {
+      py.globals.set("_l", lang);
+      return JSON.parse(py.runPython("json.dumps(topics.catalog(_l))"));
+    },
+    async cheatTitles(level, lang) {
+      py.globals.set("_t", py.toPy([level, lang]));
+      return JSON.parse(py.runPython("json.dumps(g.cheat_titles(_t[0], _t[1]))"));
     },
     async cheats(level, seed, lang, which) {
       py.globals.set("_c", py.toPy([level, seed, lang, which]));
@@ -431,8 +481,8 @@ function translateUI() {
   document.documentElement.lang = state.ui;
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
-  $("levels").setAttribute("aria-label", t("level"));
-  renderLevels(); renderTitle(); renderRecent();
+  renderPanel(); renderTitle(); renderRecent();
+  if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
 function fillLangSelects() {
@@ -445,21 +495,103 @@ function fillLangSelects() {
     };
   }
 }
-function renderLevels() {
-  const card = (id, big, name, text) => `
-    <button type="button" class="level" role="radio" aria-checked="${id === state.level}" data-level="${id}" tabindex="${id === state.level ? 0 : -1}">
-      <span class="big">${big}</span><span><b>${name}</b><small>${text}</small></span>
-    </button>`;
-  const u = UI[state.ui];
-  $("levels").innerHTML = card("R", "R", ...u.stages.R) + card("Y1A", "Y1", ...u.stages.Y1A) +
-    `<p class="hint" style="margin:6px 0 0">${u.review}</p>` +
-    u.levels.map(([name, text], i) => card(i + 1, i + 1, name, text)).join("");
+/* ---------- year -> subject -> what to practise (ready-made sheet or chosen topics) */
+const catalogs = {};  // UI language -> topic catalogue from scripts/topics.py
+const catalog = () => catalogs[state.ui];
+async function loadCatalog() {
+  if (!catalogs[state.ui]) catalogs[state.ui] = await backend.catalog(state.ui);
+  return catalogs[state.ui];
 }
-function setLevel(v) { state.level = v; localStorage.level = v; renderLevels(); update(); $("levels").querySelector(`[data-level="${v}"]`).focus(); }
-$("levels").addEventListener("click", (e) => { const b = e.target.closest(".level"); if (b) setLevel(parseLevel(b.dataset.level)); });
-$("levels").addEventListener("keydown", (e) => {
-  const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-  if (d) { e.preventDefault(); const i = LEVEL_IDS.indexOf(state.level); setLevel(LEVEL_IDS[(i + d + LEVEL_IDS.length) % LEVEL_IDS.length]); }
+function topicYear(id) {
+  for (const c of Object.values(catalogs)) for (const r of c.rows) if (r.variants.some((v) => v.id === id)) return r.year;
+  return id[0] === "r" ? "R" : id[0] === "y" ? "Y1" : null;
+}
+const FALLBACK_PRESETS = { R: ["R"], Y1: ["Y1A", 1, 2, 3], Y2: [] };
+const presetsFor = (y) => (catalog() ? catalog().presets[y] : FALLBACK_PRESETS[y]);
+const selMap = () => state.sel[state.year] || (state.sel[state.year] = new Map());
+function topicSpec() {
+  const m = selMap(), ids = [];
+  for (const r of (catalog() ? catalog().rows : [])) if (r.year === state.year && m.has(r.row)) ids.push(m.get(r.row));
+  return ids.length ? `T:${ids.join("_")}` : null;
+}
+function syncFromLevel() {  // after a link or a "recent" chip: show the panel that matches state.level
+  state.year = yearOfLevel(state.level);
+  const preset = presetsFor(state.year).some((p) => p === state.level);
+  state.mode = isTopics(state.level) && !preset ? "topics" : "ready";
+  if (state.mode === "ready") state.lastPreset[state.year] = state.level;
+  else if (catalog()) {
+    const m = new Map(), ids = state.level.slice(2).split("_");
+    for (const r of catalog().rows) for (const v of r.variants) if (ids.includes(v.id)) m.set(r.row, v.id);
+    state.sel[state.year] = m;
+  }
+}
+function renderPanel() {
+  const u = UI[state.ui];
+  const card = (attr, id, big, name, text, on) => `
+    <button type="button" class="level" role="radio" aria-checked="${on}" ${attr}="${id}">
+      <span class="big">${big}</span><span><b>${name}</b><small>${text}</small></span></button>`;
+  $("years").innerHTML = ["R", "Y1", "Y2"].map((y) => card("data-year", y, y === "R" ? "R" : y.slice(1), ...u.years[y], y === state.year)).join("");
+  $("subjects").innerHTML = `<button class="chip" aria-pressed="true">${u.maths}</button>` +
+    [u.english, u.science].map((n) => `<button class="chip" disabled>${n} · ${u.soon}</button>`).join("");
+  $("modes").innerHTML = [["ready", u.ready], ["topics", u.choose]].map(([m, n]) =>
+    `<button class="chip" role="radio" aria-pressed="${state.mode === m}" data-mode="${m}">${n}</button>`).join("");
+  const desc = { R: u.stages.R[1], Y1A: u.stages.Y1A[1], 1: u.levels[0][1], 2: u.levels[1][1], 3: u.levels[2][1], Y2: u.years.Y2[1] };
+  $("presets").hidden = state.mode !== "ready";
+  $("presets").innerHTML = presetsFor(state.year).map((p) => {
+    const key = isTopics(p) ? "Y2" : p;
+    const big = { R: "R", Y1A: "A", Y2: "★" }[key] || key;
+    return card("data-preset", p, big, u.presetNames[key], desc[key], p === state.level);
+  }).join("");
+  $("topic-picker").hidden = state.mode !== "topics";
+  if (state.mode === "topics") renderTopics();
+}
+function renderTopics() {
+  const c = catalog();
+  if (!c) { $("topic-list").innerHTML = ""; return; }
+  const m = selMap(), u = UI[state.ui];
+  $("topic-count").textContent = fmt(u.topicsCount, { n: m.size, max: c.max });
+  let html = "", strand = null;
+  for (const r of c.rows.filter((r) => r.year === state.year)) {
+    if (r.strand !== strand) { strand = r.strand; html += `<p class="strand">${c.strands[strand]}</p>`; }
+    const on = m.has(r.row), chosen = r.variants.find((v) => v.id === m.get(r.row)) || r.variants[Math.floor(r.variants.length / 2)];
+    const chips = r.variants.length > 1 ? `<div class="vchips">${r.variants.map((v) =>
+      `<button class="chip" data-row="${r.row}" data-var="${v.id}" aria-pressed="${on && v.id === chosen.id}">${v.label}</button>`).join("")}</div>` : "";
+    html += `<div class="trow"><button type="button" class="pick" role="checkbox" aria-checked="${on}" data-row="${r.row}">
+      <span class="tickbox">${on ? "✓" : ""}</span><span>${r.title}</span><span class="ptag">${c.periods[chosen.period]}</span></button>${chips}</div>`;
+  }
+  $("topic-list").innerHTML = html;
+}
+function setYear(y) {
+  state.year = y; state.mode = "ready";
+  state.level = state.lastPreset[y] ?? presetsFor(y)[0] ?? null;
+  renderPanel(); update();
+}
+function setMode(m) {
+  state.mode = m;
+  state.level = m === "ready" ? (state.lastPreset[state.year] ?? presetsFor(state.year)[0]) : topicSpec();
+  renderPanel(); update();
+}
+$("years").addEventListener("click", (e) => { const b = e.target.closest("[data-year]"); if (b) setYear(b.dataset.year); });
+$("modes").addEventListener("click", (e) => { const b = e.target.closest("[data-mode]"); if (b) setMode(b.dataset.mode); });
+$("presets").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-preset]"); if (!b) return;
+  state.level = parseLevel(b.dataset.preset); state.lastPreset[state.year] = state.level; localStorage.level = state.level;
+  renderPanel(); update();
+});
+let topicTimer;
+$("topic-list").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-row]"); if (!b) return;
+  const m = selMap(), row = b.dataset.row, c = catalog();
+  if (b.dataset.var) m.set(row, b.dataset.var);
+  else if (m.has(row)) m.delete(row);
+  else {
+    if (m.size >= c.max) return toast(fmt(UI[state.ui].topicsCount, { n: m.size, max: c.max }));
+    const r = c.rows.find((x) => x.row === row);
+    m.set(row, r.variants[Math.floor(r.variants.length / 2)].id);
+  }
+  state.level = topicSpec();
+  renderTopics();
+  clearTimeout(topicTimer); topicTimer = setTimeout(update, 250);  // ticking several topics quickly builds once
 });
 
 function setSeed(s) { state.seed = Math.min(MAX_SEED, Math.max(0, s)); $("seed").value = state.seed; update(); }
@@ -475,6 +607,11 @@ $("seed").addEventListener("blur", () => { $("seed").value = state.seed; });
 $("tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b) { state.tab = b.dataset.tab; renderView(); } });
 
 function renderTitle() {
+  if (isTopics(state.level) || state.level === null) {
+    const title = t("stageTitle", { stage: `${UI[state.ui].years[state.year][0]} · ${t("topicsShort")}`, seed: state.seed });
+    $("title").textContent = title; document.title = `${title} — LET'S PRACTICE!`;
+    return;
+  }
   const stage = isStage(state.level) ? UI[state.ui].stages[state.level][0] : null;
   const title = stage ? t("stageTitle", { stage, seed: state.seed }) : t("title", state);
   $("title").textContent = title;
@@ -488,6 +625,13 @@ async function update() {
   ["lang", "alang"].forEach((k) => { $(k).value = state[k]; });
   renderTitle();
   if (!backend) return;
+  if (state.level === null) {  // "choose topics" with nothing ticked yet
+    state.sheet = null; ++buildNo;
+    ["print-sheet", "print-answers", "pdf-sheet", "pdf-answers", "print-cheats"].forEach((id) => { $(id).disabled = true; });
+    $("cheat-block").hidden = $("tab-cheats").hidden = true;
+    $("view").innerHTML = `<div class="loading"></div>`; $("view").firstChild.textContent = t("topicsNone");
+    return;
+  }
   const no = ++buildNo;
   try {
     const sheet = await backend.build(state.level, state.seed, state.lang, state.alang);
@@ -505,24 +649,28 @@ async function update() {
   renderView();
 }
 
-/* ================================================================ cheat sheets (stages R and Y1A only) */
-const cheatTitles = {};  // "R-en" -> titles of the cards in the worksheet language
+/* ================================================================ cheat sheets (Reception, Year 1 autumn and topic sheets) */
+const cheatTitles = {};  // "level|lang" -> [[task number on the sheet, card title], ...]
 const picksFor = {};     // level -> Set of ticked task numbers (all by default)
 const picks = () => picksFor[state.level] || (picksFor[state.level] = new Set(
-  (cheatTitles[`${state.level}-${state.lang}`] || []).map((_, i) => i + 1)));
+  (cheatTitles[`${state.level}|${state.lang}`] || []).map(([n]) => n)));
 async function refreshCheats() {
-  const on = isStage(state.level);
+  let titles = [];
+  if (isStage(state.level)) {
+    const key = `${state.level}|${state.lang}`;
+    if (!cheatTitles[key]) cheatTitles[key] = await backend.cheatTitles(state.level, state.lang);
+    titles = cheatTitles[key];
+  }
+  const on = titles.length > 0;
   $("cheat-block").hidden = $("tab-cheats").hidden = !on;
   if (!on) { if (state.tab === "cheats") state.tab = "sheet"; return; }
-  const key = `${state.level}-${state.lang}`;
-  if (!cheatTitles[key]) cheatTitles[key] = (await backend.cheats(state.level, state.seed, state.lang, [1])).titles;
   renderPicks();
 }
 function renderPicks() {
-  const titles = cheatTitles[`${state.level}-${state.lang}`] || [], sel = picks();
-  $("cheat-picks").innerHTML = titles.map((title, i) => `
-    <button type="button" class="pick" role="checkbox" aria-checked="${sel.has(i + 1)}" data-pick="${i + 1}">
-      <span class="tickbox">${sel.has(i + 1) ? "✓" : ""}</span><span class="no">${i + 1}</span><span>${title}</span></button>`).join("");
+  const titles = cheatTitles[`${state.level}|${state.lang}`] || [], sel = picks();
+  $("cheat-picks").innerHTML = titles.map(([n, title]) => `
+    <button type="button" class="pick" role="checkbox" aria-checked="${sel.has(n)}" data-pick="${n}">
+      <span class="tickbox">${sel.has(n) ? "✓" : ""}</span><span class="no">${n}</span><span>${title}</span></button>`).join("");
 }
 $("cheat-picks").addEventListener("click", (e) => {
   const b = e.target.closest("[data-pick]"); if (!b) return;
@@ -558,7 +706,7 @@ async function renderView() {
     return showPages(pages, (i) => t("page", { n: i + 1 }), state.lang);
   }
   const isSheet = state.tab === "sheet";
-  showPages(isSheet ? state.sheet.pages : [state.sheet.answers],
+  showPages(isSheet ? state.sheet.pages : state.sheet.answers.split(/(?=<div class="page")/),
             (i) => (isSheet ? t("page", { n: i + 1 }) : t("answersFor")), isSheet ? state.lang : state.alang);
 }
 function showPages(bodies, labelOf, lang) {
@@ -612,6 +760,7 @@ $("copy-link").onclick = async () => {
 /* ================================================================ recent */
 function recentList() { try { return JSON.parse(localStorage.recent2 || "[]"); } catch { return []; } }
 function remember() {
+  if (state.level === null) return;
   const cur = [state.level, state.seed, state.lang, state.alang];
   const list = [cur, ...recentList().filter((x) => x.join() !== cur.join())].slice(0, 10);
   localStorage.recent2 = JSON.stringify(list);
@@ -623,7 +772,8 @@ function renderRecent() {
   $("recent").innerHTML = list.map((x) => {
     const langs = x[2] === "en" && x[3] === "en" ? "" : ` · ${x[2]}/${x[3]}`;
     const lv = parseLevel(x[0]);
-    const label = isStage(lv) ? `${lv === "Y1A" ? "Y1" : lv} · ${x[1]}` : t("short", { level: x[0], seed: x[1] });
+    const label = isTopics(lv) ? `${t("topicsShort")} · ${x[1]}` : isStage(lv) ? `${lv === "Y1A" ? "Y1" : lv} · ${x[1]}`
+      : t("short", { level: x[0], seed: x[1] });
     return `<button class="chip" data-r="${x.join()}" aria-pressed="${x.join() === cur}">${label}${langs}</button>`;
   }).join("");
 }
@@ -631,7 +781,7 @@ $("recent").addEventListener("click", (e) => {
   const b = e.target.closest("[data-r]"); if (!b) return;
   const [l, s, lang, alang] = b.dataset.r.split(",");
   Object.assign(state, { level: parseLevel(l) || 2, lang: pick(lang, "en"), alang: pick(alang, "en") });
-  renderLevels(); setSeed(+s);
+  syncFromLevel(); renderPanel(); setSeed(+s);
 });
 
 let toastTimer;
@@ -642,12 +792,15 @@ function toast(msg) {
 }
 
 /* ================================================================ start */
-window.addEventListener("hashchange", () => { if (readHash()) { renderLevels(); update(); } });
+window.addEventListener("hashchange", () => { if (readHash()) { syncFromLevel(); renderPanel(); update(); } });
 if (!readHash()) { state.level = parseLevel(localStorage.level) || "Y1A"; state.seed = randomSeed(); }
+state.year = yearOfLevel(state.level);
 fillLangSelects(); translateUI(); update();
-localBackend().catch(() => pyodideBackend()).then((b) => {
+localBackend().catch(() => pyodideBackend()).then(async (b) => {
   backend = b;
   $("pdf-sheet").hidden = $("pdf-answers").hidden = !b.pdf;
+  await loadCatalog();
+  syncFromLevel(); renderPanel();
   update();
 }).catch((err) => {
   console.error(err);

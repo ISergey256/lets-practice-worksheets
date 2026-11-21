@@ -16,6 +16,9 @@
 !/scripts/i18n.py
 !/scripts/stages.py
 !/scripts/cheats.py
+!/scripts/topics.py
+!/scripts/measure_topics.py
+!/scripts/topic_heights.json
 !/scripts/server.py
 !/scripts/fetch_fonts.py
 !/scripts/build_site.py

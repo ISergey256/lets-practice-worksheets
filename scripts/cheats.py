@@ -27,9 +27,9 @@ def card_keys(stage):
     return [f'{"R" if stage == "R" else "Y"}{i}' for i in range(1, COUNT[stage] + 1)]
 
 
-def titles(stage, lang):
-    """Card titles in task order (used by the website for the check boxes)."""
-    return [CHEAT[lang][k][0] for k in card_keys(stage)]
+def titles(level, lang):
+    """[(task number on the sheet, card title)] for the website check boxes."""
+    return [(n, CHEAT[lang][k][0]) for n, k in available(level)]
 
 
 # ---------------------------------------------------------------- small pictures
@@ -212,17 +212,27 @@ def card(num, key, look, try_, C):
             f'<span class="ican">{g.box(30, r=7)}{ican}</span></div></div>')
 
 
-def build(stage, seed, L, which=None):
-    """Cheat-sheet pages for the chosen task numbers (1-based; default: all), two cards per page."""
-    keys = card_keys(stage)
-    which = sorted({int(w) for w in which} if which else range(1, len(keys) + 1))
-    if any(not 1 <= w <= len(keys) for w in which):
-        raise ValueError(f"task numbers must be 1..{len(keys)}")
-    rng = random.Random(f"cheat-{stage}-{seed}")  # str seed: same numbers in CPython and in Pyodide
+def available(level):
+    """Cards for a sheet: [(task number on the sheet, card key)]. level: "R", "Y1A" or a topic spec "T:..."."""
+    if level.startswith("T:"):
+        import topics
+        return topics.cards(level)
+    return [(i + 1, k) for i, k in enumerate(card_keys(level))]
+
+
+def build(level, seed, L, which=None):
+    """Cheat-sheet pages for the chosen task numbers (default: all available cards), two cards per page."""
+    cards = available(level)
+    nums = {n for n, _ in cards}
+    which = sorted({int(w) for w in which} if which else nums)
+    if any(w not in nums for w in which):
+        raise ValueError(f"cheat cards exist for tasks {sorted(nums)}")
+    rng = random.Random(f"cheat-{level}-{seed}")  # str seed: same numbers in CPython and in Pyodide
     obj = rng.choice(["apple", "star", "flower", "ball", "heart"])
     C = CHEAT[L.wl]
-    cards = []
-    for w in which:
-        look, try_ = pictures(keys[w - 1], rng, obj, L)
-        cards.append(card(w, keys[w - 1], look, try_, C))
-    return [g.page("".join(cards[i:i + 2]), "gap:16px") for i in range(0, len(cards), 2)]
+    out = []
+    for n, key in cards:
+        if n in which:
+            look, try_ = pictures(key, rng, obj, L)
+            out.append(card(n, key, look, try_, C))
+    return [g.page("".join(out[i:i + 2]), "gap:16px") for i in range(0, len(out), 2)]

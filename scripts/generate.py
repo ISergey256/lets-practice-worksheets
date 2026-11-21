@@ -81,6 +81,8 @@ body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line
 .ih .it{font-size:15px;font-weight:700;color:#444;line-height:1.3}
 .opt{position:relative;display:inline-flex;width:56px;height:56px;align-items:center;justify-content:center;font-size:32px;font-weight:900}
 .trace{font-size:62px;font-weight:900;line-height:1;color:#c2c2c2;width:52px;text-align:center}
+.stretch>.q+:not(.sub),.stretch>.sub+*,.stretch>.ih+*{margin-top:auto}
+.stretch>:last-child{margin-bottom:auto}
 .card{border:3px solid #111;border-radius:22px;padding:14px 20px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
 .ch{display:flex;align-items:center;gap:12px}
 .ch .n{width:38px;height:38px;font-size:20px}
@@ -909,9 +911,13 @@ def header(L, badge):
 
 
 def parse_level(level):
-    """1, 2, 3 (Year 1 review, by difficulty) or a stage: "R" (Reception), "Y1A" (Year 1 autumn)."""
+    """1, 2, 3 (Year 1 review, by difficulty), a stage "R" (Reception) / "Y1A" (Year 1 autumn),
+    or chosen topics "T:r1_v4a_..." (see topics.py)."""
     if str(level) in ("R", "Y1A"):
         return str(level)
+    if str(level).startswith("T:"):
+        import topics
+        return "T:" + "_".join(topics.parse(str(level)))
     level = int(level)
     if level not in (1, 2, 3):
         raise ValueError("level must be 1, 2, 3, R or Y1A")
@@ -922,6 +928,9 @@ def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
     """Return (worksheet pages, answer page) as HTML. Numbers and pictures depend only on level and seed."""
     L = Lang(lang, answers_lang)
     level = parse_level(level)
+    if isinstance(level, str) and level.startswith("T:"):
+        import topics  # a sheet made of the topics the parent or teacher picked
+        return topics.build(level, seed, L)
     if isinstance(level, str):
         import stages  # Reception / Year 1 autumn: icon-led tasks for children who cannot read yet
         return stages.build(level, seed, L)
@@ -956,10 +965,10 @@ def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
 
 
 def cheats(level, seed, lang=i18n.DEFAULT, which=None):
-    """Cheat-sheet pages (two cards per A4) for the chosen task numbers; only for the stages R and Y1A."""
+    """Cheat-sheet pages (two cards per A4) for the chosen task numbers; for the stages R, Y1A and topic sheets."""
     level = parse_level(level)
     if not isinstance(level, str):
-        raise ValueError("cheat sheets exist for the stages R and Y1A")
+        raise ValueError("cheat sheets exist for the stages R and Y1A and for topic sheets")
     import cheats as c
     return c.build(level, seed, Lang(lang, lang), which)
 
@@ -982,6 +991,9 @@ def html_doc(body, lang=i18n.DEFAULT):
 
 def stem_of(level, seed, lang=i18n.DEFAULT):
     level = parse_level(level)
+    if isinstance(level, str) and level.startswith("T:"):
+        import topics
+        return f"Worksheet_T{topics.short_id(topics.parse(level))}_{seed}_{lang}"
     return f"Worksheet_{'L' if isinstance(level, int) else ''}{level}_{seed}_{lang}"
 
 
@@ -1043,7 +1055,7 @@ async def render_many(jobs, png=True, log=print):
         try:
             pg = await browser.new_page(viewport={"width": 794, "height": 1123})
             for j in map(_job, jobs):
-                log(f"Level {j[0]} ({LEVEL_NAMES[j[0]]}), worksheet №{j[1]}, {j[2]} / answers {j[3]}")
+                log(f"Level {j[0]} ({LEVEL_NAMES.get(j[0], 'topics')}), worksheet №{j[1]}, {j[2]} / answers {j[3]}")
                 results.append(await _render_one(pg, j, png, log))
         finally:
             await browser.close()

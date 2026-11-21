@@ -38,6 +38,7 @@ architecture), so we can agree on it before you spend time on it. Small fixes ca
    - `scripts/generate.py` — Year 1 review sheet (18 tasks), page layout, CSS;
    - `scripts/stages.py` — Reception and Year 1 Autumn sheets (icon-led tasks);
    - `scripts/cheats.py` — cheat-sheet cards;
+   - `scripts/topics.py` — topics (year, term, strand) and sheets made of chosen topics;
    - `scripts/i18n.py` — **all** texts in all languages;
    - `site/index.html` — the website (one file, no build step, no frameworks).
 4. Rules for code:
@@ -52,6 +53,7 @@ architecture), so we can agree on it before you spend time on it. Small fixes ca
 5. Check before opening the pull request:
    ```
    python scripts/i18n.py            # all languages have all texts
+   python scripts/measure_topics.py  # after changing a task: re-measure topic heights (commit topic_heights.json)
    python scripts/build_site.py      # every level, language and cheat card builds
    python scripts/check_layout.py    # every page fits A4 in every language (must print "all ... pages fit")
    python scripts/generate.py --level R --seed 7    # look at the PNG previews in out/

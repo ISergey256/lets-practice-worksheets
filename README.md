@@ -10,7 +10,7 @@ maths exercises for their child?
 
 **No sign-up, no subscriptions, no ads, no hidden payments.**
 The goal: open the site → choose a year → a subject → a topic → get the tasks → print. That's all.
-(Today you choose a stage or a level; subjects and topics will follow.)
+(Today: maths for Reception, Year 1 and the first Year 2 topics; more subjects will follow.)
 
 **What is planned**
 - Ages: from preschool (Reception) up to Year 11.
@@ -38,7 +38,7 @@ and more accessible.
 
 ## How to use
 
-Choose a stage or a level and a worksheet number, then press “Print worksheet”. To get a PDF, choose “Save as PDF” in the print dialog.
+Choose the **year** (Reception, Year 1, Year 2), the **subject** (maths for now) and **what to practise**: a ready-made sheet or **your own topics** (up to 12, grouped like the curriculum, each tagged with the term it is taught in). Then pick a worksheet number and press “Print worksheet”. To get a PDF, choose “Save as PDF” in the print dialog.
 Everything runs in your browser: nothing to install, nothing is sent anywhere.
 
 ## Languages
@@ -99,6 +99,7 @@ On Windows you can also double-click `start_site.bat`.
 - `scripts/generate.py`: the 18 tasks (one `task_*` function each) and the A4 layout (HTML + inline SVG).
 - `scripts/stages.py`: the Reception and Year 1 Autumn sheets (action icons, worked examples, dotted digits for tracing).
 - `scripts/cheats.py`: the cheat-sheet cards (texts in `i18n.CHEAT`).
+- `scripts/topics.py`: every task as a topic (year, curriculum term, strand) and sheets built from chosen topics; `scripts/measure_topics.py` measures every topic in every language into `scripts/topic_heights.json`, so any choice of topics is packed onto A4 safely.
 - `scripts/i18n.py`: all texts in every language, plus number words and ordinals. To add a language, copy the `en` entries, translate them and run the checks below.
 - `site/index.html`: the website. On GitHub Pages it runs the same `generate.py` in the browser with [Pyodide](https://pyodide.org) (Python compiled to WebAssembly), so worksheet numbers match the local version. With `scripts/server.py` the same page asks the local server instead and can download PDF files.
 - `scripts/build_site.py`: checks the generator in every language and builds `_site/`. GitHub Actions (`.github/workflows/pages.yml`) publishes it on every push to `main`. Use `python scripts/build_site.py --serve` to preview it.

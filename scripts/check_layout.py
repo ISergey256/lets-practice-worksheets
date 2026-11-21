@@ -1,6 +1,7 @@
 """Check that every page fits A4 in every language (needs playwright + chromium).
 
-Usage:  python scripts/check_layout.py              # all languages, levels 1-3, numbers 101-108
+Usage:  python scripts/check_layout.py              # all languages, all levels and stages, numbers 101-108,
+                                                     # plus random topic sheets (scripts/topics.py)
         python scripts/check_layout.py --lang el    # one language
 Run it after changing a task or a translation: longer texts can push a page over the bottom edge.
 """
@@ -10,11 +11,26 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import random  # noqa: E402
+
 import generate as g  # noqa: E402
 import i18n  # noqa: E402
+import topics  # noqa: E402
 
 LEVELS = (1, 2, 3, "R", "Y1A")
-OVER = "(() => { const p = document.querySelector('.page'); return p.scrollHeight - p.clientHeight })()"
+OVER = "Math.max(...[...document.querySelectorAll('.page')].map(p => p.scrollHeight - p.clientHeight))"
+
+
+def topic_specs(n=6):
+    """Random topic sheets per year (fixed random seed): a few small and some with the maximum number of topics."""
+    rng = random.Random(2026)
+    specs = [topics.presets()["Y2"][0]]
+    for year in topics.YEARS:
+        ids = [t for t, m in topics.META.items() if m["year"] == year]
+        for i in range(n):
+            k = min(len(ids), topics.MAX_TOPICS if i % 2 else rng.randint(2, 6))
+            specs.append("T:" + "_".join(rng.sample(ids, k)))
+    return specs
 
 
 async def main(langs, seeds):
@@ -26,7 +42,7 @@ async def main(langs, seeds):
         pg = await browser.new_page(viewport={"width": 794, "height": 1123})
         try:
             for lang in langs:
-                for level in LEVELS:
+                for level in LEVELS + tuple(topic_specs()):
                     for seed in seeds:
                         pages, answers = g.build(level, seed, lang, lang)
                         for name, body in [*((f"p{i}", b) for i, b in enumerate(pages, 1)), ("answers", answers)]:
@@ -37,6 +53,8 @@ async def main(langs, seeds):
                             over = await pg.evaluate(OVER)
                             if over > 1:
                                 bad.append(f"{lang} level {level} No. {seed} {name}: {over}px too tall")
+                            if name == "p1" and len(pages) > 6:
+                                bad.append(f"{lang} level {level} No. {seed}: {len(pages)} pages, packing is wasteful")
         finally:
             tmp.unlink(missing_ok=True)
             await browser.close()

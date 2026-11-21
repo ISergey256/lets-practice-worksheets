@@ -40,7 +40,7 @@ def build():
     if DEST.exists():
         shutil.rmtree(DEST)
     shutil.copytree(SITE, DEST)
-    for f in ("generate.py", "i18n.py", "stages.py", "cheats.py"):  # the page loads them into Pyodide
+    for f in ("generate.py", "i18n.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"):  # the page loads them into Pyodide
         shutil.copy2(ROOT / "scripts" / f, DEST / f)
     (DEST / "fonts").mkdir()
     for f in (ROOT / "fonts").iterdir():

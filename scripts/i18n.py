@@ -810,6 +810,54 @@ CHEAT = {
 }
 
 
+# ---------------------------------------------------------------- topic picker (website: year -> subject -> topics)
+# "names": short names of the 18 Year 1 review tasks (index 1..18); "strands": groups of topics in the picker.
+TOPIC = {
+    "en": {"pictures": "first steps", "names": ("Counting objects", "Estimate and count", "Odd and even numbers", "Number line", "Comparing numbers (&lt;, &gt;, =)",
+                     "Numbers in words", "3D shapes: faces and edges", "2D shapes in a picture", "Polygons: count the sides",
+                     "Shading fractions", "Equal parts", "Longer and taller", "Number bonds", "Counting in steps",
+                     "Adding and subtracting", "Number walls", "Position words", "Ordinal numbers"),
+           "strands": {"place": "Numbers and counting", "addsub": "Adding and taking away", "muldiv": "Counting in groups",
+                       "fractions": "Fractions", "measure": "Measuring", "shape": "Shapes", "position": "Position", "patterns": "Patterns"}},
+    "ru": {"pictures": "первые шаги", "names": ("Счёт предметов", "Прикинь и посчитай", "Чётные и нечётные", "Числовой луч", "Сравнение чисел (&lt;, &gt;, =)",
+                     "Числа словами", "Объёмные фигуры: грани и рёбра", "Плоские фигуры на картинке", "Многоугольники: стороны",
+                     "Доли: закрась", "Равные части", "Длиннее и выше", "Состав числа", "Счёт шагами",
+                     "Сложение и вычитание", "Числовые стены", "Слова о положении", "Порядковые числа"),
+           "strands": {"place": "Числа и счёт", "addsub": "Сложение и вычитание", "muldiv": "Счёт группами",
+                       "fractions": "Доли", "measure": "Измерения", "shape": "Фигуры", "position": "Положение", "patterns": "Узоры"}},
+    "uk": {"pictures": "перші кроки", "names": ("Лічба предметів", "Прикинь і порахуй", "Парні й непарні", "Числовий промінь", "Порівняння чисел (&lt;, &gt;, =)",
+                     "Числа словами", "Об’ємні фігури: грані й ребра", "Плоскі фігури на малюнку", "Многокутники: сторони",
+                     "Частки: розфарбуй", "Рівні частини", "Довше і вище", "Склад числа", "Лічба кроками",
+                     "Додавання і віднімання", "Числові стіни", "Слова про розташування", "Порядкові числа"),
+           "strands": {"place": "Числа й лічба", "addsub": "Додавання і віднімання", "muldiv": "Лічба групами",
+                       "fractions": "Частки", "measure": "Вимірювання", "shape": "Фігури", "position": "Розташування", "patterns": "Візерунки"}},
+    "el": {"pictures": "πρώτα βήματα", "names": ("Μέτρηση αντικειμένων", "Υπολόγισε και μέτρησε", "Μονοί και ζυγοί", "Αριθμογραμμή", "Σύγκριση αριθμών (&lt;, &gt;, =)",
+                     "Αριθμοί με λέξεις", "Στερεά: έδρες και ακμές", "Επίπεδα σχήματα σε εικόνα", "Πολύγωνα: πλευρές",
+                     "Κλάσματα: χρωμάτισε", "Ίσα μέρη", "Μακρύτερο και ψηλότερο", "Ανάλυση αριθμών", "Μέτρηση ανά βήμα",
+                     "Πρόσθεση και αφαίρεση", "Αριθμητικοί τοίχοι", "Λέξεις θέσης", "Τακτικά αριθμητικά"),
+           "strands": {"place": "Αριθμοί και μέτρηση", "addsub": "Πρόσθεση και αφαίρεση", "muldiv": "Μέτρηση σε ομάδες",
+                       "fractions": "Κλάσματα", "measure": "Μετρήσεις", "shape": "Σχήματα", "position": "Θέση", "patterns": "Μοτίβα"}},
+    "de": {"pictures": "erste Schritte", "names": ("Gegenstände zählen", "Schätzen und zählen", "Gerade und ungerade Zahlen", "Zahlenstrahl", "Zahlen vergleichen (&lt;, &gt;, =)",
+                     "Zahlen in Worten", "Körper: Flächen und Kanten", "Formen im Bild", "Vielecke: Seiten zählen",
+                     "Brüche anmalen", "Gleiche Teile", "Länger und höher", "Zahlzerlegung", "In Schritten zählen",
+                     "Plus und Minus", "Zahlenmauern", "Lagewörter", "Ordnungszahlen"),
+           "strands": {"place": "Zahlen und Zählen", "addsub": "Plus und Minus", "muldiv": "In Gruppen zählen",
+                       "fractions": "Brüche", "measure": "Messen", "shape": "Formen", "position": "Lage", "patterns": "Muster"}},
+    "fr": {"pictures": "premiers pas", "names": ("Compter des objets", "Estimer et compter", "Nombres pairs et impairs", "Droite numérique", "Comparer des nombres (&lt;, &gt;, =)",
+                     "Nombres en lettres", "Solides : faces et arêtes", "Figures planes dans une image", "Polygones : compter les côtés",
+                     "Fractions à colorier", "Parts égales", "Plus long, plus haut", "Décompositions", "Compter de n en n",
+                     "Additions et soustractions", "Murs de nombres", "Mots de position", "Nombres ordinaux"),
+           "strands": {"place": "Nombres et comptage", "addsub": "Additionner et soustraire", "muldiv": "Compter par groupes",
+                       "fractions": "Fractions", "measure": "Mesures", "shape": "Formes", "position": "Position", "patterns": "Motifs"}},
+    "es": {"pictures": "primeros pasos", "names": ("Contar objetos", "Estima y cuenta", "Pares e impares", "Recta numérica", "Comparar números (&lt;, &gt;, =)",
+                     "Números con letras", "Cuerpos: caras y aristas", "Figuras planas en un dibujo", "Polígonos: contar lados",
+                     "Colorear fracciones", "Partes iguales", "Más largo y más alto", "Descomposición", "Contar de n en n",
+                     "Sumas y restas", "Muros de números", "Palabras de posición", "Números ordinales"),
+           "strands": {"place": "Números y conteo", "addsub": "Sumar y restar", "muldiv": "Contar en grupos",
+                       "fractions": "Fracciones", "measure": "Medidas", "shape": "Figuras", "position": "Posición", "patterns": "Series"}},
+}
+
+
 def text(entry, **kw):
     """A translation entry is either a format string or a function of the same keyword arguments."""
     return entry(**kw) if callable(entry) else entry.format(**kw)

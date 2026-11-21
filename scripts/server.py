@@ -21,7 +21,7 @@ import i18n  # noqa: E402
 
 SITE = g.ROOT / "site"
 MAX_SEED = 999_999
-OUT_FILE = re.compile(r"^Worksheet_(L[123]|R|Y1A)_\d{1,6}_[a-z]{2}(_answers_[a-z]{2})?\.pdf$")
+OUT_FILE = re.compile(r"^Worksheet_(L[123]|R|Y1A|T[0-9a-f]{8})_\d{1,6}_[a-z]{2}(_answers_[a-z]{2})?\.pdf$")
 FONT_FILE = re.compile(r"^[\w-]+\.(css|woff2|txt)$")
 TYPES = {".html": "text/html; charset=utf-8", ".pdf": "application/pdf", ".css": "text/css; charset=utf-8",
          ".woff2": "font/woff2", ".txt": "text/plain; charset=utf-8"}
@@ -82,6 +82,21 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError as e:
                 return self.send_json({"error": str(e)}, 400)
             return self.send_json({"pages": pages, "answers": answers, "css": g.CSS})
+        if path == "/api/topics":
+            import topics
+            lang = q.get("lang", i18n.DEFAULT)
+            if lang not in i18n.LANGS:
+                return self.send_json({"error": "unknown language"}, 400)
+            return self.send_json(topics.catalog(lang))
+        if path == "/api/cheat_titles":
+            try:
+                level, lang = g.parse_level(q.get("level", "R")), q.get("lang", i18n.DEFAULT)
+                if lang not in i18n.LANGS:
+                    raise ValueError("unknown language")
+                titles = g.cheat_titles(level, lang) if isinstance(level, str) else []
+            except ValueError as e:
+                return self.send_json({"error": str(e)}, 400)
+            return self.send_json({"titles": titles})
         if path == "/api/cheats":
             try:
                 level, seed, lang, _ = parse_job(q)
