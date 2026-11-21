@@ -35,6 +35,12 @@ def check(seeds=100):
         for stage in ("R", "Y1A", "1a", "1b", "2a", "2b", "3a", "3b"):
             for seed in range(seeds // 5):
                 assert g.cheats(stage, seed, lang), (lang, stage, seed)
+    import importlib, registry, topics
+    for sub in registry.SUBJECTS:  # every ready year of a subject must have topics in its module
+        if sub["ready"]:
+            mod = importlib.import_module(sub["module"])
+            have = {r["year"] for r in mod.catalog()["rows"]}
+            assert set(sub["ready"]) <= have, (sub["id"], set(sub["ready"]) - have)
     print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets")
 
 
@@ -58,7 +64,7 @@ def build():
     if DEST.exists():
         shutil.rmtree(DEST)
     shutil.copytree(SITE, DEST)
-    for f in ("generate.py", "i18n.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"):  # the page loads them into Pyodide
+    for f in ("generate.py", "i18n.py", "registry.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"):  # the page loads them into Pyodide
         shutil.copy2(ROOT / "scripts" / f, DEST / f)
     (DEST / "fonts").mkdir()
     for f in (ROOT / "fonts").iterdir():

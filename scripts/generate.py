@@ -1022,13 +1022,23 @@ def parse_level(level):
     raise ValueError("level must be 1, 2, 3 (1a ... 3b), R, Y1A or T:<topics>")
 
 
+def subject_module(spec):
+    """The module that builds a topic sheet: the one of the sheet's subject (scripts/registry.py)."""
+    import importlib
+    import registry
+    ids = [x for x in spec[2:].split("_") if x]
+    sub = registry.SUBJECT[registry.subject_of(ids)]
+    if not sub["module"]:
+        raise ValueError(f'no worksheets for {sub["id"]} yet')
+    return importlib.import_module(sub["module"])
+
+
 def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
     """Return (worksheet pages, answer page) as HTML. Numbers and pictures depend only on level and seed."""
     L = Lang(lang, answers_lang)
     level = parse_level(level)
-    if level.startswith("T:"):
-        import topics  # a sheet made of chosen topics (also the Year 1 review sheets)
-        return topics.build(level, seed, L)
+    if level.startswith("T:"):  # a sheet made of chosen topics (also the Year 1 review sheets)
+        return subject_module(level).build(level, seed, L)
     import stages  # Reception / Year 1 autumn: icon-led tasks for children who cannot read yet
     return stages.build(level, seed, L)
 

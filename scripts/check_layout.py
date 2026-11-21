@@ -27,6 +27,8 @@ def topic_specs(n=6):
     specs = [topics.presets()["Y2"][0]["id"]]
     for year in topics.YEARS:
         ids = [t for t, m in topics.META.items() if m["year"] == year]
+        if not ids:  # years without maths worksheets yet (registry: "soon")
+            continue
         for i in range(n):
             k = min(len(ids), topics.MAX_TOPICS if i % 2 else rng.randint(2, 6))
             specs.append("T:" + "_".join(rng.sample(ids, k)))

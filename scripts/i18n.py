@@ -936,6 +936,57 @@ CHEAT = {
 }
 
 
+# ---------------------------------------------------------------- years and subjects (scripts/registry.py)
+# "year": how a year is named ({n} = 1..11; Reception keeps its English name); "ages": the age line;
+# "ua": nearest Ukrainian class ({n}), "preschool": for Reception and Year 1; "subjects": names on the site.
+REG = {
+    "en": {"reception": "Reception", "year": "Year {n}", "ages": "ages {a}", "ua": "≈ Ukrainian class {n}", "preschool": "preschool",
+           "soon_year": "Worksheets for this year are coming. Maths for Reception to Year 2 is ready now.",
+           "subjects": {"maths": "Maths", "algebra": "Algebra", "geometry": "Geometry", "languages": "Languages", "nature": "Nature",
+                        "physics": "Physics", "chemistry": "Chemistry", "biology": "Biology", "society": "People and society",
+                        "geography": "Geography", "history": "History"}},
+    "uk": {"reception": "Reception", "year": "Year {n}", "ages": "{a} років", "ua": "≈ {n} клас", "preschool": "дошкілля",
+           "soon_year": "Аркуші для цього класу готуються. Математика для Reception – Year 2 вже є.",
+           "subjects": {"maths": "Математика", "algebra": "Алгебра", "geometry": "Геометрія", "languages": "Мови", "nature": "Природа",
+                        "physics": "Фізика", "chemistry": "Хімія", "biology": "Біологія", "society": "Люди і суспільство",
+                        "geography": "Географія", "history": "Історія"}},
+    "ru": {"reception": "Reception", "year": "Year {n}", "ages": "{a} лет", "ua": "≈ {n} класс (Украина)", "preschool": "дошкольники",
+           "soon_year": "Листы для этого класса готовятся. Математика для Reception – Year 2 уже есть.",
+           "subjects": {"maths": "Математика", "algebra": "Алгебра", "geometry": "Геометрия", "languages": "Языки", "nature": "Природа",
+                        "physics": "Физика", "chemistry": "Химия", "biology": "Биология", "society": "Люди и общество",
+                        "geography": "География", "history": "История"}},
+    "el": {"reception": "Reception", "year": "Year {n}", "ages": "{a} ετών", "ua": "≈ {n}η τάξη Ουκρανίας", "preschool": "προσχολική",
+           "soon_year": "Τα φύλλα για αυτή την τάξη ετοιμάζονται. Τα Μαθηματικά για Reception – Year 2 είναι έτοιμα.",
+           "subjects": {"maths": "Μαθηματικά", "algebra": "Άλγεβρα", "geometry": "Γεωμετρία", "languages": "Γλώσσες", "nature": "Φύση",
+                        "physics": "Φυσική", "chemistry": "Χημεία", "biology": "Βιολογία", "society": "Άνθρωποι και κοινωνία",
+                        "geography": "Γεωγραφία", "history": "Ιστορία"}},
+    "de": {"reception": "Reception", "year": "Year {n}", "ages": "{a} Jahre", "ua": "≈ Klasse {n} (Ukraine)", "preschool": "Vorschule",
+           "soon_year": "Blätter für dieses Jahr kommen noch. Mathe für Reception bis Year 2 ist fertig.",
+           "subjects": {"maths": "Mathe", "algebra": "Algebra", "geometry": "Geometrie", "languages": "Sprachen", "nature": "Natur",
+                        "physics": "Physik", "chemistry": "Chemie", "biology": "Biologie", "society": "Mensch und Gesellschaft",
+                        "geography": "Erdkunde", "history": "Geschichte"}},
+    "fr": {"reception": "Reception", "year": "Year {n}", "ages": "{a} ans", "ua": "≈ {n}e classe (Ukraine)", "preschool": "maternelle",
+           "soon_year": "Les fiches de cette année arrivent. Les maths de Reception à Year 2 sont prêtes.",
+           "subjects": {"maths": "Maths", "algebra": "Algèbre", "geometry": "Géométrie", "languages": "Langues", "nature": "Nature",
+                        "physics": "Physique", "chemistry": "Chimie", "biology": "Biologie", "society": "Vivre ensemble",
+                        "geography": "Géographie", "history": "Histoire"}},
+    "es": {"reception": "Reception", "year": "Year {n}", "ages": "{a} años", "ua": "≈ {n}.º curso (Ucrania)", "preschool": "infantil",
+           "soon_year": "Las fichas de este curso están en camino. Matemáticas de Reception a Year 2 ya están listas.",
+           "subjects": {"maths": "Matemáticas", "algebra": "Álgebra", "geometry": "Geometría", "languages": "Lenguas", "nature": "Naturaleza",
+                        "physics": "Física", "chemistry": "Química", "biology": "Biología", "society": "Personas y sociedad",
+                        "geography": "Geografía", "history": "Historia"}},
+}
+
+
+def year_info(lang, year_id):
+    """{"id", "name", "ages", "ua"} of a year in a language (for the website)."""
+    import registry
+    r = REG[lang]
+    _, ages, ua = next(y for y in registry.YEARS if y[0] == year_id)
+    name = r["reception"] if year_id == "R" else text(r["year"], n=year_id[1:])
+    return {"id": year_id, "name": name, "ages": text(r["ages"], a=ages), "ua": text(r["ua"], n=ua) if ua else r["preschool"]}
+
+
 # ---------------------------------------------------------------- topic picker (website: year -> subject -> topics)
 # "names": short names of the 18 Year 1 review tasks (index 1..18); "strands": groups of topics in the picker.
 TOPIC = {
@@ -1006,6 +1057,11 @@ def check():
         assert all(len(v) == 5 for v in CHEAT[lang].values()), f"CHEAT[{lang}]: 5 texts per card"
         for n in range(100):
             assert numwords(lang, n)
+        assert set(REG[lang]) == set(REG["en"]), f"REG[{lang}] keys differ"
+        assert set(REG[lang]["subjects"]) == set(REG["en"]["subjects"]), f"REG[{lang}] subjects differ"
+    import registry
+    registry.check()
+    assert set(REG["en"]["subjects"]) == set(registry.SUBJECT), "REG subjects must match registry.SUBJECTS"
     return True
 
 

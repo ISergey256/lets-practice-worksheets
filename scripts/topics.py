@@ -17,12 +17,13 @@ from pathlib import Path
 
 import generate as g
 import i18n
+import registry
 import stages as s
 from i18n import text
 
 MAX_TOPICS = 12
-YEARS = ("R", "Y1", "Y2")
-SUBJECTS = ("maths",)
+YEARS = registry.YEAR_IDS  # all school years; maths topics exist for R, Y1, Y2 (see registry.SUBJECTS)
+SUBJECT = "maths"  # this module holds the maths topics; other subjects get their own modules (ARCHITECTURE.md)
 STRANDS = ("place", "addsub", "muldiv", "fractions", "measure", "shape", "position", "patterns")
 PERIOD_ORDER = {"R": 0, "Y1A": 1, "Y1Sp": 2, "Y1Su": 3, "Y2": 4}
 LEVEL_LETTER = {1: "a", 2: "b", 3: "c"}
@@ -77,7 +78,7 @@ def catalog(lang=i18n.DEFAULT):
     merged = {t: tid for tid, t in MERGE.items()}
     for tid, m in META.items():
         if m["task"] is None and tid not in MERGE:  # Reception / Year 1 autumn task: one variant
-            rows.append({"row": tid, "year": m["year"], "strand": m["strand"], "title": cheat[m["card"]][0],
+            rows.append({"row": tid, "year": m["year"], "subject": SUBJECT, "strand": m["strand"], "title": cheat[m["card"]][0],
                          "variants": [{"id": tid, "period": m["period"], "label": ""}]})
     for t in range(1, 19):
         by_year = {}
@@ -90,12 +91,18 @@ def catalog(lang=i18n.DEFAULT):
                 variants.insert(0, {"id": merged[t], "period": META[merged[t]]["period"], "label": i18n.TOPIC[lang]["pictures"]})
             if len(variants) == 1:
                 variants[0]["label"] = ""
-            rows.append({"row": f"v{t}-{year}", "year": year, "strand": REVIEW_STRAND[t - 1], "title": names[t - 1],
+            rows.append({"row": f"v{t}-{year}", "year": year, "subject": SUBJECT, "strand": REVIEW_STRAND[t - 1], "title": names[t - 1],
                          "variants": variants})
     rows.sort(key=lambda r: (YEARS.index(r["year"]), STRANDS.index(r["strand"]),
                              PERIOD_ORDER[r["variants"][0]["period"]], r["title"]))
+    names_ = i18n.REG[lang]["subjects"]
     return {"rows": rows, "strands": i18n.TOPIC[lang]["strands"], "periods": i18n.A[lang]["period"],
-            "max": MAX_TOPICS, "presets": presets()}
+            "max": MAX_TOPICS, "presets": presets(),
+            # years and subjects for the whole site come from the registry (one subject per worksheet)
+            "years": [i18n.year_info(lang, y) for y in registry.YEAR_IDS],
+            "subjects": [{"id": sub["id"], "name": names_[sub["id"]],
+                          "years": {y: ("ready" if y in sub["ready"] else "soon") for y in sub["years"]}} for sub in registry.SUBJECTS],
+            "soon_year": i18n.REG[lang]["soon_year"]}
 
 
 def review_spec(level, part):
@@ -106,10 +113,10 @@ def review_spec(level, part):
 
 def presets():
     """Ready-made sheets per year: [{"id": level for build(), "key": label key on the site, "part": 1 | 2 | None}]."""
-    review = [{"id": review_spec(lv, part), "key": str(lv), "part": part} for lv in (1, 2, 3) for part in (1, 2)]
-    return {"R": [{"id": "R", "key": "R", "part": None}],
-            "Y1": [{"id": "Y1A", "key": "Y1A", "part": None}] + review,
-            "Y2": [{"id": "T:" + "_".join(year_topics("Y2")), "key": "Y2", "part": None}]}
+    review = [{"id": review_spec(lv, part), "key": str(lv), "part": part, "subject": SUBJECT} for lv in (1, 2, 3) for part in (1, 2)]
+    return {"R": [{"id": "R", "key": "R", "part": None, "subject": SUBJECT}],
+            "Y1": [{"id": "Y1A", "key": "Y1A", "part": None, "subject": SUBJECT}] + review,
+            "Y2": [{"id": "T:" + "_".join(year_topics("Y2")), "key": "Y2", "part": None, "subject": SUBJECT}]}
 
 
 def year_topics(year):
@@ -125,6 +132,8 @@ def year_topics(year):
 def parse(spec):
     """'T:r1_v4a' -> ['r1', 'v4a'] (validated, unique, in the given order)."""
     ids = [x for x in spec[2:].split("_") if x]
+    if ids:
+        registry.subject_of(ids)  # one subject per worksheet
     bad = [x for x in ids if x not in META]
     if bad or not ids:
         raise ValueError(f"unknown topics: {', '.join(bad) or 'none'}")

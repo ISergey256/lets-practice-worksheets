@@ -440,8 +440,7 @@ def card(num, key, look, try_, C):
 def available(level):
     """Cards for a sheet: [(task number on the sheet, card key)]. level: "R", "Y1A" or a topic spec "T:..."."""
     if level.startswith("T:"):
-        import topics
-        return topics.cards(level)
+        return g.subject_module(level).cards(level)
     return [(i + 1, k) for i, k in enumerate(card_keys(level))]
 
 

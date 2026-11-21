@@ -42,6 +42,8 @@ Maths first; the other subjects follow the same rules (STANDARDS.md): no reading
 every action, a worked example in grey, cheat sheets for a parent or teacher. Each subject is built on the official
 programmes (England: EYFS areas of learning and the National Curriculum; Ukraine: НУШ) and only open sources.
 
+Which years and subjects exist, and which are ready, is set in `scripts/registry.py` (see ARCHITECTURE.md).
+
 | Subject on the site | Reception (EYFS area) | Year 1–2 (National Curriculum) | Ukraine (НУШ, 1–2) |
 |---|---|---|---|
 | **Maths** — now | Mathematics | Mathematics | Математична галузь |

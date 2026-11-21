@@ -6,6 +6,7 @@
 !/README.md
 !/README.ru.md
 !/CONTRIBUTING.md
+!/ARCHITECTURE.md
 !/CONTRIBUTORS.md
 !/DESIGN.md
 !/DESIGN.ru.md
@@ -23,6 +24,7 @@
 !/scripts/stages.py
 !/scripts/cheats.py
 !/scripts/topics.py
+!/scripts/registry.py
 !/scripts/measure_topics.py
 !/scripts/topic_heights.json
 !/scripts/server.py

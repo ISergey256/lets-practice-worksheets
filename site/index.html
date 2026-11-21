@@ -101,6 +101,12 @@
   .dbg-head { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; font-size:13px; font-weight:800; }
   .dbg-head span { color:var(--muted); margin-right:auto; }
   .debug a.chip { text-decoration:none; color:inherit; display:inline-flex; align-items:center; }
+  .yearchips { display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; }
+  .ychip { min-height:44px; border:2.5px solid var(--ink); border-radius:12px; background:#fff; font-size:17px; font-weight:900; padding:0; }
+  .ychip:hover { background:var(--soft); }
+  .ychip[aria-checked="true"] { background:var(--ink); color:#fff; }
+  .ychip.later { border-style:dashed; color:var(--muted); }
+  .ychip.later[aria-checked="true"] { color:#fff; }
   .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-6px 0 14px; }
   .listen { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .listen .chip { display:inline-flex; align-items:center; gap:5px; }
@@ -128,15 +134,17 @@
     <aside class="card panel">
       <div class="block">
         <p class="step"><span class="n">1</span><span data-t="year"></span></p>
-        <div class="levels" role="radiogroup" id="years"></div>
+        <div class="yearchips" role="radiogroup" id="years"></div>
+        <p class="hint" id="year-info" style="margin-top:8px"></p>
       </div>
 
       <div class="block">
         <p class="step"><span class="n">2</span><span data-t="subject"></span></p>
         <div class="recent" id="subjects"></div>
+        <p class="hint" id="year-soon" hidden></p>
       </div>
 
-      <div class="block">
+      <div class="block" id="practise-block">
         <p class="step"><span class="n">3</span><span data-t="practise"></span></p>
         <div class="recent" id="modes" role="radiogroup"></div>
         <div class="levels" id="presets" role="radiogroup" style="margin-top:10px"></div>
@@ -268,7 +276,7 @@ const UI = {
     cheats: "Help cards", cheatsHint: "A card shows how to do a task: look, do, check, try. Tick the tasks the child needs help with. Two cards per page.", all: "All", none: "None", printCheats: "Print help cards", tabCheats: "Help cards", cheatsNone: "Tick at least one task.",
     free: "Free for learning. Not for resale.", license: "License",
     aboutTitle: "About the project", about1: "Let’s Practice is a free project: good learning materials should be available to every child, whatever their family can afford.", about2: "No sign-up, no subscriptions, no ads and no hidden payments. Choose, print, practise. We start with maths for ages 4–6 and will grow step by step up to Year 11 and other subjects.",
-    year: "Year", subject: "Subject", maths: "Maths", soon: "soon", english: "Languages", science: "Nature", society: "People and society", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
+    year: "Year", subject: "Subject", maths: "Maths", soon: "soon", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
     helpTitle: "Help make it better", suggest: "Suggest a task", report: "Report a problem", ghNote: "Opens GitHub (a free account is needed).", why: "Why black and white?",
     partWord: "part",
     thanksTitle: "Made with the help of", joinUs: "Want to help? Your name can be here.", roles: {"idea": "idea and development", "teacher": "teaching advice", "translation": "translations", "code": "code", "testing": "testing with children", "design": "design"},
@@ -296,7 +304,7 @@ const UI = {
     cheats: "Картки-підказки", cheatsHint: "Для батьків або вчителя: позначте завдання, з якими дитині потрібна допомога. Одна картка на завдання, дві на сторінці.", all: "Усі", none: "Жодного", printCheats: "Друкувати картки-підказки", tabCheats: "Підказки", cheatsNone: "Позначте хоча б одне завдання.",
     free: "Безкоштовно для навчання. Не для продажу.", license: "Ліцензія",
     aboutTitle: "Про проєкт", about1: "Let’s Practice — безкоштовний проєкт: якісні навчальні матеріали мають бути доступні кожній дитині, незалежно від можливостей родини.", about2: "Без реєстрації, підписок, реклами та прихованих платежів. Обрав — роздрукував — займаєшся. Починаємо з математики для дітей 4–6 років і поступово дійдемо до 11 класу та інших предметів.",
-    year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", english: "Мови", science: "Природа", society: "Люди і суспільство", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
+    year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
     helpTitle: "Допоможіть зробити краще", suggest: "Запропонувати завдання", report: "Повідомити про помилку", ghNote: "Відкриється GitHub (потрібен безкоштовний акаунт).", why: "Чому все чорно-біле?",
     partWord: "частина",
     thanksTitle: "Над проєктом працювали", joinUs: "Хочете допомогти? Тут може бути ваше ім’я.", roles: {"idea": "ідея та розробка", "teacher": "поради вчителя", "translation": "переклади", "code": "код", "testing": "перевірка з дітьми", "design": "дизайн"},
@@ -324,7 +332,7 @@ const UI = {
     cheats: "Карточки-подсказки", cheatsHint: "Для родителя или учителя: отметьте задания, с которыми ребёнку нужна помощь. Одна карточка на задание, две на странице.", all: "Все", none: "Ничего", printCheats: "Печать карточек-подсказок", tabCheats: "Подсказки", cheatsNone: "Отметьте хотя бы одно задание.",
     free: "Бесплатно для обучения. Не для продажи.", license: "Лицензия",
     aboutTitle: "О проекте", about1: "Let’s Practice — бесплатный проект: хорошие учебные материалы должны быть доступны каждому ребёнку, независимо от возможностей семьи.", about2: "Без регистрации, подписок, рекламы и скрытых платежей. Выбрал — распечатал — занимаешься. Начинаем с математики для детей 4–6 лет и постепенно дойдём до 11 класса и других предметов.",
-    year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", english: "Языки", science: "Природа", society: "Люди и общество", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
+    year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
     helpTitle: "Помогите сделать лучше", suggest: "Предложить задание", report: "Сообщить об ошибке", ghNote: "Откроется GitHub (нужен бесплатный аккаунт).", why: "Почему всё чёрно-белое?",
     partWord: "часть",
     thanksTitle: "Над проектом работали", joinUs: "Хотите помочь? Здесь может быть ваше имя.", roles: {"idea": "идея и разработка", "teacher": "советы учителя", "translation": "переводы", "code": "код", "testing": "проверка с детьми", "design": "дизайн"},
@@ -352,7 +360,7 @@ const UI = {
     cheats: "Βοηθητικές κάρτες", cheatsHint: "Για γονείς ή εκπαιδευτικούς: σημειώστε τις ασκήσεις όπου το παιδί χρειάζεται βοήθεια. Μία κάρτα ανά άσκηση, δύο ανά σελίδα.", all: "Όλες", none: "Καμία", printCheats: "Εκτύπωση καρτών", tabCheats: "Κάρτες", cheatsNone: "Σημειώστε τουλάχιστον μία άσκηση.",
     free: "Δωρεάν για μάθηση. Όχι για μεταπώληση.", license: "Άδεια χρήσης",
     aboutTitle: "Σχετικά με το έργο", about1: "Το Let’s Practice είναι ένα δωρεάν έργο: το καλό εκπαιδευτικό υλικό πρέπει να είναι διαθέσιμο σε κάθε παιδί, ανεξάρτητα από τις δυνατότητες της οικογένειας.", about2: "Χωρίς εγγραφή, συνδρομές, διαφημίσεις ή κρυφές χρεώσεις. Διαλέγεις, τυπώνεις, εξασκείσαι. Ξεκινάμε με μαθηματικά για παιδιά 4–6 ετών και σιγά σιγά θα φτάσουμε ως το Year 11 και σε άλλα μαθήματα.",
-    year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", english: "Γλώσσες", science: "Φύση", society: "Άνθρωποι και κοινωνία", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
+    year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
     helpTitle: "Βοηθήστε να γίνει καλύτερο", suggest: "Προτείνετε άσκηση", report: "Αναφέρετε πρόβλημα", ghNote: "Ανοίγει το GitHub (χρειάζεται δωρεάν λογαριασμός).", why: "Γιατί όλα είναι ασπρόμαυρα;",
     partWord: "μέρος",
     thanksTitle: "Συνεισφέρουν", joinUs: "Θέλετε να βοηθήσετε; Εδώ μπορεί να είναι το όνομά σας.", roles: {"idea": "ιδέα και ανάπτυξη", "teacher": "συμβουλές εκπαιδευτικού", "translation": "μεταφράσεις", "code": "κώδικας", "testing": "δοκιμές με παιδιά", "design": "σχεδιασμός"},
@@ -380,7 +388,7 @@ const UI = {
     cheats: "Hilfekarten", cheatsHint: "Für Eltern oder Lehrkräfte: Kreuzen Sie die Aufgaben an, bei denen das Kind Hilfe braucht. Eine Karte pro Aufgabe, zwei pro Seite.", all: "Alle", none: "Keine", printCheats: "Hilfekarten drucken", tabCheats: "Hilfekarten", cheatsNone: "Mindestens eine Aufgabe ankreuzen.",
     free: "Kostenlos zum Lernen. Nicht zum Weiterverkauf.", license: "Lizenz",
     aboutTitle: "Über das Projekt", about1: "Let’s Practice ist ein kostenloses Projekt: Gute Lernmaterialien sollen jedem Kind zur Verfügung stehen, unabhängig vom Geldbeutel der Familie.", about2: "Keine Anmeldung, keine Abos, keine Werbung, keine versteckten Kosten. Auswählen, drucken, üben. Wir beginnen mit Mathe für 4- bis 6-Jährige und wachsen Schritt für Schritt bis Year 11 und zu weiteren Fächern.",
-    year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", english: "Sprachen", science: "Natur", society: "Mensch und Gesellschaft", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
+    year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
     helpTitle: "Helfen Sie mit", suggest: "Aufgabe vorschlagen", report: "Fehler melden", ghNote: "Öffnet GitHub (ein kostenloses Konto ist nötig).", why: "Warum alles schwarz-weiß ist",
     partWord: "Teil",
     thanksTitle: "Mitgewirkt haben", joinUs: "Möchten Sie helfen? Hier kann Ihr Name stehen.", roles: {"idea": "Idee und Entwicklung", "teacher": "Rat von Lehrkräften", "translation": "Übersetzungen", "code": "Code", "testing": "Tests mit Kindern", "design": "Gestaltung"},
@@ -408,7 +416,7 @@ const UI = {
     cheats: "Fiches d’aide", cheatsHint: "Pour le parent ou l’enseignant : cochez les exercices où l’enfant a besoin d’aide. Une carte par exercice, deux par page.", all: "Toutes", none: "Aucune", printCheats: "Imprimer les fiches d’aide", tabCheats: "Fiches d’aide", cheatsNone: "Cochez au moins un exercice.",
     free: "Gratuit pour apprendre. Pas à revendre.", license: "Licence",
     aboutTitle: "À propos du projet", about1: "Let’s Practice est un projet gratuit : de bons supports d’apprentissage doivent être accessibles à chaque enfant, quels que soient les moyens de sa famille.", about2: "Sans inscription, sans abonnement, sans publicité ni frais cachés. On choisit, on imprime, on s’entraîne. Nous commençons par les maths pour les 4–6 ans et grandirons pas à pas jusqu’à Year 11 et d’autres matières.",
-    year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", english: "Langues", science: "Nature", society: "Vivre ensemble", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
+    year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
     helpTitle: "Aidez à l’améliorer", suggest: "Proposer un exercice", report: "Signaler un problème", ghNote: "Ouvre GitHub (un compte gratuit est nécessaire).", why: "Pourquoi tout est en noir et blanc ?",
     partWord: "partie",
     thanksTitle: "Ont contribué", joinUs: "Envie d’aider ? Votre nom peut figurer ici.", roles: {"idea": "idée et développement", "teacher": "conseils d’enseignant", "translation": "traductions", "code": "code", "testing": "tests avec des enfants", "design": "design"},
@@ -436,7 +444,7 @@ const UI = {
     cheats: "Fichas de ayuda", cheatsHint: "Para la familia o el docente: marque los ejercicios en los que el niño necesita ayuda. Una tarjeta por ejercicio, dos por página.", all: "Todas", none: "Ninguna", printCheats: "Imprimir fichas de ayuda", tabCheats: "Fichas de ayuda", cheatsNone: "Marque al menos un ejercicio.",
     free: "Gratis para aprender. No para revender.", license: "Licencia",
     aboutTitle: "Sobre el proyecto", about1: "Let’s Practice es un proyecto gratuito: los buenos materiales de aprendizaje deben estar al alcance de todos los niños, sean cuales sean las posibilidades de su familia.", about2: "Sin registro, sin suscripciones, sin anuncios ni pagos ocultos. Eliges, imprimes y practicas. Empezamos con matemáticas para niños de 4 a 6 años y creceremos poco a poco hasta Year 11 y otras asignaturas.",
-    year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", english: "Lenguas", science: "Naturaleza", society: "Personas y sociedad", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
+    year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
     helpTitle: "Ayude a mejorarlo", suggest: "Proponer un ejercicio", report: "Informar de un problema", ghNote: "Abre GitHub (hace falta una cuenta gratuita).", why: "¿Por qué todo es en blanco y negro?",
     partWord: "parte",
     thanksTitle: "Han colaborado", joinUs: "¿Quiere ayudar? Su nombre puede estar aquí.", roles: {"idea": "idea y desarrollo", "teacher": "consejos docentes", "translation": "traducciones", "code": "código", "testing": "pruebas con niños", "design": "diseño"},
@@ -478,7 +486,7 @@ const yearOfLevel = (v) => (v === "R" ? "R" : isTopics(v) ? (topicYear(v.slice(2
 const pick = (v, d) => (v in LANGS ? v : d);
 const state = {
   level: 2, seed: 101, tab: "sheet", sheet: null, ready: false,
-  year: "Y1", mode: "ready", sel: {}, lastPreset: {},
+  year: "Y1", subject: "maths", mode: "ready", sel: {}, lastPreset: {},
   ui: pick(localStorage.ui, "en"), lang: pick(localStorage.lang, "en"), alang: pick(localStorage.alang, "en"),
 };
 let backend = null;  // {build(level, seed, lang, alang) -> {pages, answers, css}, pdf?}
@@ -543,7 +551,7 @@ async function pyodideBackend() {
   });
   const py = await loadPyodide({ indexURL: PYODIDE });
   py.FS.mkdirTree("/app");
-  for (const f of ["generate.py", "i18n.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"]) {
+  for (const f of ["generate.py", "i18n.py", "registry.py", "stages.py", "cheats.py", "topics.py", "topic_heights.json"]) {
     py.FS.writeFile(`/app/${f}`, await (await fetch(f, { cache: "no-cache" })).text());
   }
   py.runPython("import sys, json; sys.path.insert(0, '/app'); import generate as g, topics");
@@ -611,13 +619,36 @@ function topicYear(id) {
 }
 // ready-made sheets: [{id: level, key: label, part: 1 | 2 | null}] (Year 1 review comes in two parts of 9 tasks)
 const FALLBACK_PRESETS = { R: [{ id: "R", key: "R", part: null }], Y1: [{ id: "Y1A", key: "Y1A", part: null }], Y2: [] };
-const presetsFor = (y) => (catalog() ? catalog().presets[y] : FALLBACK_PRESETS[y]);
+const presetsFor = (y) => ((catalog() ? catalog().presets[y] : FALLBACK_PRESETS[y]) || [])
+  .filter((p) => (p.subject || "maths") === state.subject);
+const YEAR_IDS = ["R", "Y1", "Y2", "Y3", "Y4", "Y5", "Y6", "Y7", "Y8", "Y9", "Y10", "Y11"];
+function yearList() {  // [{id, name, ages, ua}] from scripts/registry.py
+  if (catalog()) return catalog().years;
+  return YEAR_IDS.map((y) => ({ id: y, name: y === "R" ? "Reception" : `Year ${y.slice(1)}`, ages: "", ua: "" }));
+}
+const yearName = (y) => (yearList().find((x) => x.id === y) || { name: y }).name;
+function subjectsOf(y) {  // [{id, name, status: "ready" | "soon"}] taught in year y
+  if (catalog()) return catalog().subjects.filter((s) => s.years[y]).map((s) => ({ id: s.id, name: s.name, status: s.years[y] }));
+  return [{ id: "maths", name: UI[state.ui].maths, status: ["R", "Y1", "Y2"].includes(y) ? "ready" : "soon" }];
+}
+const subjectReady = (y = state.year, sub = state.subject) => subjectsOf(y).some((s) => s.id === sub && s.status === "ready");
+function pickSubject(y) {  // keep the subject if it has worksheets in year y, else the first one that has
+  if (subjectReady(y, state.subject)) return state.subject;
+  return (subjectsOf(y).find((s) => s.status === "ready") || subjectsOf(y)[0] || { id: "maths" }).id;
+}
 const presetIds = (y) => presetsFor(y).map((p) => p.id);
 const selMap = () => state.sel[state.year] || (state.sel[state.year] = new Map());
 function topicSpec() {
   const m = selMap(), ids = [];
-  for (const r of (catalog() ? catalog().rows : [])) if (r.year === state.year && m.has(r.row)) ids.push(m.get(r.row));
+  for (const r of (catalog() ? catalog().rows : [])) if (r.year === state.year && (r.subject || "maths") === state.subject && m.has(r.row)) ids.push(m.get(r.row));
   return ids.length ? `T:${ids.join("_")}` : null;
+}
+function subjectOfLevel(v) {  // the subject of a sheet: its topics' subject (registry); stage sheets are maths
+  if (isTopics(v) && catalog()) {
+    const id = v.slice(2).split("_")[0];
+    for (const r of catalog().rows) if (r.variants.some((x) => x.id === id)) return r.subject || "maths";
+  }
+  return "maths";
 }
 function syncFromLevel() {  // after a link or a "recent" chip: show the panel that matches state.level
   if (typeof state.level === "number" && catalog()) {  // old links #L2-123: part 1 of that review level
@@ -625,6 +656,7 @@ function syncFromLevel() {  // after a link or a "recent" chip: show the panel t
     if (p) state.level = p.id;
   }
   state.year = yearOfLevel(state.level);
+  state.subject = subjectOfLevel(state.level);
   const preset = presetIds(state.year).includes(state.level);
   state.mode = isTopics(state.level) && !preset ? "topics" : "ready";
   if (state.mode === "ready") state.lastPreset[state.year] = state.level;
@@ -639,9 +671,21 @@ function renderPanel() {
   const card = (attr, id, big, name, text, on) => `
     <button type="button" class="level" role="radio" aria-checked="${on}" ${attr}="${id}">
       <span class="big">${big}</span><span><b>${name}</b><small>${text}</small></span></button>`;
-  $("years").innerHTML = ["R", "Y1", "Y2"].map((y) => card("data-year", y, y === "R" ? "R" : y.slice(1), ...u.years[y], y === state.year)).join("");
-  $("subjects").innerHTML = `<button class="chip" aria-pressed="true">${u.maths}</button>` +
-    [u.english, u.science, u.society].map((n) => `<button class="chip" disabled>${n} · ${u.soon}</button>`).join("");
+  const years = yearList();
+  $("years").innerHTML = years.map((y) => {
+    const has = subjectsOf(y.id).some((s) => s.status === "ready");
+    return `<button type="button" class="ychip${has ? "" : " later"}" role="radio" aria-checked="${y.id === state.year}" data-year="${y.id}"
+      title="${y.name}${y.ages ? " · " + y.ages : ""}" aria-label="${y.name}">${y.id === "R" ? "R" : y.id.slice(1)}</button>`;
+  }).join("");
+  const yi = years.find((y) => y.id === state.year) || { name: state.year };
+  $("year-info").innerHTML = `<b style="color:var(--ink)">${yi.name}</b>${yi.ages ? " · " + yi.ages : ""}${yi.ua ? " · " + yi.ua : ""}`;
+  $("subjects").innerHTML = subjectsOf(state.year).map((sb) => sb.status === "ready"
+    ? `<button class="chip" type="button" data-subject="${sb.id}" aria-pressed="${sb.id === state.subject}">${sb.name}</button>`
+    : `<button class="chip" type="button" disabled>${sb.name} · ${u.soon}</button>`).join("");
+  const ready = subjectReady();
+  $("year-soon").hidden = ready;
+  $("year-soon").textContent = catalog() ? catalog().soon_year : "";
+  $("practise-block").hidden = !ready;
   $("modes").innerHTML = [["ready", u.ready], ["topics", u.choose]].map(([m, n]) =>
     `<button class="chip" role="radio" aria-pressed="${state.mode === m}" data-mode="${m}">${n}</button>`).join("");
   const desc = { R: u.stages.R[1], Y1A: u.stages.Y1A[1], 1: u.levels[0][1], 2: u.levels[1][1], 3: u.levels[2][1], Y2: u.years.Y2[1] };
@@ -660,7 +704,7 @@ function renderTopics() {
   const m = selMap(), u = UI[state.ui];
   $("topic-count").textContent = fmt(u.topicsCount, { n: m.size, max: c.max });
   let html = "", strand = null;
-  for (const r of c.rows.filter((r) => r.year === state.year)) {
+  for (const r of c.rows.filter((r) => r.year === state.year && (r.subject || "maths") === state.subject)) {
     if (r.strand !== strand) { strand = r.strand; html += `<p class="strand">${c.strands[strand]}</p>`; }
     const on = m.has(r.row), chosen = r.variants.find((v) => v.id === m.get(r.row)) || r.variants[Math.floor(r.variants.length / 2)];
     const chips = r.variants.length > 1 ? `<div class="vchips">${r.variants.map((v) =>
@@ -671,8 +715,13 @@ function renderTopics() {
   $("topic-list").innerHTML = html;
 }
 function setYear(y) {
-  state.year = y; state.mode = "ready";
-  state.level = state.lastPreset[y] ?? presetIds(y)[0] ?? null;
+  state.year = y; state.mode = "ready"; state.subject = pickSubject(y);
+  state.level = subjectReady() ? (state.lastPreset[y] ?? presetIds(y)[0] ?? null) : null;
+  renderPanel(); update();
+}
+function setSubject(sub) {
+  state.subject = sub; state.mode = "ready";
+  state.level = subjectReady() ? (presetIds(state.year)[0] ?? null) : null;
   renderPanel(); update();
 }
 function setMode(m) {
@@ -681,6 +730,7 @@ function setMode(m) {
   renderPanel(); update();
 }
 $("years").addEventListener("click", (e) => { const b = e.target.closest("[data-year]"); if (b) setYear(b.dataset.year); });
+$("subjects").addEventListener("click", (e) => { const b = e.target.closest("[data-subject]"); if (b) setSubject(b.dataset.subject); });
 $("modes").addEventListener("click", (e) => { const b = e.target.closest("[data-mode]"); if (b) setMode(b.dataset.mode); });
 $("presets").addEventListener("click", (e) => {
   const b = e.target.closest("[data-preset]"); if (!b) return;
@@ -716,8 +766,12 @@ $("seed").addEventListener("blur", () => { $("seed").value = state.seed; });
 $("tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b) { state.tab = b.dataset.tab; renderView(); } });
 
 function renderTitle() {
+  if (!subjectReady()) {  // a year without worksheets yet: just its name
+    $("title").textContent = yearName(state.year); document.title = `${yearName(state.year)} — Let's Practice!`;
+    return;
+  }
   if (isTopics(state.level) || state.level === null) {
-    const title = t("stageTitle", { stage: `${UI[state.ui].years[state.year][0]} · ${t("topicsShort")}`, seed: state.seed });
+    const title = t("stageTitle", { stage: `${yearName(state.year)} · ${t("topicsShort")}`, seed: state.seed });
     $("title").textContent = title; document.title = `${title} — Let's Practice!`;
     return;
   }
@@ -736,9 +790,11 @@ async function update() {
   if (!backend) return;
   if (state.level === null) {  // "choose topics" with nothing ticked yet
     state.sheet = null; ++buildNo;
+    renderTools(); renderDebug();  // nothing to listen to, label or make harder
     ["print-sheet", "print-answers", "pdf-sheet", "pdf-answers", "print-cheats"].forEach((id) => { $(id).disabled = true; });
     $("cheat-block").hidden = $("tab-cheats").hidden = true;
-    $("view").innerHTML = `<div class="loading"></div>`; $("view").firstChild.textContent = t("topicsNone");
+    $("view").innerHTML = `<div class="loading"></div>`;
+    $("view").firstChild.textContent = subjectReady() ? t("topicsNone") : (catalog() ? catalog().soon_year : "");
     return;
   }
   const no = ++buildNo;
