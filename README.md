@@ -12,7 +12,19 @@ Everything runs in your browser: nothing to install, nothing is sent anywhere.
 English by default. The site language, the language of the tasks and the language of the answers are chosen separately:
 English, Українська, Русский, Ελληνικά, Deutsch, Français, Español.
 
-## What is on a worksheet
+## Stages
+
+| Stage | For whom | What is inside |
+|---|---|---|
+| **Reception** | ages 4–5, no reading needed | ladybird spots (subitising), count and circle, more / fewer, ten frames, part + part, tracing dotted numbers, patterns, colouring shapes |
+| **Year 1 · Autumn** | ages 5–6, first term | count and write, ten frames, 1 more / 1 less, &lt; &gt; =, number lines, part–whole, adding and taking away within 10, make 10, naming shapes |
+| **Year 1 review** (levels 1–3) | Year 1 | the full 18-task sheet below, easy / medium / hard |
+
+On the Reception and Year 1 Autumn sheets every task has an **action icon** (count, circle, match, colour, trace, write, tick,
+cross out, draw) and its **first item is already done on a grey background**: grey means “do it like this”.
+Children answer by circling, matching, ticking, drawing or tracing; the short text is for the adult.
+
+## What is on a Year 1 review worksheet
 
 - counting and estimating;
 - odd and even numbers, number line, comparing numbers, numbers in words;
@@ -44,6 +56,7 @@ On Windows you can also double-click `start_site.bat`.
 ## How it works
 
 - `scripts/generate.py`: the 18 tasks (one `task_*` function each) and the A4 layout (HTML + inline SVG).
+- `scripts/stages.py`: the Reception and Year 1 Autumn sheets (action icons, worked examples, dotted digits for tracing).
 - `scripts/i18n.py`: all texts in every language, plus number words and ordinals. To add a language, copy the `en` entries, translate them and run the checks below.
 - `site/index.html`: the website. On GitHub Pages it runs the same `generate.py` in the browser with [Pyodide](https://pyodide.org) (Python compiled to WebAssembly), so worksheet numbers match the local version. With `scripts/server.py` the same page asks the local server instead and can download PDF files.
 - `scripts/build_site.py`: checks the generator in every language and builds `_site/`. GitHub Actions (`.github/workflows/pages.yml`) publishes it on every push to `main`. Use `python scripts/build_site.py --serve` to preview it.

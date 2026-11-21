@@ -554,6 +554,108 @@ A = {
 }
 
 
+# ---------------------------------------------------------------- early stages: Reception and Year 1 autumn
+# Children who cannot read yet follow the action icon and the worked example (grey row); these lines are for the adult.
+EARLY = {
+    "en": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · Autumn"}, "badge_stage": "{stage} · No. {seed}",
+        "sub_stage": "Worksheet No. {seed}, {stage}. For parents — no need to print this page.",
+        "r1": "How many spots? Match each ladybird to its number.", "r2": "Count. Circle the number.",
+        "r3": "Which plate has more? Tick it.", "r4": "Draw this many dots in the frame.",
+        "r5": "How many altogether? Circle the number.", "r6": "Trace the grey numbers.",
+        "r7": "What comes next? Draw it.", "r8": "Colour every shape like this one:",
+        "y1": "Count. Write the number.", "y2": "How many? Circle the number.", "y3": "Write 1 less and 1 more.",
+        "y4": "Write &lt;, &gt; or =.", "y5": "Fill in the missing numbers.", "y6": "Write the missing number.",
+        "y7": "Add. Write how many altogether.", "y8": "Cross out. Write how many are left.",
+        "y9": "How many more to make 10?", "y10": "Match each shape to its name.",
+        "shape1": {"circle": "circle", "triangle": "triangle", "square": "square", "rect": "rectangle"},
+    },
+    "ru": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · осень"}, "badge_stage": "{stage} · №{seed}",
+        "sub_stage": "Лист №{seed}, {stage}. Для родителей — эту страницу печатать не обязательно.",
+        "r1": "Сколько точек? Соедини каждую божью коровку с числом.", "r2": "Посчитай. Обведи число.",
+        "r3": "На какой тарелке больше? Отметь её.", "r4": "Нарисуй столько точек в рамке.",
+        "r5": "Сколько всего? Обведи число.", "r6": "Обведи серые цифры.",
+        "r7": "Что дальше? Нарисуй.", "r8": "Раскрась все такие фигуры:",
+        "y1": "Посчитай. Напиши число.", "y2": "Сколько? Обведи число.", "y3": "Напиши на 1 меньше и на 1 больше.",
+        "y4": "Поставь знак &lt;, &gt; или =.", "y5": "Впиши пропущенные числа.", "y6": "Впиши пропущенное число.",
+        "y7": "Сложи. Напиши, сколько всего.", "y8": "Зачеркни. Напиши, сколько осталось.",
+        "y9": "Сколько не хватает до 10?", "y10": "Соедини фигуру с её названием.",
+        "shape1": {"circle": "круг", "triangle": "треугольник", "square": "квадрат", "rect": "прямоугольник"},
+    },
+    "uk": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · осінь"}, "badge_stage": "{stage} · №{seed}",
+        "sub_stage": "Аркуш №{seed}, {stage}. Для батьків — цю сторінку друкувати не обов’язково.",
+        "r1": "Скільки цяточок? З’єднай кожне сонечко з числом.", "r2": "Порахуй. Обведи число.",
+        "r3": "На якій тарілці більше? Познач її.", "r4": "Намалюй стільки крапок у рамці.",
+        "r5": "Скільки всього? Обведи число.", "r6": "Обведи сірі цифри.",
+        "r7": "Що далі? Намалюй.", "r8": "Розфарбуй усі такі фігури:",
+        "y1": "Порахуй. Напиши число.", "y2": "Скільки? Обведи число.", "y3": "Напиши на 1 менше і на 1 більше.",
+        "y4": "Постав знак &lt;, &gt; або =.", "y5": "Впиши пропущені числа.", "y6": "Впиши пропущене число.",
+        "y7": "Додай. Напиши, скільки всього.", "y8": "Закресли. Напиши, скільки залишилось.",
+        "y9": "Скільки бракує до 10?", "y10": "З’єднай фігуру з її назвою.",
+        "shape1": {"circle": "коло", "triangle": "трикутник", "square": "квадрат", "rect": "прямокутник"},
+    },
+    "el": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · φθινόπωρο"}, "badge_stage": "{stage} · αρ. {seed}",
+        "sub_stage": "Φύλλο αρ. {seed}, {stage}. Για τους γονείς — δεν χρειάζεται να τυπώσετε αυτή τη σελίδα.",
+        "r1": "Πόσες βούλες; Ένωσε κάθε πασχαλίτσα με τον αριθμό της.", "r2": "Μέτρησε. Κύκλωσε τον αριθμό.",
+        "r3": "Ποιο πιάτο έχει περισσότερα; Σημείωσέ το.", "r4": "Ζωγράφισε τόσες τελείες στο πλαίσιο.",
+        "r5": "Πόσα είναι όλα μαζί; Κύκλωσε τον αριθμό.", "r6": "Πέρασε με το μολύβι τους γκρι αριθμούς.",
+        "r7": "Τι ακολουθεί; Ζωγράφισέ το.", "r8": "Χρωμάτισε όλα τα σχήματα σαν αυτό:",
+        "y1": "Μέτρησε. Γράψε τον αριθμό.", "y2": "Πόσα; Κύκλωσε τον αριθμό.", "y3": "Γράψε 1 λιγότερο και 1 περισσότερο.",
+        "y4": "Γράψε &lt;, &gt; ή =.", "y5": "Συμπλήρωσε τους αριθμούς που λείπουν.", "y6": "Γράψε τον αριθμό που λείπει.",
+        "y7": "Πρόσθεσε. Γράψε πόσα είναι όλα μαζί.", "y8": "Διάγραψε. Γράψε πόσα έμειναν.",
+        "y9": "Πόσα λείπουν για να γίνουν 10;", "y10": "Ένωσε κάθε σχήμα με το όνομά του.",
+        "shape1": {"circle": "κύκλος", "triangle": "τρίγωνο", "square": "τετράγωνο", "rect": "ορθογώνιο"},
+    },
+    "de": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · Herbst"}, "badge_stage": "{stage} · Nr. {seed}",
+        "sub_stage": "Arbeitsblatt Nr. {seed}, {stage}. Für Eltern — diese Seite muss nicht gedruckt werden.",
+        "r1": "Wie viele Punkte? Verbinde jeden Marienkäfer mit seiner Zahl.", "r2": "Zähle. Kreise die Zahl ein.",
+        "r3": "Auf welchem Teller ist mehr? Kreuze ihn an.", "r4": "Male so viele Punkte in den Rahmen.",
+        "r5": "Wie viele sind es zusammen? Kreise die Zahl ein.", "r6": "Spure die grauen Zahlen nach.",
+        "r7": "Wie geht es weiter? Male es.", "r8": "Male alle Formen wie diese an:",
+        "y1": "Zähle. Schreibe die Zahl.", "y2": "Wie viele? Kreise die Zahl ein.", "y3": "Schreibe 1 weniger und 1 mehr.",
+        "y4": "Setze &lt;, &gt; oder = ein.", "y5": "Ergänze die fehlenden Zahlen.", "y6": "Schreibe die fehlende Zahl.",
+        "y7": "Rechne plus. Schreibe, wie viele es zusammen sind.", "y8": "Streiche durch. Schreibe, wie viele übrig sind.",
+        "y9": "Wie viele fehlen bis 10?", "y10": "Verbinde jede Form mit ihrem Namen.",
+        "shape1": {"circle": "Kreis", "triangle": "Dreieck", "square": "Quadrat", "rect": "Rechteck"},
+    },
+    "fr": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · automne"}, "badge_stage": "{stage} · n° {seed}",
+        "sub_stage": "Fiche n° {seed}, {stage}. Pour les parents — inutile d’imprimer cette page.",
+        "r1": "Combien de points ? Relie chaque coccinelle à son nombre.", "r2": "Compte. Entoure le nombre.",
+        "r3": "Quelle assiette en a le plus ? Coche-la.", "r4": "Dessine autant de points dans le cadre.",
+        "r5": "Combien en tout ? Entoure le nombre.", "r6": "Repasse sur les chiffres gris.",
+        "r7": "Qu’est-ce qui vient ensuite ? Dessine-le.", "r8": "Colorie toutes les formes comme celle-ci :",
+        "y1": "Compte. Écris le nombre.", "y2": "Combien ? Entoure le nombre.", "y3": "Écris 1 de moins et 1 de plus.",
+        "y4": "Écris &lt;, &gt; ou =.", "y5": "Complète les nombres manquants.", "y6": "Écris le nombre manquant.",
+        "y7": "Additionne. Écris combien en tout.", "y8": "Barre. Écris combien il en reste.",
+        "y9": "Combien en manque-t-il pour faire 10 ?", "y10": "Relie chaque forme à son nom.",
+        "shape1": {"circle": "cercle", "triangle": "triangle", "square": "carré", "rect": "rectangle"},
+    },
+    "es": {
+        "stages": {"R": "Reception", "Y1A": "Year 1 · otoño"}, "badge_stage": "{stage} · n.º {seed}",
+        "sub_stage": "Ficha n.º {seed}, {stage}. Para las familias: no hace falta imprimir esta página.",
+        "r1": "¿Cuántos puntos? Une cada mariquita con su número.", "r2": "Cuenta. Rodea el número.",
+        "r3": "¿Qué plato tiene más? Márcalo.", "r4": "Dibuja tantos puntos en el marco.",
+        "r5": "¿Cuántos hay en total? Rodea el número.", "r6": "Repasa los números grises.",
+        "r7": "¿Qué viene después? Dibújalo.", "r8": "Colorea todas las figuras como esta:",
+        "y1": "Cuenta. Escribe el número.", "y2": "¿Cuántos? Rodea el número.", "y3": "Escribe 1 menos y 1 más.",
+        "y4": "Escribe &lt;, &gt; o =.", "y5": "Completa los números que faltan.", "y6": "Escribe el número que falta.",
+        "y7": "Suma. Escribe cuántos hay en total.", "y8": "Tacha. Escribe cuántos quedan.",
+        "y9": "¿Cuántos faltan para 10?", "y10": "Une cada figura con su nombre.",
+        "shape1": {"circle": "círculo", "triangle": "triángulo", "square": "cuadrado", "rect": "rectángulo"},
+    },
+}
+for _lang in W:
+    W[_lang].update(EARLY[_lang])
+    A[_lang]["period"]["R"] = "Reception"
+    A[_lang]["sub_stage"] = EARLY[_lang]["sub_stage"]
+    A[_lang]["stages"] = EARLY[_lang]["stages"]
+
+
 def text(entry, **kw):
     """A translation entry is either a format string or a function of the same keyword arguments."""
     return entry(**kw) if callable(entry) else entry.format(**kw)

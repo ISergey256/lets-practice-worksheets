@@ -21,7 +21,7 @@ import i18n  # noqa: E402
 
 SITE = g.ROOT / "site"
 MAX_SEED = 999_999
-OUT_FILE = re.compile(r"^Worksheet_L[123]_\d{1,6}_[a-z]{2}(_answers_[a-z]{2})?\.pdf$")
+OUT_FILE = re.compile(r"^Worksheet_(L[123]|R|Y1A)_\d{1,6}_[a-z]{2}(_answers_[a-z]{2})?\.pdf$")
 FONT_FILE = re.compile(r"^[\w-]+\.(css|woff2|txt)$")
 TYPES = {".html": "text/html; charset=utf-8", ".pdf": "application/pdf", ".css": "text/css; charset=utf-8",
          ".woff2": "font/woff2", ".txt": "text/plain; charset=utf-8"}
@@ -31,10 +31,8 @@ pdf_lock = threading.Lock()  # one Chromium at a time is plenty for a home print
 
 def parse_job(q):
     """Validate level / seed / languages from a query or JSON body. Raises ValueError."""
-    level, seed = int(q.get("level", 2)), int(q.get("seed", 0))
+    level, seed = g.parse_level(q.get("level", 2)), int(q.get("seed", 0))
     lang, alang = q.get("lang", i18n.DEFAULT), q.get("alang", i18n.DEFAULT)
-    if level not in (1, 2, 3):
-        raise ValueError("level must be 1, 2 or 3")
     if not 0 <= seed <= MAX_SEED:
         raise ValueError(f"worksheet number must be 0..{MAX_SEED}")
     if lang not in i18n.LANGS or alang not in i18n.LANGS:

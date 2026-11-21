@@ -12,6 +12,7 @@
 /scripts/*
 !/scripts/generate.py
 !/scripts/i18n.py
+!/scripts/stages.py
 !/scripts/server.py
 !/scripts/fetch_fonts.py
 !/scripts/build_site.py

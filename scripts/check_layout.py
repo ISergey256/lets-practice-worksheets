@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import generate as g  # noqa: E402
 import i18n  # noqa: E402
 
+LEVELS = (1, 2, 3, "R", "Y1A")
 OVER = "(() => { const p = document.querySelector('.page'); return p.scrollHeight - p.clientHeight })()"
 
 
@@ -25,7 +26,7 @@ async def main(langs, seeds):
         pg = await browser.new_page(viewport={"width": 794, "height": 1123})
         try:
             for lang in langs:
-                for level in (1, 2, 3):
+                for level in LEVELS:
                     for seed in seeds:
                         pages, answers = g.build(level, seed, lang, lang)
                         for name, body in [*((f"p{i}", b) for i, b in enumerate(pages, 1)), ("answers", answers)]:

@@ -29,14 +29,14 @@ def check(seeds=100):
             for seed in range(seeds):
                 pages, answers = g.build(level, seed, lang, lang)
                 assert len(pages) == 4 and answers, (lang, level, seed)
-    print(f"  generator ok: {len(i18n.LANGS)} languages x 3 levels x {seeds} worksheets")
+    print(f"  generator ok: {len(i18n.LANGS)} languages x 5 levels x {seeds} worksheets")
 
 
 def build():
     if DEST.exists():
         shutil.rmtree(DEST)
     shutil.copytree(SITE, DEST)
-    for f in ("generate.py", "i18n.py"):  # the page loads them into Pyodide
+    for f in ("generate.py", "i18n.py", "stages.py"):  # the page loads them into Pyodide
         shutil.copy2(ROOT / "scripts" / f, DEST / f)
     (DEST / "fonts").mkdir()
     for f in (ROOT / "fonts").iterdir():

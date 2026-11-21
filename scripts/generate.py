@@ -36,7 +36,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out"
 FONTS = ROOT / "fonts"
 
-LEVEL_NAMES = {1: "Easy", 2: "Medium", 3: "Hard"}
+LEVEL_NAMES = {1: "Easy", 2: "Medium", 3: "Hard", "R": "Reception", "Y1A": "Year 1 autumn"}
 
 
 class Lang:
@@ -76,6 +76,11 @@ body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line
 .a{display:flex;gap:12px;align-items:baseline;font-size:16px;font-weight:600;line-height:1.4;padding:5px 0;border-bottom:1.5px solid #bbb}
 .a .n{width:28px;height:28px;font-size:15px;transform:translateY(6px)}
 .a b{font-weight:900}
+.ih{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+.ih .n{width:34px;height:34px;font-size:18px}
+.ih .it{font-size:15px;font-weight:700;color:#444;line-height:1.3}
+.opt{position:relative;display:inline-flex;width:56px;height:56px;align-items:center;justify-content:center;font-size:32px;font-weight:900}
+.trace{font-size:62px;font-weight:900;line-height:1;color:#c2c2c2;width:52px;text-align:center}
 .a .tag{flex:none;align-self:center;font-size:11.5px;font-weight:800;border:1.5px solid #111;border-radius:10px;padding:0 7px;white-space:nowrap}
 """
 
@@ -876,9 +881,36 @@ def page(content, extra_style=""):
     return f'<div class="page" style="{extra_style}">{content}</div>'
 
 
+def header(L, badge):
+    """Title, Name / Date lines and the level badge (first page of every worksheet)."""
+    w = L.w
+    # the badge sits in the Name/Date row, so a long title in any language can never run into it
+    return ('<div style="display:flex;justify-content:center">'
+            f'<div style="background:#111;color:#fff;border-radius:40px;padding:4px 40px;font-size:34px;font-weight:900;letter-spacing:1px">{w["title"]}</div></div>'
+            '<div style="display:flex;gap:24px;font-size:20px;font-weight:800;margin-bottom:4px;align-items:flex-end">'
+            f'<div style="display:flex;flex:2;align-items:flex-end;gap:8px">{w["name"]}<span class="line"></span></div>'
+            f'<div style="display:flex;flex:1.4;align-items:flex-end;gap:8px">{w["date"]}<span class="line"></span></div>'
+            '<div style="flex:none;font-size:15px;font-weight:800;border:2px solid #111;border-radius:14px;padding:2px 10px;white-space:nowrap">'
+            f'{badge}</div></div>')
+
+
+def parse_level(level):
+    """1, 2, 3 (Year 1 review, by difficulty) or a stage: "R" (Reception), "Y1A" (Year 1 autumn)."""
+    if str(level) in ("R", "Y1A"):
+        return str(level)
+    level = int(level)
+    if level not in (1, 2, 3):
+        raise ValueError("level must be 1, 2, 3, R or Y1A")
+    return level
+
+
 def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
-    """Return (4 worksheet pages, answer page) as HTML. Numbers and pictures depend only on level and seed."""
+    """Return (worksheet pages, answer page) as HTML. Numbers and pictures depend only on level and seed."""
     L = Lang(lang, answers_lang)
+    level = parse_level(level)
+    if isinstance(level, str):
+        import stages  # Reception / Year 1 autumn: icon-led tasks for children who cannot read yet
+        return stages.build(level, seed, L)
     rng = random.Random(seed)
     k1, k2 = rng.sample(list(ICONS), 2)
     if k2 == "fish":
@@ -889,17 +921,9 @@ def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
                  task_positions, task_ordinals):
         t.append(task(rng, level, L))
     w = L.w
-    # the level badge sits in the Name/Date row, so a long title in any language can never run into it
-    header = (
-        '<div style="display:flex;justify-content:center">'
-        f'<div style="background:#111;color:#fff;border-radius:40px;padding:4px 40px;font-size:34px;font-weight:900;letter-spacing:1px">{w["title"]}</div></div>'
-        '<div style="display:flex;gap:24px;font-size:20px;font-weight:800;margin-bottom:4px;align-items:flex-end">'
-        f'<div style="display:flex;flex:2;align-items:flex-end;gap:8px">{w["name"]}<span class="line"></span></div>'
-        f'<div style="display:flex;flex:1.4;align-items:flex-end;gap:8px">{w["date"]}<span class="line"></span></div>'
-        f'<div style="flex:none;font-size:15px;font-weight:800;border:2px solid #111;border-radius:14px;padding:2px 10px;white-space:nowrap">'
-        f'{text(w["badge"], level=level, seed=seed)}</div></div>')
+    header_html = header(L, text(w["badge"], level=level, seed=seed))
     pages = [
-        page(header + "".join(x[0] for x in t[0:6]), "padding-bottom:36px"),
+        page(header_html + "".join(x[0] for x in t[0:6]), "padding-bottom:36px"),
         page("".join(x[0] for x in t[6:11])),
         page("".join(x[0] for x in t[11:15])),
         page("".join(x[0] for x in t[15:18])),
@@ -929,7 +953,8 @@ def html_doc(body, lang=i18n.DEFAULT):
 
 
 def stem_of(level, seed, lang=i18n.DEFAULT):
-    return f"Worksheet_L{level}_{seed}_{lang}"
+    level = parse_level(level)
+    return f"Worksheet_{'L' if isinstance(level, int) else ''}{level}_{seed}_{lang}"
 
 
 def answers_stem(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
@@ -1004,7 +1029,8 @@ def generate(jobs, png=True, log=print):
 
 def main():
     ap = argparse.ArgumentParser(description="Generate LET'S PRACTICE! maths worksheets")
-    ap.add_argument("--level", type=int, choices=[1, 2, 3], default=2, help="1 easy, 2 medium, 3 hard")
+    ap.add_argument("--level", type=parse_level, default=2,
+                    help="R = Reception, Y1A = Year 1 autumn, 1/2/3 = Year 1 review easy/medium/hard")
     ap.add_argument("--seed", type=int, help="worksheet number (same number = same worksheet)")
     ap.add_argument("--count", type=int, default=1, help="how many worksheets to make")
     ap.add_argument("--lang", choices=list(i18n.LANGS), default=i18n.DEFAULT, help="language of the tasks")
