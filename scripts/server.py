@@ -76,6 +76,9 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_file(SITE / "index.html")
         if path == "/contributors.json":
             return self.send_file(SITE / "contributors.json")
+        if path == "/changelog.json":
+            import build_site
+            return self.send_json(build_site.changelog())
         if path == "/api/info":
             return self.send_json({"langs": i18n.LANGS, "pdf": True})
         if path == "/api/build":

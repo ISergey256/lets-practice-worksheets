@@ -9,7 +9,9 @@ The site uses scripts/generate.py itself, so the website and the local PDF gener
 import argparse
 import functools
 import http.server
+import json
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -36,6 +38,22 @@ def check(seeds=100):
     print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets")
 
 
+def changelog():
+    """Project history for the site: every commit (hash, date, subject only; never names or e-mails), newest first,
+    with the plain-words description from site/history.json in each language."""
+    texts = json.loads((SITE / "history.json").read_text(encoding="utf-8"))
+    try:
+        log = subprocess.run(["git", "log", "--format=%H%x09%ad%x09%s", "--date=short"], cwd=ROOT,
+                             capture_output=True, text=True, encoding="utf-8", check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return []
+    out = []
+    for line in log.splitlines():
+        h, d, subject = line.split("\t", 2)
+        out.append({"hash": h, "date": d, "subject": subject, "text": texts.get(subject, {})})
+    return out
+
+
 def build():
     if DEST.exists():
         shutil.rmtree(DEST)
@@ -46,6 +64,8 @@ def build():
     for f in (ROOT / "fonts").iterdir():
         if f.suffix in (".css", ".woff2", ".txt"):
             shutil.copy2(f, DEST / "fonts" / f.name)
+    (DEST / "changelog.json").write_text(json.dumps(changelog(), ensure_ascii=False), encoding="utf-8")
+    (DEST / "history.json").unlink()  # merged into changelog.json
     (DEST / ".nojekyll").write_text("")  # serve files as they are
     print(f"  site built: {DEST.relative_to(ROOT)}/ ({sum(1 for p in DEST.rglob('*') if p.is_file())} files)")
 

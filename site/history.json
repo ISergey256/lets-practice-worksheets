@@ -1,0 +1,93 @@
+{
+  "_comment": "What each commit added, in plain words, by commit subject. The list itself is built from git log by scripts/build_site.py (hash, date, subject only; no names or e-mails). Languages without a text fall back to English.",
+  "LET'S PRACTICE! maths worksheet generator and website": {
+    "en": "First version: a worksheet generator with 18 tasks and 3 levels, and this website.",
+    "uk": "Перша версія: генератор листів із 18 завданнями та 3 рівнями і цей сайт.",
+    "ru": "Первая версия: генератор листов с 18 заданиями и 3 уровнями и этот сайт."
+  },
+  "Curriculum tags on the answer page; model row in number bonds": {
+    "en": "The answer page shows which part of the curriculum each task belongs to.",
+    "uk": "На сторінці відповідей видно, до якої частини програми належить кожне завдання.",
+    "ru": "На странице ответов видно, к какой части программы относится каждое задание."
+  },
+  "Reception and Year 1 sheets for children who cannot read yet": {
+    "en": "Sheets for Reception and Year 1 autumn: icons instead of words, a solved example in grey.",
+    "uk": "Листи для Reception і осені Year 1: значки замість слів, розв’язаний приклад на сірому.",
+    "ru": "Листы для Reception и осени Year 1: значки вместо слов, решённый пример на сером."
+  },
+  "Reception and Year 1 autumn sheets for children who cannot read yet": {
+    "en": "Sheets for Reception and Year 1 autumn: icons instead of words, a solved example in grey.",
+    "uk": "Листи для Reception і осені Year 1: значки замість слів, розв’язаний приклад на сірому.",
+    "ru": "Листы для Reception и осени Year 1: значки вместо слов, решённый пример на сером."
+  },
+  "Cheat sheets for Reception and Year 1 autumn": {
+    "en": "Cheat sheets: one card per task — look, do, check, try, \"I can do it!\".",
+    "uk": "Підказки: одна картка на завдання — подивись, зроби, перевір, спробуй, «Я зможу!».",
+    "ru": "Шпаргалки: одна карточка на задание — посмотри, сделай, проверь, попробуй, «Я смогу!»."
+  },
+  "License: Let's Practice Community License (free for learning, not for resale)": {
+    "en": "Licence: free for learning, not for resale.",
+    "uk": "Ліцензія: безкоштовно для навчання, не для перепродажу.",
+    "ru": "Лицензия: бесплатно для обучения, не для перепродажи."
+  },
+  "Site footer: \"Free for learning. Not for resale.\" with a link to the license": {
+    "en": "The licence is linked at the bottom of the site.",
+    "uk": "Посилання на ліцензію внизу сайту.",
+    "ru": "Ссылка на лицензию внизу сайта."
+  },
+  "Project mission: README (English), README.ru.md, \"About\" block on the site": {
+    "en": "The project's mission: free learning for every child, no accounts, no ads.",
+    "uk": "Місія проєкту: безкоштовне навчання для кожної дитини, без акаунтів і реклами.",
+    "ru": "Миссия проекта: бесплатное обучение для каждого ребёнка, без аккаунтов и рекламы."
+  },
+  "Contribution rules: CONTRIBUTING.md, PR and issue templates, PR checks": {
+    "en": "Rules for helpers, templates for ideas and bug reports, automatic checks of changes.",
+    "uk": "Правила для помічників, шаблони для ідей і помилок, автоматична перевірка змін.",
+    "ru": "Правила для помощников, шаблоны для идей и ошибок, автоматическая проверка изменений."
+  },
+  "Topics: year -> subject -> topics, sheets built from chosen topics": {
+    "en": "Choose year, subject and topics — the sheet is built from the topics you pick.",
+    "uk": "Оберіть клас, предмет і теми — лист складається з вибраних тем.",
+    "ru": "Выберите класс, предмет и темы — лист собирается из выбранных тем."
+  },
+  "Why it looks like this (DESIGN.md) and a feedback block on the site": {
+    "en": "Why the sheets are black and white, with sources; a \"Help make it better\" block.",
+    "uk": "Чому листи чорно-білі, з джерелами; блок «Допоможіть зробити краще».",
+    "ru": "Почему листы чёрно-белые, с источниками; блок «Помогите сделать лучше»."
+  },
+  "Worksheet standard (STANDARDS.md) and roadmap": {
+    "en": "A standard for how sheets should look (Ukraine, Russia, Europe, research) and a to-do list.",
+    "uk": "Стандарт вигляду листів (Україна, Росія, Європа, дослідження) і список, що доробити.",
+    "ru": "Стандарт вида листов (Украина, Россия, Европа, исследования) и список, что доделать."
+  },
+  "Year 1 review tasks follow the standard; review in two parts": {
+    "en": "Year 1 review: icons, solved examples, \"done\" boxes, page numbers; two shorter parts.",
+    "uk": "Повторення Year 1: значки, розв’язані приклади, «Зроблено», номери сторінок; дві коротші частини.",
+    "ru": "Повторение Year 1: значки, решённые примеры, «Сделал», номера страниц; две части покороче."
+  },
+  "Recognition for contributors: CONTRIBUTORS.md and a block on the site": {
+    "en": "Everyone who helps is thanked on the site.",
+    "uk": "Усім, хто допомагає, — подяка на сайті.",
+    "ru": "Всем, кто помогает, — благодарность на сайте."
+  },
+  "Shorter instructions, listen button, cream background, a bit harder": {
+    "en": "Shorter instructions, \"Listen to the task\", cream background, \"Next: a bit harder\", bigger buttons on phones.",
+    "uk": "Коротші інструкції, «Послухати завдання», кремовий фон, «Далі: трохи складніше», більші кнопки на телефоні.",
+    "ru": "Короче инструкции, «Послушать задание», кремовый фон, «Дальше: чуть сложнее», крупные кнопки на телефоне."
+  },
+  "Safer pull requests: CODEOWNERS, PR safety report, rules": {
+    "en": "Every proposed change gets an automatic safety report before it can go live.",
+    "uk": "Кожна запропонована зміна отримує автоматичний звіт про безпеку.",
+    "ru": "Каждое предложенное изменение получает автоматический отчёт о безопасности."
+  },
+  "PR safety report: catch prompt injection aimed at AI tools": {
+    "en": "The safety report also catches hidden instructions aimed at AI tools.",
+    "uk": "Звіт про безпеку також ловить приховані інструкції для ШІ.",
+    "ru": "Отчёт о безопасности также ловит спрятанные инструкции для ИИ."
+  },
+  "Project history on the site, built from the commits": {
+    "en": "This list: the project history on the site, with a link to every change.",
+    "uk": "Цей список: історія проєкту на сайті з посиланням на кожну зміну.",
+    "ru": "Этот список: история проекта на сайте со ссылкой на каждое изменение."
+  }
+}

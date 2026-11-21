@@ -89,6 +89,11 @@
 
   .about { border:var(--b); border-radius:var(--r); background:#fff; padding:16px 20px; margin-bottom:16px; color:var(--ink); }
   .about b { font-size:18px; font-weight:900; }
+  .hist { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .hist li { font-size:15px; font-weight:700; line-height:1.45; }
+  .hist .when { display:inline-block; min-width:92px; font-weight:900; }
+  .hist a { font-family:ui-monospace, Consolas, monospace; font-size:12.5px; color:var(--muted); margin-left:6px; }
+  .about details { margin-top:8px; } .about summary { cursor:pointer; font-size:15px; font-weight:800; }
   .about p { margin:6px 0 0; font-size:15px; font-weight:700; line-height:1.5; }
   footer { margin-top:34px; color:var(--muted); font-size:14px; font-weight:700; line-height:1.6; }
   .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:#fff; border-radius:14px; padding:12px 20px; font-size:15px; font-weight:800; max-width:min(640px,90vw); z-index:50; }
@@ -214,6 +219,12 @@
   </div>
 
   <footer>
+    <div class="about" id="history" hidden>
+      <b data-t="historyTitle"></b>
+      <ol class="hist" id="history-list"></ol>
+      <details><summary data-t="historyAll"></summary><ol class="hist" id="history-more"></ol></details>
+      <p data-t="historyNote"></p>
+    </div>
     <div class="about" id="thanks" hidden>
       <b data-t="thanksTitle"></b>
       <p id="thanks-list"></p>
@@ -248,6 +259,7 @@ const UI = {
     partWord: "part",
     thanksTitle: "Made with the help of", joinUs: "Want to help? Your name can be here.", roles: {"idea": "idea and development", "teacher": "teaching advice", "translation": "translations", "code": "code", "testing": "testing with children", "design": "design"},
     listen: "Listen to the task", noVoice: "This device has no voice for this language.", cream: "Cream background", harder: "Next: a bit harder",
+    historyTitle: "How the project grew", historyAll: "Show all changes", historyNote: "Every change is public on GitHub.",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -274,6 +286,7 @@ const UI = {
     partWord: "частина",
     thanksTitle: "Над проєктом працювали", joinUs: "Хочете допомогти? Тут може бути ваше ім’я.", roles: {"idea": "ідея та розробка", "teacher": "поради вчителя", "translation": "переклади", "code": "код", "testing": "перевірка з дітьми", "design": "дизайн"},
     listen: "Послухати завдання", noVoice: "На цьому пристрої немає голосу для цієї мови.", cream: "Кремовий фон", harder: "Далі: трохи складніше",
+    historyTitle: "Як ріс проєкт", historyAll: "Показати всі зміни", historyNote: "Кожна зміна відкрита на GitHub.",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -300,6 +313,7 @@ const UI = {
     partWord: "часть",
     thanksTitle: "Над проектом работали", joinUs: "Хотите помочь? Здесь может быть ваше имя.", roles: {"idea": "идея и разработка", "teacher": "советы учителя", "translation": "переводы", "code": "код", "testing": "проверка с детьми", "design": "дизайн"},
     listen: "Послушать задание", noVoice: "На этом устройстве нет голоса для этого языка.", cream: "Кремовый фон", harder: "Дальше: чуть сложнее",
+    historyTitle: "Как рос проект", historyAll: "Показать все изменения", historyNote: "Каждое изменение открыто на GitHub.",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -326,6 +340,7 @@ const UI = {
     partWord: "μέρος",
     thanksTitle: "Συνεισφέρουν", joinUs: "Θέλετε να βοηθήσετε; Εδώ μπορεί να είναι το όνομά σας.", roles: {"idea": "ιδέα και ανάπτυξη", "teacher": "συμβουλές εκπαιδευτικού", "translation": "μεταφράσεις", "code": "κώδικας", "testing": "δοκιμές με παιδιά", "design": "σχεδιασμός"},
     listen: "Άκου την άσκηση", noVoice: "Αυτή η συσκευή δεν έχει φωνή για αυτή τη γλώσσα.", cream: "Κρεμ φόντο", harder: "Επόμενο: λίγο πιο δύσκολο",
+    historyTitle: "Πώς μεγάλωσε το έργο", historyAll: "Όλες οι αλλαγές", historyNote: "Κάθε αλλαγή είναι δημόσια στο GitHub.",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -352,6 +367,7 @@ const UI = {
     partWord: "Teil",
     thanksTitle: "Mitgewirkt haben", joinUs: "Möchten Sie helfen? Hier kann Ihr Name stehen.", roles: {"idea": "Idee und Entwicklung", "teacher": "Rat von Lehrkräften", "translation": "Übersetzungen", "code": "Code", "testing": "Tests mit Kindern", "design": "Gestaltung"},
     listen: "Aufgabe anhören", noVoice: "Dieses Gerät hat keine Stimme für diese Sprache.", cream: "Cremefarbener Hintergrund", harder: "Weiter: etwas schwerer",
+    historyTitle: "Wie das Projekt gewachsen ist", historyAll: "Alle Änderungen zeigen", historyNote: "Jede Änderung ist auf GitHub öffentlich.",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -378,6 +394,7 @@ const UI = {
     partWord: "partie",
     thanksTitle: "Ont contribué", joinUs: "Envie d’aider ? Votre nom peut figurer ici.", roles: {"idea": "idée et développement", "teacher": "conseils d’enseignant", "translation": "traductions", "code": "code", "testing": "tests avec des enfants", "design": "design"},
     listen: "Écouter la consigne", noVoice: "Cet appareil n’a pas de voix pour cette langue.", cream: "Fond crème", harder: "Suivant : un peu plus dur",
+    historyTitle: "Comment le projet a grandi", historyAll: "Voir toutes les modifications", historyNote: "Chaque modification est publique sur GitHub.",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -404,6 +421,7 @@ const UI = {
     partWord: "parte",
     thanksTitle: "Han colaborado", joinUs: "¿Quiere ayudar? Su nombre puede estar aquí.", roles: {"idea": "idea y desarrollo", "teacher": "consejos docentes", "translation": "traducciones", "code": "código", "testing": "pruebas con niños", "design": "diseño"},
     listen: "Escuchar la tarea", noVoice: "Este dispositivo no tiene voz para este idioma.", cream: "Fondo crema", harder: "Siguiente: un poco más difícil",
+    historyTitle: "Cómo ha crecido el proyecto", historyAll: "Ver todos los cambios", historyNote: "Cada cambio es público en GitHub.",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -542,7 +560,7 @@ function translateUI() {
   document.documentElement.lang = state.ui;
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
-  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks(); if (state.sheet) renderTools();
+  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks(); renderHistory(); if (state.sheet) renderTools();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -923,6 +941,25 @@ function updateFeedbackLinks() {
     `<!-- Please do not attach photos of children or worksheets with a child's name. -->`;
   $("report").href = `${REPO}/issues/new?labels=bug&title=${encodeURIComponent("Problem: ")}&body=${encodeURIComponent(body)}`;
   $("why-link").href = `${REPO}/blob/main/${["ru", "uk"].includes(state.ui) ? "DESIGN.ru.md" : "DESIGN.md"}`;
+}
+
+/* ================================================================ project history (changelog.json, built from git) */
+let changes = [];
+fetch("changelog.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => { changes = d || []; renderHistory(); }).catch(() => {});
+function renderHistory() {
+  $("history").hidden = !changes.length;
+  const item = (c) => {
+    const li = document.createElement("li");
+    const when = Object.assign(document.createElement("span"), { className: "when", textContent: c.date });
+    const what = document.createTextNode(c.text[state.ui] || c.text.en || c.subject);
+    const link = Object.assign(document.createElement("a"), { href: `${REPO}/commit/${c.hash}`, textContent: c.hash.slice(0, 7),
+      title: c.subject, target: "_blank", rel: "noopener" });
+    li.append(when, what, link);
+    return li;
+  };
+  $("history-list").replaceChildren(...changes.slice(0, 5).map(item));
+  $("history-more").replaceChildren(...changes.slice(5).map(item));
+  $("history-more").parentElement.hidden = changes.length <= 5;
 }
 
 /* ================================================================ contributors (site/contributors.json) */

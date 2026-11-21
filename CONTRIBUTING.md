@@ -87,6 +87,12 @@ By opening a pull request you confirm that:
 
 This project is for children. Be patient and respectful in issues and reviews; criticise ideas, not people.
 
+## 6a. Project history on the site
+
+The site shows every commit of `main` (date, plain-words description, link). When your PR adds something people will
+notice, add one entry to `site/history.json`: the key is the commit (or squash) title, the value is one short sentence
+in `en` (and `uk`, `ru` if you can). Other languages fall back to English.
+
 ## 7. Recognition
 
 Everyone who helps — teachers, translators, families who test the sheets, developers, designers — can be listed in
