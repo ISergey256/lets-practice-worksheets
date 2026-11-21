@@ -58,6 +58,12 @@
   .printrow { display:flex; flex-direction:column; gap:8px; }
 
   .recent { display:flex; flex-wrap:wrap; gap:6px; }
+  .picks { display:flex; flex-direction:column; gap:6px; }
+  .pick { display:flex; align-items:center; gap:10px; border:2px solid var(--ink); border-radius:12px; padding:6px 10px; background:#fff; font-size:14.5px; font-weight:800; text-align:left; width:100%; }
+  .pick:hover { background:var(--soft); }
+  .pick .tickbox { width:22px; height:22px; border:2.5px solid var(--ink); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; flex:none; font-size:15px; color:#fff; }
+  .pick[aria-checked="true"] .tickbox { background:var(--ink); }
+  .pick .no { font-weight:900; min-width:18px; }
   .chip { border:2px solid var(--ink); border-radius:20px; padding:3px 12px; background:#fff; font-size:14px; font-weight:800; }
   .chip:hover { background:var(--soft); }
   .chip[aria-pressed="true"] { background:var(--ink); color:#fff; }
@@ -125,6 +131,17 @@
         <p class="hint" data-t="printHint"></p>
       </div>
 
+      <div class="block" id="cheat-block" hidden>
+        <p class="step"><span class="n">5</span><span data-t="cheats"></span></p>
+        <p class="hint" style="margin:0 0 10px" data-t="cheatsHint"></p>
+        <div class="picks" id="cheat-picks" role="group"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn" id="cheat-all" type="button" data-t="all"></button>
+          <button class="btn" id="cheat-none" type="button" data-t="none"></button>
+        </div>
+        <button class="btn dark big-btn wide" id="print-cheats" type="button" disabled data-t="printCheats"></button>
+      </div>
+
       <div class="block" id="recent-block" hidden>
         <p class="step" data-t="recent"></p>
         <div class="recent" id="recent"></div>
@@ -137,6 +154,7 @@
         <div class="recent" id="tabs">
           <button class="chip" data-tab="sheet" aria-pressed="true" data-t="tabSheet"></button>
           <button class="chip" data-tab="answers" aria-pressed="false" data-t="tabAnswers"></button>
+          <button class="chip" data-tab="cheats" aria-pressed="false" id="tab-cheats" hidden data-t="tabCheats"></button>
         </div>
       </div>
       <div id="view"><div class="loading"><div class="spinner"></div><span data-t="loading"></span></div></div>
@@ -158,6 +176,7 @@ const UI = {
   en: {
     tagline: "Free printable maths worksheets for Year 1 (ages 5–7)", uiLang: "Site language",
     stages: { R: ["Reception", "ages 4–5 · no reading needed: spots, counting, patterns"], Y1A: ["Year 1 · Autumn", "ages 5–6 · numbers to 10, + and −, shapes"] }, review: "Year 1 review (all topics)", stageTitle: "{stage} · No. {seed}",
+    cheats: "Cheat sheets", cheatsHint: "For a parent or teacher: tick the tasks the child needs help with. One card per task, two per page.", all: "All", none: "None", printCheats: "Print cheat sheets", tabCheats: "Cheat sheets", cheatsNone: "Tick at least one task.",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -176,6 +195,7 @@ const UI = {
   uk: {
     tagline: "Безкоштовні аркуші з математики для 1 класу (5–7 років)", uiLang: "Мова сайту",
     stages: { R: ["Reception", "4–5 років · без читання: цяточки, лічба, візерунки"], Y1A: ["Year 1 · осінь", "5–6 років · числа до 10, + і −, фігури"] }, review: "Повторення за Year 1 (усі теми)", stageTitle: "{stage} · №{seed}",
+    cheats: "Шпаргалки", cheatsHint: "Для батьків або вчителя: позначте завдання, з якими дитині потрібна допомога. Одна картка на завдання, дві на сторінці.", all: "Усі", none: "Жодного", printCheats: "Друкувати шпаргалки", tabCheats: "Шпаргалки", cheatsNone: "Позначте хоча б одне завдання.",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -194,6 +214,7 @@ const UI = {
   ru: {
     tagline: "Бесплатные листы по математике для 1 класса (5–7 лет)", uiLang: "Язык сайта",
     stages: { R: ["Reception", "4–5 лет · можно без чтения: точки, счёт, узоры"], Y1A: ["Year 1 · осень", "5–6 лет · числа до 10, + и −, фигуры"] }, review: "Повторение за Year 1 (все темы)", stageTitle: "{stage} · №{seed}",
+    cheats: "Шпаргалки", cheatsHint: "Для родителя или учителя: отметьте задания, с которыми ребёнку нужна помощь. Одна карточка на задание, две на странице.", all: "Все", none: "Ничего", printCheats: "Печать шпаргалок", tabCheats: "Шпаргалки", cheatsNone: "Отметьте хотя бы одно задание.",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -212,6 +233,7 @@ const UI = {
   el: {
     tagline: "Δωρεάν φύλλα μαθηματικών για την Α΄ Δημοτικού (5–7 ετών)", uiLang: "Γλώσσα ιστότοπου",
     stages: { R: ["Reception", "4–5 ετών · χωρίς ανάγνωση: βούλες, μέτρηση, μοτίβα"], Y1A: ["Year 1 · φθινόπωρο", "5–6 ετών · αριθμοί έως 10, + και −, σχήματα"] }, review: "Επανάληψη Year 1 (όλα τα θέματα)", stageTitle: "{stage} · αρ. {seed}",
+    cheats: "Βοηθητικές κάρτες", cheatsHint: "Για γονείς ή εκπαιδευτικούς: σημειώστε τις ασκήσεις όπου το παιδί χρειάζεται βοήθεια. Μία κάρτα ανά άσκηση, δύο ανά σελίδα.", all: "Όλες", none: "Καμία", printCheats: "Εκτύπωση καρτών", tabCheats: "Κάρτες", cheatsNone: "Σημειώστε τουλάχιστον μία άσκηση.",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -230,6 +252,7 @@ const UI = {
   de: {
     tagline: "Kostenlose Mathe-Arbeitsblätter für die 1. Klasse (5–7 Jahre)", uiLang: "Sprache der Seite",
     stages: { R: ["Reception", "4–5 Jahre · ohne Lesen: Punkte, Zählen, Muster"], Y1A: ["Year 1 · Herbst", "5–6 Jahre · Zahlen bis 10, + und −, Formen"] }, review: "Year-1-Wiederholung (alle Themen)", stageTitle: "{stage} · Nr. {seed}",
+    cheats: "Spickzettel", cheatsHint: "Für Eltern oder Lehrkräfte: Kreuzen Sie die Aufgaben an, bei denen das Kind Hilfe braucht. Eine Karte pro Aufgabe, zwei pro Seite.", all: "Alle", none: "Keine", printCheats: "Spickzettel drucken", tabCheats: "Spickzettel", cheatsNone: "Mindestens eine Aufgabe ankreuzen.",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -248,6 +271,7 @@ const UI = {
   fr: {
     tagline: "Fiches de maths gratuites à imprimer pour le CP (5–7 ans)", uiLang: "Langue du site",
     stages: { R: ["Reception", "4–5 ans · sans lire : points, comptage, motifs"], Y1A: ["Year 1 · automne", "5–6 ans · nombres jusqu’à 10, + et −, formes"] }, review: "Révision Year 1 (tous les thèmes)", stageTitle: "{stage} · n° {seed}",
+    cheats: "Fiches d’aide", cheatsHint: "Pour le parent ou l’enseignant : cochez les exercices où l’enfant a besoin d’aide. Une carte par exercice, deux par page.", all: "Toutes", none: "Aucune", printCheats: "Imprimer les fiches d’aide", tabCheats: "Fiches d’aide", cheatsNone: "Cochez au moins un exercice.",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -266,6 +290,7 @@ const UI = {
   es: {
     tagline: "Fichas de matemáticas gratis para imprimir, 1.º de primaria (5–7 años)", uiLang: "Idioma del sitio",
     stages: { R: ["Reception", "4–5 años · sin leer: puntos, contar, series"], Y1A: ["Year 1 · otoño", "5–6 años · números hasta 10, + y −, figuras"] }, review: "Repaso de Year 1 (todos los temas)", stageTitle: "{stage} · n.º {seed}",
+    cheats: "Fichas de ayuda", cheatsHint: "Para la familia o el docente: marque los ejercicios en los que el niño necesita ayuda. Una tarjeta por ejercicio, dos por página.", all: "Todas", none: "Ninguna", printCheats: "Imprimir fichas de ayuda", tabCheats: "Fichas de ayuda", cheatsNone: "Marque al menos un ejercicio.",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -335,6 +360,13 @@ async function localBackend() {
       if (!res.ok) throw new Error(data.error || res.status);
       return data;
     },
+    async cheats(level, seed, lang, which) {
+      const q = new URLSearchParams({ level, seed, lang, which: which.join(",") });
+      const res = await fetch(`api/cheats?${q}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || res.status);
+      return data;
+    },
   };
 }
 // 2) GitHub Pages: the same Python generator runs in the browser (Pyodide = CPython compiled to WebAssembly)
@@ -346,7 +378,7 @@ async function pyodideBackend() {
   });
   const py = await loadPyodide({ indexURL: PYODIDE });
   py.FS.mkdirTree("/app");
-  for (const f of ["generate.py", "i18n.py", "stages.py"]) {
+  for (const f of ["generate.py", "i18n.py", "stages.py", "cheats.py"]) {
     py.FS.writeFile(`/app/${f}`, await (await fetch(f, { cache: "no-cache" })).text());
   }
   py.runPython("import sys, json; sys.path.insert(0, '/app'); import generate as g");
@@ -357,6 +389,12 @@ async function pyodideBackend() {
       py.globals.set("_a", py.toPy([level, seed, lang, alang]));
       const [pages, answers] = JSON.parse(py.runPython("json.dumps(g.build(*_a))"));
       return { pages, answers, css };
+    },
+    async cheats(level, seed, lang, which) {
+      py.globals.set("_c", py.toPy([level, seed, lang, which]));
+      const data = JSON.parse(py.runPython(
+        "json.dumps({'pages': g.cheats(_c[0], _c[1], _c[2], list(_c[3])), 'titles': g.cheat_titles(_c[0], _c[2])})"));
+      return { ...data, css };
     },
   };
 }
@@ -438,28 +476,78 @@ async function update() {
     $("view").firstChild.textContent = `${t("buildFail")} ${String(err.message || err).split("\n").slice(-2).join(" ")}`;
     return;
   }
-  ["print-sheet", "print-answers", "pdf-sheet", "pdf-answers"].forEach((id) => { $(id).disabled = false; });
+  ["print-sheet", "print-answers", "pdf-sheet", "pdf-answers", "print-cheats"].forEach((id) => { $(id).disabled = false; });
   remember();
+  await refreshCheats();
   renderView();
 }
+
+/* ================================================================ cheat sheets (stages R and Y1A only) */
+const cheatTitles = {};  // "R-en" -> titles of the cards in the worksheet language
+const picksFor = {};     // level -> Set of ticked task numbers (all by default)
+const picks = () => picksFor[state.level] || (picksFor[state.level] = new Set(
+  (cheatTitles[`${state.level}-${state.lang}`] || []).map((_, i) => i + 1)));
+async function refreshCheats() {
+  const on = isStage(state.level);
+  $("cheat-block").hidden = $("tab-cheats").hidden = !on;
+  if (!on) { if (state.tab === "cheats") state.tab = "sheet"; return; }
+  const key = `${state.level}-${state.lang}`;
+  if (!cheatTitles[key]) cheatTitles[key] = (await backend.cheats(state.level, state.seed, state.lang, [1])).titles;
+  renderPicks();
+}
+function renderPicks() {
+  const titles = cheatTitles[`${state.level}-${state.lang}`] || [], sel = picks();
+  $("cheat-picks").innerHTML = titles.map((title, i) => `
+    <button type="button" class="pick" role="checkbox" aria-checked="${sel.has(i + 1)}" data-pick="${i + 1}">
+      <span class="tickbox">${sel.has(i + 1) ? "✓" : ""}</span><span class="no">${i + 1}</span><span>${title}</span></button>`).join("");
+}
+$("cheat-picks").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-pick]"); if (!b) return;
+  const n = +b.dataset.pick, sel = picks();
+  sel.has(n) ? sel.delete(n) : sel.add(n);
+  renderPicks(); if (state.tab === "cheats") renderView();
+});
+$("cheat-all").onclick = () => { delete picksFor[state.level]; picks(); renderPicks(); if (state.tab === "cheats") renderView(); };
+$("cheat-none").onclick = () => { picksFor[state.level] = new Set(); renderPicks(); if (state.tab === "cheats") renderView(); };
+async function cheatPages() {
+  const which = [...picks()].sort((a, b) => a - b);
+  if (!which.length) return null;
+  return (await backend.cheats(state.level, state.seed, state.lang, which)).pages;
+}
+$("print-cheats").onclick = async () => {
+  const pages = await cheatPages();
+  if (!pages) return toast(t("cheatsNone"));
+  printBodies(pages, `${stem()}_cheats`, state.lang);
+};
 
 const scalers = new ResizeObserver((entries) => {
   for (const e of entries) e.target.firstElementChild.style.transform = `scale(${e.contentRect.width / 794})`;
 });
-function renderView() {
+let viewNo = 0;
+async function renderView() {
   if (!state.sheet) return;
   $("tabs").querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === state.tab));
+  const no = ++viewNo;
+  if (state.tab === "cheats") {
+    const pages = await cheatPages();
+    if (no !== viewNo) return;
+    if (!pages) { $("view").innerHTML = `<div class="loading"></div>`; $("view").firstChild.textContent = t("cheatsNone"); return; }
+    return showPages(pages, (i) => t("page", { n: i + 1 }), state.lang);
+  }
   const isSheet = state.tab === "sheet";
-  const bodies = isSheet ? state.sheet.pages : [state.sheet.answers];
+  showPages(isSheet ? state.sheet.pages : [state.sheet.answers],
+            (i) => (isSheet ? t("page", { n: i + 1 }) : t("answersFor")), isSheet ? state.lang : state.alang);
+}
+function showPages(bodies, labelOf, lang) {
   const wrap = document.createElement("div");
   wrap.className = "pages" + (bodies.length === 1 ? " single" : "");
   bodies.forEach((body, i) => {
     const cell = document.createElement("div");
     const label = document.createElement("p"); label.className = "pno";
-    label.textContent = isSheet ? t("page", { n: i + 1 }) : t("answersFor");
+    label.textContent = labelOf(i);
     const pg = document.createElement("div"); pg.className = "pg";
     const fr = document.createElement("iframe"); fr.title = label.textContent; fr.loading = "lazy";
-    fr.srcdoc = doc([body], state.sheet.css, stem(), isSheet ? state.lang : state.alang);
+    fr.srcdoc = doc([body], state.sheet.css, stem(), lang);
     pg.appendChild(fr); cell.append(label, pg); wrap.appendChild(cell);
   });
   scalers.disconnect();

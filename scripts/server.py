@@ -82,6 +82,14 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError as e:
                 return self.send_json({"error": str(e)}, 400)
             return self.send_json({"pages": pages, "answers": answers, "css": g.CSS})
+        if path == "/api/cheats":
+            try:
+                level, seed, lang, _ = parse_job(q)
+                which = [int(x) for x in q.get("which", "").split(",") if x.strip()] or None
+                pages = g.cheats(level, seed, lang, which)
+            except ValueError as e:
+                return self.send_json({"error": str(e)}, 400)
+            return self.send_json({"pages": pages, "titles": g.cheat_titles(level, lang), "css": g.CSS})
         if path.startswith("/out/") and OUT_FILE.match(path[5:]):
             return self.send_file(g.OUT / path[5:], download="download" in q)
         if path.startswith("/fonts/") and FONT_FILE.match(path[7:]):

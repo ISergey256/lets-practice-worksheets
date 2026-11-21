@@ -81,6 +81,20 @@ body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line
 .ih .it{font-size:15px;font-weight:700;color:#444;line-height:1.3}
 .opt{position:relative;display:inline-flex;width:56px;height:56px;align-items:center;justify-content:center;font-size:32px;font-weight:900}
 .trace{font-size:62px;font-weight:900;line-height:1;color:#c2c2c2;width:52px;text-align:center}
+.card{border:3px solid #111;border-radius:22px;padding:14px 20px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+.ch{display:flex;align-items:center;gap:12px}
+.ch .n{width:38px;height:38px;font-size:20px}
+.ct{font-size:27px;font-weight:900}
+.lab{display:inline-block;background:#111;color:#fff;border-radius:14px;padding:2px 12px;font-size:15px;font-weight:900;align-self:flex-start;flex:none}
+.cm{display:flex;gap:18px;align-items:stretch;flex:1;min-height:0}
+.cl{flex:1.15;display:flex;flex-direction:column;gap:8px}
+.cpic{flex:1;display:flex;align-items:center;justify-content:center;background:#efefef;border-radius:14px;padding:10px}
+.cd{flex:1;display:flex;flex-direction:column;gap:12px}
+.cs{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;line-height:1.25}
+.csn{width:32px;height:32px;border-radius:50%;border:2.5px solid #111;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:none}
+.cc{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;border-top:2px dashed #999;padding-top:10px}
+.ctr{display:flex;align-items:center;gap:12px;border-top:2px dashed #999;padding-top:10px}
+.ican{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:900;flex:none}
 .a .tag{flex:none;align-self:center;font-size:11.5px;font-weight:800;border:1.5px solid #111;border-radius:10px;padding:0 7px;white-space:nowrap}
 """
 
@@ -939,6 +953,20 @@ def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
                    f'{text(a["sub"], seed=seed, level=level, lname=a["levels"][level])}<br>{a["legend"]}</p>' + ans,
                    "padding:40px 52px;gap:0")
     return pages, answers
+
+
+def cheats(level, seed, lang=i18n.DEFAULT, which=None):
+    """Cheat-sheet pages (two cards per A4) for the chosen task numbers; only for the stages R and Y1A."""
+    level = parse_level(level)
+    if not isinstance(level, str):
+        raise ValueError("cheat sheets exist for the stages R and Y1A")
+    import cheats as c
+    return c.build(level, seed, Lang(lang, lang), which)
+
+
+def cheat_titles(level, lang=i18n.DEFAULT):
+    import cheats as c
+    return c.titles(parse_level(level), lang)
 
 
 def font_link():

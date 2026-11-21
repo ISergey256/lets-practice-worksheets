@@ -24,6 +24,13 @@ On the Reception and Year 1 Autumn sheets every task has an **action icon** (cou
 cross out, draw) and its **first item is already done on a grey background**: grey means “do it like this”.
 Children answer by circling, matching, ticking, drawing or tracing; the short text is for the adult.
 
+## Cheat sheets
+
+For Reception and Year 1 Autumn a parent or teacher can tick the tasks the child needs help with and print **cheat sheets**:
+one card per task, two cards per A4 page. Every card has the same order — **Look** (a worked example), **Do** (3 short steps),
+**Check**, **Try** (one mini task) and an “I can do it!” box — so the child always knows where to look.
+The numbers on the cards differ from the worksheet, so they never give its answers away.
+
 ## What is on a Year 1 review worksheet
 
 - counting and estimating;
@@ -57,6 +64,7 @@ On Windows you can also double-click `start_site.bat`.
 
 - `scripts/generate.py`: the 18 tasks (one `task_*` function each) and the A4 layout (HTML + inline SVG).
 - `scripts/stages.py`: the Reception and Year 1 Autumn sheets (action icons, worked examples, dotted digits for tracing).
+- `scripts/cheats.py`: the cheat-sheet cards (texts in `i18n.CHEAT`).
 - `scripts/i18n.py`: all texts in every language, plus number words and ordinals. To add a language, copy the `en` entries, translate them and run the checks below.
 - `site/index.html`: the website. On GitHub Pages it runs the same `generate.py` in the browser with [Pyodide](https://pyodide.org) (Python compiled to WebAssembly), so worksheet numbers match the local version. With `scripts/server.py` the same page asks the local server instead and can download PDF files.
 - `scripts/build_site.py`: checks the generator in every language and builds `_site/`. GitHub Actions (`.github/workflows/pages.yml`) publishes it on every push to `main`. Use `python scripts/build_site.py --serve` to preview it.
