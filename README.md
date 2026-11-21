@@ -106,6 +106,10 @@ On Windows you can also double-click `start_site.bat`.
 - `scripts/check_layout.py`: renders worksheets in every language and checks that every page fits A4.
 - `fonts/`: Nunito, plus M PLUS Rounded 1c for Greek letters (both under the SIL Open Font License, see `fonts/OFL-*.txt`). `scripts/fetch_fonts.py` downloads them again.
 
+## Why it looks like this
+
+Black and white, a worked example on grey, one icon per action, little on a page: every choice has a reason, with research where there is research — including for children with ADHD, autism and dyslexia. See [DESIGN.md](DESIGN.md).
+
 ## Contributing
 
 Help is welcome: bug reports, new tasks and topics, translations by native speakers, accessibility.

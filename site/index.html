@@ -168,6 +168,15 @@
         <button class="btn dark big-btn wide" id="print-cheats" type="button" disabled data-t="printCheats"></button>
       </div>
 
+      <div class="block">
+        <p class="step" data-t="helpTitle"></p>
+        <div class="printrow">
+          <a class="btn" id="suggest" target="_blank" rel="noopener" data-t="suggest"></a>
+          <a class="btn" id="report" target="_blank" rel="noopener" data-t="report"></a>
+        </div>
+        <p class="hint" data-t="ghNote"></p>
+      </div>
+
       <div class="block" id="recent-block" hidden>
         <p class="step" data-t="recent"></p>
         <div class="recent" id="recent"></div>
@@ -196,7 +205,8 @@
     <span data-t="privacy"></span>
     <span data-t="source"></span>: <a href="https://github.com/ISergey256/lets-practice-worksheets">github.com/ISergey256/lets-practice-worksheets</a><br>
     <b data-t="free"></b>
-    <a href="https://github.com/ISergey256/lets-practice-worksheets/blob/main/LICENSE.md" data-t="license"></a>
+    <a href="https://github.com/ISergey256/lets-practice-worksheets/blob/main/LICENSE.md" data-t="license"></a> ·
+    <a id="why-link" data-t="why"></a>
   </footer>
 </div>
 <iframe id="printframe" title="print" aria-hidden="true" tabindex="-1"></iframe>
@@ -212,6 +222,7 @@ const UI = {
     free: "Free for learning. Not for resale.", license: "License",
     aboutTitle: "About the project", about1: "Let’s Practice is a free project: good learning materials should be available to every child, whatever their family can afford.", about2: "No sign-up, no subscriptions, no ads and no hidden payments. Choose, print, practise. We start with maths for ages 4–6 and will grow step by step up to Year 11 and other subjects.",
     year: "Year", subject: "Subject", maths: "Maths", soon: "soon", english: "English", science: "Science", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
+    helpTitle: "Help make it better", suggest: "Suggest a task", report: "Report a problem", ghNote: "Opens GitHub (a free account is needed).", why: "Why black and white?",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -234,6 +245,7 @@ const UI = {
     free: "Безкоштовно для навчання. Не для продажу.", license: "Ліцензія",
     aboutTitle: "Про проєкт", about1: "Let’s Practice — безкоштовний проєкт: якісні навчальні матеріали мають бути доступні кожній дитині, незалежно від можливостей родини.", about2: "Без реєстрації, підписок, реклами та прихованих платежів. Обрав — роздрукував — займаєшся. Починаємо з математики для дітей 4–6 років і поступово дійдемо до 11 класу та інших предметів.",
     year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", english: "Англійська", science: "Природознавство", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
+    helpTitle: "Допоможіть зробити краще", suggest: "Запропонувати завдання", report: "Повідомити про помилку", ghNote: "Відкриється GitHub (потрібен безкоштовний акаунт).", why: "Чому все чорно-біле?",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -256,6 +268,7 @@ const UI = {
     free: "Бесплатно для обучения. Не для продажи.", license: "Лицензия",
     aboutTitle: "О проекте", about1: "Let’s Practice — бесплатный проект: хорошие учебные материалы должны быть доступны каждому ребёнку, независимо от возможностей семьи.", about2: "Без регистрации, подписок, рекламы и скрытых платежей. Выбрал — распечатал — занимаешься. Начинаем с математики для детей 4–6 лет и постепенно дойдём до 11 класса и других предметов.",
     year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", english: "Английский", science: "Естествознание", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
+    helpTitle: "Помогите сделать лучше", suggest: "Предложить задание", report: "Сообщить об ошибке", ghNote: "Откроется GitHub (нужен бесплатный аккаунт).", why: "Почему всё чёрно-белое?",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -278,6 +291,7 @@ const UI = {
     free: "Δωρεάν για μάθηση. Όχι για μεταπώληση.", license: "Άδεια χρήσης",
     aboutTitle: "Σχετικά με το έργο", about1: "Το Let’s Practice είναι ένα δωρεάν έργο: το καλό εκπαιδευτικό υλικό πρέπει να είναι διαθέσιμο σε κάθε παιδί, ανεξάρτητα από τις δυνατότητες της οικογένειας.", about2: "Χωρίς εγγραφή, συνδρομές, διαφημίσεις ή κρυφές χρεώσεις. Διαλέγεις, τυπώνεις, εξασκείσαι. Ξεκινάμε με μαθηματικά για παιδιά 4–6 ετών και σιγά σιγά θα φτάσουμε ως το Year 11 και σε άλλα μαθήματα.",
     year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", english: "Αγγλικά", science: "Φυσικές επιστήμες", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
+    helpTitle: "Βοηθήστε να γίνει καλύτερο", suggest: "Προτείνετε άσκηση", report: "Αναφέρετε πρόβλημα", ghNote: "Ανοίγει το GitHub (χρειάζεται δωρεάν λογαριασμός).", why: "Γιατί όλα είναι ασπρόμαυρα;",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -300,6 +314,7 @@ const UI = {
     free: "Kostenlos zum Lernen. Nicht zum Weiterverkauf.", license: "Lizenz",
     aboutTitle: "Über das Projekt", about1: "Let’s Practice ist ein kostenloses Projekt: Gute Lernmaterialien sollen jedem Kind zur Verfügung stehen, unabhängig vom Geldbeutel der Familie.", about2: "Keine Anmeldung, keine Abos, keine Werbung, keine versteckten Kosten. Auswählen, drucken, üben. Wir beginnen mit Mathe für 4- bis 6-Jährige und wachsen Schritt für Schritt bis Year 11 und zu weiteren Fächern.",
     year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", english: "Englisch", science: "Sachkunde", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
+    helpTitle: "Helfen Sie mit", suggest: "Aufgabe vorschlagen", report: "Fehler melden", ghNote: "Öffnet GitHub (ein kostenloses Konto ist nötig).", why: "Warum alles schwarz-weiß ist",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -322,6 +337,7 @@ const UI = {
     free: "Gratuit pour apprendre. Pas à revendre.", license: "Licence",
     aboutTitle: "À propos du projet", about1: "Let’s Practice est un projet gratuit : de bons supports d’apprentissage doivent être accessibles à chaque enfant, quels que soient les moyens de sa famille.", about2: "Sans inscription, sans abonnement, sans publicité ni frais cachés. On choisit, on imprime, on s’entraîne. Nous commençons par les maths pour les 4–6 ans et grandirons pas à pas jusqu’à Year 11 et d’autres matières.",
     year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", english: "Anglais", science: "Sciences", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
+    helpTitle: "Aidez à l’améliorer", suggest: "Proposer un exercice", report: "Signaler un problème", ghNote: "Ouvre GitHub (un compte gratuit est nécessaire).", why: "Pourquoi tout est en noir et blanc ?",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -344,6 +360,7 @@ const UI = {
     free: "Gratis para aprender. No para revender.", license: "Licencia",
     aboutTitle: "Sobre el proyecto", about1: "Let’s Practice es un proyecto gratuito: los buenos materiales de aprendizaje deben estar al alcance de todos los niños, sean cuales sean las posibilidades de su familia.", about2: "Sin registro, sin suscripciones, sin anuncios ni pagos ocultos. Eliges, imprimes y practicas. Empezamos con matemáticas para niños de 4 a 6 años y creceremos poco a poco hasta Year 11 y otras asignaturas.",
     year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", english: "Inglés", science: "Ciencias", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
+    helpTitle: "Ayude a mejorarlo", suggest: "Proponer un ejercicio", report: "Informar de un problema", ghNote: "Abre GitHub (hace falta una cuenta gratuita).", why: "¿Por qué todo es en blanco y negro?",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -399,6 +416,7 @@ function writeHash() {
   if (state.level === null) return;
   const langs = state.lang === "en" && state.alang === "en" ? "" : `-${state.lang}-${state.alang}`;
   history.replaceState(null, "", `#${levelTag(state.level)}-${state.seed}${langs}`);
+  if (typeof updateFeedbackLinks === "function") updateFeedbackLinks();
 }
 const randomSeed = () => 100 + Math.floor(Math.random() * 9900);
 
@@ -481,7 +499,7 @@ function translateUI() {
   document.documentElement.lang = state.ui;
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
-  renderPanel(); renderTitle(); renderRecent();
+  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -756,6 +774,16 @@ $("pdf-answers").onclick = () => downloadPdf("answers_pdf");
 $("copy-link").onclick = async () => {
   try { await navigator.clipboard.writeText(location.href); toast(t("copied")); } catch { toast(location.href); }
 };
+
+/* ================================================================ feedback (GitHub issues) */
+const REPO = "https://github.com/ISergey256/lets-practice-worksheets";
+function updateFeedbackLinks() {
+  $("suggest").href = `${REPO}/issues/new?template=idea.md`;
+  const body = `**Link to the worksheet:** ${location.href}\n\n**Which task and what is wrong?**\n\n\n**What should it be?**\n\n` +
+    `<!-- Please do not attach photos of children or worksheets with a child's name. -->`;
+  $("report").href = `${REPO}/issues/new?labels=bug&title=${encodeURIComponent("Problem: ")}&body=${encodeURIComponent(body)}`;
+  $("why-link").href = `${REPO}/blob/main/${["ru", "uk"].includes(state.ui) ? "DESIGN.ru.md" : "DESIGN.md"}`;
+}
 
 /* ================================================================ recent */
 function recentList() { try { return JSON.parse(localStorage.recent2 || "[]"); } catch { return []; } }
