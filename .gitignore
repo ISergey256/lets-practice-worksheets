@@ -1,0 +1,30 @@
+# Whitelist: the public repository contains only what the generator and the website need.
+# Everything else in this folder (notes, reference photos, generated sheets, archives) stays local.
+/*
+!/.gitignore
+!/.github/
+!/README.md
+!/LICENSE
+!/start_site.bat
+!/fonts/
+!/site/
+!/scripts/
+/scripts/*
+!/scripts/generate.py
+!/scripts/i18n.py
+!/scripts/server.py
+!/scripts/fetch_fonts.py
+!/scripts/build_site.py
+!/scripts/check_layout.py
+
+# never public (also covered by the whitelist above)
+/reference/
+/out/
+/_site/
+/pages/
+*.zip
+*.pdf
+CLAUDE.md
+CONTEXT.md
+__pycache__/
+*.pyc
