@@ -122,6 +122,11 @@ def ring(html, pad=3):
             f'border-radius:999px;padding:{pad}px;background:{EX_BG}">{html}</span>')
 
 
+def tag_task(html, task_id):
+    """Mark a section with the id of its task (data-task): the site's debug mode shows it; nothing changes on paper."""
+    return html.replace("<section ", f'<section data-task="{task_id}" ', 1)
+
+
 def number_pages(pages):
     """'1 / 4' at the bottom right of every page (STANDARDS L5)."""
     n = len(pages)

@@ -94,5 +94,10 @@
     "en": "\"1 less, 1 more\" is now drawn with arrows from the number and a small number track; pictures no longer stick out of the frame.",
     "uk": "«На 1 менше, на 1 більше» тепер зі стрілками від числа і маленькою числовою доріжкою; картинки більше не виходять за рамку.",
     "ru": "«На 1 меньше, на 1 больше» теперь со стрелками от числа и маленькой числовой дорожкой; картинки больше не вылезают за рамку."
+  },
+  "Every task carries its id, for exact bug reports": {
+    "en": "Every task now has an id, so a problem can be reported precisely.",
+    "uk": "Кожне завдання тепер має позначку, щоб точно повідомити про помилку.",
+    "ru": "У каждого задания теперь есть метка, чтобы точно сообщить об ошибке."
   }
 }

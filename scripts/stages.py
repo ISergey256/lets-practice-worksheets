@@ -534,7 +534,7 @@ def build(stage, seed, L):
             if j == len(group_) - 1:  # last section on the page fills the rest of it
                 # the title stays on top; the spare space is shared above and below the task (CSS .stretch, as in topics)
                 html = html.replace('<section class="sec">', '<section class="sec stretch" style="flex:1;display:flex;flex-direction:column">', 1)
-            secs.append(html)
+            secs.append(g.tag_task(html, task.__name__))
             answers.append(ans)
         head = g.header(L, text(L.w["badge_stage"], stage=L.w["stages"][stage], seed=seed)) if pi == 0 else ""
         pages_html.append(g.page(head + "".join(secs), "padding-bottom:36px" if pi == 0 else ""))

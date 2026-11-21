@@ -206,6 +206,7 @@ def build(spec, seed, L):
     for pi, group in enumerate(pack(ids, H)):
         secs = [made[t][0] for t in group]
         secs[-1] = stretch(secs[-1])
+        secs = [g.tag_task(h, t) for h, t in zip(secs, group)]
         head = g.header(L, badge) if pi == 0 else ""
         pages.append(g.page(head + "".join(secs), "padding-bottom:36px" if pi == 0 else ""))
     pages = g.number_pages(pages)

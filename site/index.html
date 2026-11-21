@@ -97,6 +97,9 @@
   .about p { margin:6px 0 0; font-size:15px; font-weight:700; line-height:1.5; }
   footer { margin-top:34px; color:var(--muted); font-size:14px; font-weight:700; line-height:1.6; }
   .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:#fff; border-radius:14px; padding:12px 20px; font-size:15px; font-weight:800; max-width:min(640px,90vw); z-index:50; }
+  .debug { border:2.5px dashed var(--ink); border-radius:12px; padding:8px 10px; margin:-6px 0 14px; background:#fff; }
+  .dbg-head { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; font-size:13px; font-weight:800; }
+  .dbg-head span { color:var(--muted); margin-right:auto; }
   .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-6px 0 14px; }
   .listen { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .listen .chip { display:inline-flex; align-items:center; gap:5px; }
@@ -208,6 +211,12 @@
           <button class="chip" data-tab="answers" aria-pressed="false" data-t="tabAnswers"></button>
           <button class="chip" data-tab="cheats" aria-pressed="false" id="tab-cheats" hidden data-t="tabCheats"></button>
         </div>
+      </div>
+      <div class="debug" id="debug" hidden>
+        <div class="dbg-head"><b>Debug</b><span id="dbg-ver"></span>
+          <button class="chip" type="button" id="dbg-sheet">Copy sheet</button>
+          <button class="chip" type="button" id="dbg-off">Turn off</button></div>
+        <div id="dbg-tasks" class="recent"></div>
       </div>
       <div class="tools" id="tools" hidden>
         <div class="listen" id="listen" hidden><span class="lab2" data-t="listen"></span><span id="listen-btns" class="listen"></span></div>
@@ -786,6 +795,7 @@ let viewNo = 0;
 async function renderView() {
   if (!state.sheet) return;
   renderTools();
+  if (debugOn()) setTimeout(renderDebug, 1200);  // after the preview frames have loaded
   $("tabs").querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === state.tab));
   const no = ++viewNo;
   if (state.tab === "cheats") {
@@ -808,13 +818,76 @@ function showPages(bodies, labelOf, lang) {
     const pg = document.createElement("div"); pg.className = "pg";
     const fr = document.createElement("iframe"); fr.title = label.textContent; fr.loading = "lazy";
     fr.srcdoc = doc([body], state.sheet.css, stem(), lang);
-    fr.addEventListener("load", () => paintCream(fr));
+    fr.addEventListener("load", () => { paintCream(fr); debugTags(fr); });
     pg.appendChild(fr); cell.append(label, pg); wrap.appendChild(cell);
   });
   scalers.disconnect();
   $("view").replaceChildren(wrap);
   wrap.querySelectorAll(".pg").forEach((p) => scalers.observe(p));
 }
+
+/* ================================================================ debug mode (only for the author; not linked anywhere)
+   Turn on with ?debug=1 in the address (remembered on this device), off with ?debug=0 or "Turn off".
+   It shows the id of every task on the preview and copies a reference that opens exactly the same sheet.
+   It changes nothing and sends nothing anywhere. */
+{
+  const q = new URLSearchParams(location.search).get("debug");
+  if (q === "1") localStorage.debug = "1";
+  if (q === "0") delete localStorage.debug;
+}
+const debugOn = () => localStorage.debug === "1";
+function sheetLink() {
+  return location.origin + location.pathname + location.hash;
+}
+function debugRef(extra) {
+  const ver = (typeof changes !== "undefined" && changes[0]) ? changes[0].hash.slice(0, 7) : "local";
+  return [`Let's Practice debug`, sheetLink(), `sheet ${String(state.level)} · No. ${state.seed} · lang ${state.lang} / answers ${state.alang} · site ${state.ui}`,
+          `tab ${state.tab}${extra ? " · " + extra : ""}`, `version ${ver} · screen ${innerWidth}x${innerHeight} · ${navigator.userAgent.slice(0, 120)}`].join("\n");
+}
+function copyText(text) {
+  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(
+    () => toast("Copied"), () => { window.prompt("Copy:", text); });
+}
+function debugTags(fr) {
+  if (!debugOn()) return;
+  try {
+    const d = fr.contentDocument;
+    if (d.getElementById("dbg-style")) return;
+    const st = d.createElement("style"); st.id = "dbg-style";
+    st.textContent = "[data-task]{position:relative;outline:2px dashed #d00;outline-offset:-2px}" +
+      ".dbg-tag{position:absolute;right:46px;top:4px;background:#d00;color:#fff;font:800 13px/1.2 monospace;padding:2px 6px;border-radius:6px;z-index:9}";
+    d.head.appendChild(st);
+    const page = fr.closest(".pg")?.previousElementSibling?.textContent || "";
+    d.querySelectorAll("[data-task]").forEach((el) => {
+      const n = el.querySelector(".n")?.textContent.trim() || "?";
+      const tag = d.createElement("span"); tag.className = "dbg-tag"; tag.textContent = `${n} · ${el.dataset.task} · ${page}`;
+      el.appendChild(tag);
+    });
+  } catch { /* not ready */ }
+}
+function renderDebug() {
+  $("debug").hidden = !debugOn() || !state.sheet;
+  if ($("debug").hidden) return;
+  $("dbg-ver").textContent = `${String(state.level).slice(0, 40)} · No. ${state.seed}`;
+  const items = [];
+  document.querySelectorAll(".pg iframe").forEach((fr, pi) => {
+    try {
+      fr.contentDocument.querySelectorAll("[data-task]").forEach((el) => {
+        items.push({ n: el.querySelector(".n")?.textContent.trim() || "?", id: el.dataset.task, page: pi + 1 });
+      });
+    } catch {}
+  });
+  $("dbg-tasks").innerHTML = items.map((x, i) =>
+    `<button class="chip" type="button" data-dbg="${i}">${x.n} · ${x.id} · p${x.page}</button>`).join("");
+  $("dbg-tasks").dataset.items = JSON.stringify(items);
+}
+$("dbg-tasks").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-dbg]"); if (!b) return;
+  const x = JSON.parse($("dbg-tasks").dataset.items)[+b.dataset.dbg];
+  copyText(debugRef(`page ${x.page} · task ${x.n} (${x.id})`));
+});
+$("dbg-sheet").addEventListener("click", () => copyText(debugRef("")));
+$("dbg-off").addEventListener("click", () => { delete localStorage.debug; location.reload(); });
 
 /* ================================================================ screen tools: listen, cream, a bit harder */
 const CREAM = "#fbf6e6";

@@ -198,7 +198,7 @@ def card(num, key, look, try_, C):
     title, s1, s2, s3, check = C[key]
     look_l, do_l, check_l, try_l, ican = C["labels"]
     steps = "".join(f'<div class="cs"><span class="csn">{i}</span><span>{t}</span></div>' for i, t in enumerate((s1, s2, s3), 1))
-    return (f'<div class="card"><div class="ch"><span class="n">{num}</span>{s.action(TASK_ACTION[key], 50)}'
+    return (f'<div class="card" data-task="{key}"><div class="ch"><span class="n">{num}</span>{s.action(TASK_ACTION[key], 50)}'
             f'<span class="ct">{title}</span></div>'
             f'<div class="cm"><div class="cl"><span class="lab">{look_l}</span>'
             f'<div class="cpic"><div style="zoom:{LOOK_ZOOM.get(key, 1)}">{look}</div></div></div>'
