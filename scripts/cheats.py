@@ -235,4 +235,4 @@ def build(level, seed, L, which=None):
         if n in which:
             look, try_ = pictures(key, rng, obj, L)
             out.append(card(n, key, look, try_, C))
-    return [g.page("".join(out[i:i + 2]), "gap:16px") for i in range(0, len(out), 2)]
+    return g.number_pages([g.page("".join(out[i:i + 2]), "gap:16px") for i in range(0, len(out), 2)])

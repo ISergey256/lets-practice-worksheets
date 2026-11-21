@@ -54,7 +54,7 @@ def action(k, size=48):
 
 def isec(num, act, title, body, grow=False, extra=""):
     """Section with number, action icon and a small instruction for the adult."""
-    head = f'<div class="ih"><span class="n">{num}</span>{action(act)}<span class="it">{title}</span>{extra}</div>'
+    head = f'<div class="ih"><span class="n">{num}</span>{action(act)}<span class="it">{title}</span>{extra}{g.DONE}</div>'
     if grow:
         return (f'<section class="sec" style="flex:1;display:flex;flex-direction:column">{head}'
                 f'<div style="flex:1;display:flex;flex-direction:column;justify-content:center">{body}</div></section>')
@@ -163,8 +163,13 @@ def r_ladybirds(rng, L, num):
     return isec(num, "match", L.w["r1"], body), f'<b>{", ".join(map(str, counts))}</b> {L.a["top_down"]}'
 
 
+def easy_first(ks):
+    """Keep the worked example first, then the rest from easy to harder (STANDARDS D2)."""
+    return ks[:1] + sorted(ks[1:])
+
+
 def r_count_circle(rng, L, num, key):
-    ks = rng.sample(range(1, 11), 3)
+    ks = easy_first(rng.sample(range(1, 11), 3))
     rows, ans = [], []
     for i, k in enumerate(ks):
         opts = options(rng, k)
@@ -206,7 +211,7 @@ def arrow():
 
 
 def r_draw_dots(rng, L, num):
-    ks = rng.sample(range(1, 11), 3)
+    ks = easy_first(rng.sample(range(1, 11), 3))
     rows = [row(big_num(k) + arrow() + tenframe(k if i == 0 else 0, 40), i == 0, 26) for i, k in enumerate(ks)]
     return isec(num, "draw", L.w["r4"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
@@ -310,20 +315,20 @@ def r_colour(rng, L, num):
 
 # ================================================================ Year 1 autumn
 def y_count_write(rng, L, num, key):
-    ks = rng.sample(range(1, 11), 3)
+    ks = easy_first(rng.sample(range(1, 11), 3))
     rows = [row(f'<div style="width:220px;display:flex;justify-content:center">{objects(key, k, 34)}</div>'
                 + (g.filled(k, 56) if i == 0 else g.box(56)), i == 0, 60) for i, k in enumerate(ks)]
     return isec(num, "write", L.w["y1"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
 def y_tenframe_circle(rng, L, num):
-    ks = rng.sample(range(3, 11), 3)
+    ks = easy_first(rng.sample(range(3, 11), 3))
     rows = [row(tenframe(k, 36) + choice_row(options(rng, k), k if i == 0 else None), i == 0, 50) for i, k in enumerate(ks)]
     return isec(num, "circle", L.w["y2"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
 def y_more_less(rng, L, num):
-    ks = rng.sample(range(1, 10), 4)
+    ks = easy_first(rng.sample(range(1, 10), 4))
     lab = lambda t: f'<span style="font-size:18px;font-weight:900;width:34px;text-align:center">{t}</span>'
     items, ans = [], []
     for i, k in enumerate(ks):
@@ -504,6 +509,7 @@ def build(stage, seed, L):
             answers.append(ans)
         head = g.header(L, text(L.w["badge_stage"], stage=L.w["stages"][stage], seed=seed)) if pi == 0 else ""
         pages_html.append(g.page(head + "".join(secs), "padding-bottom:36px" if pi == 0 else ""))
+    pages_html = g.number_pages(pages_html)
     a = L.a
     rows = "".join(f'<div class="a"{' style="border-bottom:none"' if i == len(answers) - 1 else ""}><span class="n">{i + 1}</span>'
                    f'<span style="flex:1">{x}</span><span class="tag">{a["period"][stage]}</span></div>' for i, x in enumerate(answers))

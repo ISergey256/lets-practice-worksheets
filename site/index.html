@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LET'S PRACTICE! — maths worksheets</title>
+<title>Let's Practice! — maths worksheets</title>
 <meta name="description" content="Free printable maths worksheets for Year 1: 18 tasks, 3 levels, answers for parents, 7 languages.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23111'/%3E%3Ctext x='16' y='22' font-size='17' font-family='sans-serif' font-weight='900' fill='%23fff' text-anchor='middle'%3E%2B%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="fonts/fonts.css">
@@ -98,7 +98,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="logo">LET'S PRACTICE!</div>
+    <div class="logo">Let's Practice!</div>
     <p data-t="tagline"></p>
     <label class="uilang"><span data-t="uiLang"></span><select class="select" id="ui-lang"></select></label>
   </header>
@@ -223,6 +223,7 @@ const UI = {
     aboutTitle: "About the project", about1: "Let’s Practice is a free project: good learning materials should be available to every child, whatever their family can afford.", about2: "No sign-up, no subscriptions, no ads and no hidden payments. Choose, print, practise. We start with maths for ages 4–6 and will grow step by step up to Year 11 and other subjects.",
     year: "Year", subject: "Subject", maths: "Maths", soon: "soon", english: "English", science: "Science", practise: "What to practise", ready: "Ready-made sheet", choose: "Choose topics", years: { R: ["Reception", "ages 4–5"], Y1: ["Year 1", "ages 5–6"], Y2: ["Year 2", "ages 6–7 · first topics"] }, presetNames: { R: "Mixed sheet", Y1A: "Autumn term · mixed", 1: "Review · easy", 2: "Review · medium", 3: "Review · hard", Y2: "First topics · mixed" }, topicsHint: "Tick up to 12 topics; the sheet follows the order of the list.", topicsCount: "{n} of {max} topics", topicsNone: "Tick at least one topic.", topicsShort: "Topics",
     helpTitle: "Help make it better", suggest: "Suggest a task", report: "Report a problem", ghNote: "Opens GitHub (a free account is needed).", why: "Why black and white?",
+    partWord: "part",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -231,7 +232,7 @@ const UI = {
     pdfSheet: "Download worksheet PDF", pdfAnswers: "Download answers PDF", copyLink: "Copy link to this worksheet",
     printHint: "To get a PDF, choose “Save as PDF” in the print dialog. Paper A4, margins “None”.",
     recent: "Recent", tabSheet: "Worksheet", tabAnswers: "Answers", page: "Page {n}", answersFor: "Answers for parents",
-    title: "Level {level} · No. {seed}", short: "L{level} · No. {seed}", docTitle: "Worksheet No. {seed}, level {level} — LET'S PRACTICE!",
+    title: "Level {level} · No. {seed}", short: "L{level} · No. {seed}", docTitle: "Worksheet No. {seed}, level {level} — Let's Practice!",
     loading: "Loading the generator… The first visit takes 5–20 seconds, after that it comes from the browser cache.",
     loadFail: "Could not load the generator. Check the internet connection and reload the page.",
     buildFail: "Could not make the worksheet:", copied: "Link copied", making: "Making the PDF…", pdfFail: "Could not make the PDF.",
@@ -246,6 +247,7 @@ const UI = {
     aboutTitle: "Про проєкт", about1: "Let’s Practice — безкоштовний проєкт: якісні навчальні матеріали мають бути доступні кожній дитині, незалежно від можливостей родини.", about2: "Без реєстрації, підписок, реклами та прихованих платежів. Обрав — роздрукував — займаєшся. Починаємо з математики для дітей 4–6 років і поступово дійдемо до 11 класу та інших предметів.",
     year: "Клас", subject: "Предмет", maths: "Математика", soon: "незабаром", english: "Англійська", science: "Природознавство", practise: "Що тренуємо", ready: "Готовий аркуш", choose: "Обрати теми", years: { R: ["Reception", "4–5 років"], Y1: ["Year 1", "5–6 років"], Y2: ["Year 2", "6–7 років · перші теми"] }, presetNames: { R: "Змішаний аркуш", Y1A: "Осінь · змішаний", 1: "Повторення · легкий", 2: "Повторення · середній", 3: "Повторення · складний", Y2: "Перші теми · змішаний" }, topicsHint: "Позначте до 12 тем; аркуш піде в порядку списку.", topicsCount: "Тем: {n} з {max}", topicsNone: "Позначте хоча б одну тему.", topicsShort: "Теми",
     helpTitle: "Допоможіть зробити краще", suggest: "Запропонувати завдання", report: "Повідомити про помилку", ghNote: "Відкриється GitHub (потрібен безкоштовний акаунт).", why: "Чому все чорно-біле?",
+    partWord: "частина",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -254,7 +256,7 @@ const UI = {
     pdfSheet: "Завантажити аркуш PDF", pdfAnswers: "Завантажити відповіді PDF", copyLink: "Скопіювати посилання на аркуш",
     printHint: "Щоб отримати PDF, у вікні друку виберіть «Зберегти як PDF». Папір A4, поля «Немає».",
     recent: "Нещодавні", tabSheet: "Аркуш", tabAnswers: "Відповіді", page: "Сторінка {n}", answersFor: "Відповіді для батьків",
-    title: "Рівень {level} · №{seed}", short: "Р{level} · №{seed}", docTitle: "Аркуш №{seed}, рівень {level} — LET'S PRACTICE!",
+    title: "Рівень {level} · №{seed}", short: "Р{level} · №{seed}", docTitle: "Аркуш №{seed}, рівень {level} — Let's Practice!",
     loading: "Завантажую генератор… Перший раз це займає 5–20 секунд, потім він береться з кешу браузера.",
     loadFail: "Не вдалося завантажити генератор. Перевірте інтернет і оновіть сторінку.",
     buildFail: "Не вдалося зробити аркуш:", copied: "Посилання скопійовано", making: "Готую PDF…", pdfFail: "Не вдалося зробити PDF.",
@@ -269,6 +271,7 @@ const UI = {
     aboutTitle: "О проекте", about1: "Let’s Practice — бесплатный проект: хорошие учебные материалы должны быть доступны каждому ребёнку, независимо от возможностей семьи.", about2: "Без регистрации, подписок, рекламы и скрытых платежей. Выбрал — распечатал — занимаешься. Начинаем с математики для детей 4–6 лет и постепенно дойдём до 11 класса и других предметов.",
     year: "Класс", subject: "Предмет", maths: "Математика", soon: "скоро", english: "Английский", science: "Естествознание", practise: "Что тренируем", ready: "Готовый лист", choose: "Выбрать темы", years: { R: ["Reception", "4–5 лет"], Y1: ["Year 1", "5–6 лет"], Y2: ["Year 2", "6–7 лет · первые темы"] }, presetNames: { R: "Смешанный лист", Y1A: "Осень · смешанный", 1: "Повторение · лёгкий", 2: "Повторение · средний", 3: "Повторение · сложный", Y2: "Первые темы · смешанный" }, topicsHint: "Отметьте до 12 тем; лист пойдёт в порядке списка.", topicsCount: "Тем: {n} из {max}", topicsNone: "Отметьте хотя бы одну тему.", topicsShort: "Темы",
     helpTitle: "Помогите сделать лучше", suggest: "Предложить задание", report: "Сообщить об ошибке", ghNote: "Откроется GitHub (нужен бесплатный аккаунт).", why: "Почему всё чёрно-белое?",
+    partWord: "часть",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -277,7 +280,7 @@ const UI = {
     pdfSheet: "Скачать лист PDF", pdfAnswers: "Скачать ответы PDF", copyLink: "Скопировать ссылку на лист",
     printHint: "Чтобы получить PDF, выберите в окне печати «Сохранить как PDF». Бумага A4, поля «Нет».",
     recent: "Недавние", tabSheet: "Лист", tabAnswers: "Ответы", page: "Страница {n}", answersFor: "Ответы для родителей",
-    title: "Уровень {level} · №{seed}", short: "Ур. {level} · №{seed}", docTitle: "Лист №{seed}, уровень {level} — LET'S PRACTICE!",
+    title: "Уровень {level} · №{seed}", short: "Ур. {level} · №{seed}", docTitle: "Лист №{seed}, уровень {level} — Let's Practice!",
     loading: "Загружаю генератор… В первый раз это занимает 5–20 секунд, потом он берётся из кэша браузера.",
     loadFail: "Не удалось загрузить генератор. Проверьте интернет и обновите страницу.",
     buildFail: "Не получилось сделать лист:", copied: "Ссылка скопирована", making: "Готовлю PDF…", pdfFail: "Не получилось сделать PDF.",
@@ -292,6 +295,7 @@ const UI = {
     aboutTitle: "Σχετικά με το έργο", about1: "Το Let’s Practice είναι ένα δωρεάν έργο: το καλό εκπαιδευτικό υλικό πρέπει να είναι διαθέσιμο σε κάθε παιδί, ανεξάρτητα από τις δυνατότητες της οικογένειας.", about2: "Χωρίς εγγραφή, συνδρομές, διαφημίσεις ή κρυφές χρεώσεις. Διαλέγεις, τυπώνεις, εξασκείσαι. Ξεκινάμε με μαθηματικά για παιδιά 4–6 ετών και σιγά σιγά θα φτάσουμε ως το Year 11 και σε άλλα μαθήματα.",
     year: "Τάξη", subject: "Μάθημα", maths: "Μαθηματικά", soon: "σύντομα", english: "Αγγλικά", science: "Φυσικές επιστήμες", practise: "Τι εξασκούμε", ready: "Έτοιμο φύλλο", choose: "Διάλεξε θέματα", years: { R: ["Reception", "4–5 ετών"], Y1: ["Year 1", "5–6 ετών"], Y2: ["Year 2", "6–7 ετών · πρώτα θέματα"] }, presetNames: { R: "Μικτό φύλλο", Y1A: "Φθινόπωρο · μικτό", 1: "Επανάληψη · εύκολο", 2: "Επανάληψη · μέτριο", 3: "Επανάληψη · δύσκολο", Y2: "Πρώτα θέματα · μικτό" }, topicsHint: "Σημειώστε έως 12 θέματα· το φύλλο ακολουθεί τη σειρά της λίστας.", topicsCount: "Θέματα: {n} από {max}", topicsNone: "Σημειώστε τουλάχιστον ένα θέμα.", topicsShort: "Θέματα",
     helpTitle: "Βοηθήστε να γίνει καλύτερο", suggest: "Προτείνετε άσκηση", report: "Αναφέρετε πρόβλημα", ghNote: "Ανοίγει το GitHub (χρειάζεται δωρεάν λογαριασμός).", why: "Γιατί όλα είναι ασπρόμαυρα;",
+    partWord: "μέρος",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -300,7 +304,7 @@ const UI = {
     pdfSheet: "Λήψη φύλλου PDF", pdfAnswers: "Λήψη απαντήσεων PDF", copyLink: "Αντιγραφή συνδέσμου φύλλου",
     printHint: "Για PDF, επιλέξτε «Αποθήκευση ως PDF» στο παράθυρο εκτύπωσης. Χαρτί A4, περιθώρια «Κανένα».",
     recent: "Πρόσφατα", tabSheet: "Φύλλο", tabAnswers: "Απαντήσεις", page: "Σελίδα {n}", answersFor: "Απαντήσεις για τους γονείς",
-    title: "Επίπεδο {level} · αρ. {seed}", short: "Επ. {level} · αρ. {seed}", docTitle: "Φύλλο αρ. {seed}, επίπεδο {level} — LET'S PRACTICE!",
+    title: "Επίπεδο {level} · αρ. {seed}", short: "Επ. {level} · αρ. {seed}", docTitle: "Φύλλο αρ. {seed}, επίπεδο {level} — Let's Practice!",
     loading: "Φόρτωση της γεννήτριας… Την πρώτη φορά χρειάζονται 5–20 δευτερόλεπτα, μετά φορτώνει από την προσωρινή μνήμη.",
     loadFail: "Η γεννήτρια δεν φόρτωσε. Ελέγξτε τη σύνδεση και ανανεώστε τη σελίδα.",
     buildFail: "Το φύλλο δεν δημιουργήθηκε:", copied: "Ο σύνδεσμος αντιγράφηκε", making: "Δημιουργία PDF…", pdfFail: "Το PDF δεν δημιουργήθηκε.",
@@ -315,6 +319,7 @@ const UI = {
     aboutTitle: "Über das Projekt", about1: "Let’s Practice ist ein kostenloses Projekt: Gute Lernmaterialien sollen jedem Kind zur Verfügung stehen, unabhängig vom Geldbeutel der Familie.", about2: "Keine Anmeldung, keine Abos, keine Werbung, keine versteckten Kosten. Auswählen, drucken, üben. Wir beginnen mit Mathe für 4- bis 6-Jährige und wachsen Schritt für Schritt bis Year 11 und zu weiteren Fächern.",
     year: "Klasse", subject: "Fach", maths: "Mathe", soon: "bald", english: "Englisch", science: "Sachkunde", practise: "Was üben wir?", ready: "Fertiges Blatt", choose: "Themen wählen", years: { R: ["Reception", "4–5 Jahre"], Y1: ["Year 1", "5–6 Jahre"], Y2: ["Year 2", "6–7 Jahre · erste Themen"] }, presetNames: { R: "Gemischtes Blatt", Y1A: "Herbst · gemischt", 1: "Wiederholung · leicht", 2: "Wiederholung · mittel", 3: "Wiederholung · schwer", Y2: "Erste Themen · gemischt" }, topicsHint: "Bis zu 12 Themen ankreuzen; das Blatt folgt der Reihenfolge der Liste.", topicsCount: "{n} von {max} Themen", topicsNone: "Mindestens ein Thema ankreuzen.", topicsShort: "Themen",
     helpTitle: "Helfen Sie mit", suggest: "Aufgabe vorschlagen", report: "Fehler melden", ghNote: "Öffnet GitHub (ein kostenloses Konto ist nötig).", why: "Warum alles schwarz-weiß ist",
+    partWord: "Teil",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -323,7 +328,7 @@ const UI = {
     pdfSheet: "Blatt als PDF laden", pdfAnswers: "Lösungen als PDF laden", copyLink: "Link zu diesem Blatt kopieren",
     printHint: "Für ein PDF im Druckdialog „Als PDF speichern“ wählen. Papier A4, Ränder „Keine“.",
     recent: "Zuletzt", tabSheet: "Blatt", tabAnswers: "Lösungen", page: "Seite {n}", answersFor: "Lösungen für Eltern",
-    title: "Stufe {level} · Nr. {seed}", short: "St. {level} · Nr. {seed}", docTitle: "Blatt Nr. {seed}, Stufe {level} — LET'S PRACTICE!",
+    title: "Stufe {level} · Nr. {seed}", short: "St. {level} · Nr. {seed}", docTitle: "Blatt Nr. {seed}, Stufe {level} — Let's Practice!",
     loading: "Der Generator wird geladen… Beim ersten Mal dauert es 5–20 Sekunden, danach kommt er aus dem Browser-Cache.",
     loadFail: "Der Generator konnte nicht geladen werden. Bitte Internetverbindung prüfen und die Seite neu laden.",
     buildFail: "Das Blatt konnte nicht erstellt werden:", copied: "Link kopiert", making: "PDF wird erstellt…", pdfFail: "Das PDF konnte nicht erstellt werden.",
@@ -338,6 +343,7 @@ const UI = {
     aboutTitle: "À propos du projet", about1: "Let’s Practice est un projet gratuit : de bons supports d’apprentissage doivent être accessibles à chaque enfant, quels que soient les moyens de sa famille.", about2: "Sans inscription, sans abonnement, sans publicité ni frais cachés. On choisit, on imprime, on s’entraîne. Nous commençons par les maths pour les 4–6 ans et grandirons pas à pas jusqu’à Year 11 et d’autres matières.",
     year: "Classe", subject: "Matière", maths: "Maths", soon: "bientôt", english: "Anglais", science: "Sciences", practise: "Que travaille-t-on ?", ready: "Fiche toute prête", choose: "Choisir les thèmes", years: { R: ["Reception", "4–5 ans"], Y1: ["Year 1", "5–6 ans"], Y2: ["Year 2", "6–7 ans · premiers thèmes"] }, presetNames: { R: "Fiche mélangée", Y1A: "Automne · mélangée", 1: "Révision · facile", 2: "Révision · moyen", 3: "Révision · difficile", Y2: "Premiers thèmes · mélangée" }, topicsHint: "Cochez jusqu’à 12 thèmes ; la fiche suit l’ordre de la liste.", topicsCount: "{n} thèmes sur {max}", topicsNone: "Cochez au moins un thème.", topicsShort: "Thèmes",
     helpTitle: "Aidez à l’améliorer", suggest: "Proposer un exercice", report: "Signaler un problème", ghNote: "Ouvre GitHub (un compte gratuit est nécessaire).", why: "Pourquoi tout est en noir et blanc ?",
+    partWord: "partie",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -346,7 +352,7 @@ const UI = {
     pdfSheet: "Télécharger la fiche PDF", pdfAnswers: "Télécharger les réponses PDF", copyLink: "Copier le lien de la fiche",
     printHint: "Pour un PDF, choisissez « Enregistrer au format PDF » dans la fenêtre d’impression. Papier A4, marges « Aucune ».",
     recent: "Récentes", tabSheet: "Fiche", tabAnswers: "Réponses", page: "Page {n}", answersFor: "Réponses pour les parents",
-    title: "Niveau {level} · n° {seed}", short: "Niv. {level} · n° {seed}", docTitle: "Fiche n° {seed}, niveau {level} — LET'S PRACTICE!",
+    title: "Niveau {level} · n° {seed}", short: "Niv. {level} · n° {seed}", docTitle: "Fiche n° {seed}, niveau {level} — Let's Practice!",
     loading: "Chargement du générateur… La première fois, cela prend 5 à 20 secondes, ensuite il vient du cache du navigateur.",
     loadFail: "Impossible de charger le générateur. Vérifiez la connexion et rechargez la page.",
     buildFail: "Impossible de créer la fiche :", copied: "Lien copié", making: "Création du PDF…", pdfFail: "Impossible de créer le PDF.",
@@ -361,6 +367,7 @@ const UI = {
     aboutTitle: "Sobre el proyecto", about1: "Let’s Practice es un proyecto gratuito: los buenos materiales de aprendizaje deben estar al alcance de todos los niños, sean cuales sean las posibilidades de su familia.", about2: "Sin registro, sin suscripciones, sin anuncios ni pagos ocultos. Eliges, imprimes y practicas. Empezamos con matemáticas para niños de 4 a 6 años y creceremos poco a poco hasta Year 11 y otras asignaturas.",
     year: "Curso", subject: "Asignatura", maths: "Matemáticas", soon: "pronto", english: "Inglés", science: "Ciencias", practise: "Qué practicamos", ready: "Ficha preparada", choose: "Elegir temas", years: { R: ["Reception", "4–5 años"], Y1: ["Year 1", "5–6 años"], Y2: ["Year 2", "6–7 años · primeros temas"] }, presetNames: { R: "Ficha mixta", Y1A: "Otoño · mixta", 1: "Repaso · fácil", 2: "Repaso · medio", 3: "Repaso · difícil", Y2: "Primeros temas · mixta" }, topicsHint: "Marque hasta 12 temas; la ficha sigue el orden de la lista.", topicsCount: "{n} de {max} temas", topicsNone: "Marque al menos un tema.", topicsShort: "Temas",
     helpTitle: "Ayude a mejorarlo", suggest: "Proponer un ejercicio", report: "Informar de un problema", ghNote: "Abre GitHub (hace falta una cuenta gratuita).", why: "¿Por qué todo es en blanco y negro?",
+    partWord: "parte",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -369,7 +376,7 @@ const UI = {
     pdfSheet: "Descargar ficha PDF", pdfAnswers: "Descargar soluciones PDF", copyLink: "Copiar enlace de la ficha",
     printHint: "Para obtener un PDF, elija «Guardar como PDF» en la ventana de impresión. Papel A4, márgenes «Ninguno».",
     recent: "Recientes", tabSheet: "Ficha", tabAnswers: "Soluciones", page: "Página {n}", answersFor: "Soluciones para las familias",
-    title: "Nivel {level} · n.º {seed}", short: "Niv. {level} · n.º {seed}", docTitle: "Ficha n.º {seed}, nivel {level} — LET'S PRACTICE!",
+    title: "Nivel {level} · n.º {seed}", short: "Niv. {level} · n.º {seed}", docTitle: "Ficha n.º {seed}, nivel {level} — Let's Practice!",
     loading: "Cargando el generador… La primera vez tarda 5–20 segundos, después se carga desde la caché del navegador.",
     loadFail: "No se pudo cargar el generador. Compruebe la conexión y recargue la página.",
     buildFail: "No se pudo crear la ficha:", copied: "Enlace copiado", making: "Creando el PDF…", pdfFail: "No se pudo crear el PDF.",
@@ -524,8 +531,10 @@ function topicYear(id) {
   for (const c of Object.values(catalogs)) for (const r of c.rows) if (r.variants.some((v) => v.id === id)) return r.year;
   return id[0] === "r" ? "R" : id[0] === "y" ? "Y1" : null;
 }
-const FALLBACK_PRESETS = { R: ["R"], Y1: ["Y1A", 1, 2, 3], Y2: [] };
+// ready-made sheets: [{id: level, key: label, part: 1 | 2 | null}] (Year 1 review comes in two parts of 9 tasks)
+const FALLBACK_PRESETS = { R: [{ id: "R", key: "R", part: null }], Y1: [{ id: "Y1A", key: "Y1A", part: null }], Y2: [] };
 const presetsFor = (y) => (catalog() ? catalog().presets[y] : FALLBACK_PRESETS[y]);
+const presetIds = (y) => presetsFor(y).map((p) => p.id);
 const selMap = () => state.sel[state.year] || (state.sel[state.year] = new Map());
 function topicSpec() {
   const m = selMap(), ids = [];
@@ -533,8 +542,12 @@ function topicSpec() {
   return ids.length ? `T:${ids.join("_")}` : null;
 }
 function syncFromLevel() {  // after a link or a "recent" chip: show the panel that matches state.level
+  if (typeof state.level === "number" && catalog()) {  // old links #L2-123: part 1 of that review level
+    const p = presetsFor("Y1").find((x) => x.key === String(state.level) && x.part === 1);
+    if (p) state.level = p.id;
+  }
   state.year = yearOfLevel(state.level);
-  const preset = presetsFor(state.year).some((p) => p === state.level);
+  const preset = presetIds(state.year).includes(state.level);
   state.mode = isTopics(state.level) && !preset ? "topics" : "ready";
   if (state.mode === "ready") state.lastPreset[state.year] = state.level;
   else if (catalog()) {
@@ -556,9 +569,9 @@ function renderPanel() {
   const desc = { R: u.stages.R[1], Y1A: u.stages.Y1A[1], 1: u.levels[0][1], 2: u.levels[1][1], 3: u.levels[2][1], Y2: u.years.Y2[1] };
   $("presets").hidden = state.mode !== "ready";
   $("presets").innerHTML = presetsFor(state.year).map((p) => {
-    const key = isTopics(p) ? "Y2" : p;
-    const big = { R: "R", Y1A: "A", Y2: "★" }[key] || key;
-    return card("data-preset", p, big, u.presetNames[key], desc[key], p === state.level);
+    const big = { R: "R", Y1A: "A", Y2: "★" }[p.key] || p.key;
+    const name = u.presetNames[p.key] + (p.part ? ` · ${u.partWord} ${p.part}` : "");
+    return card("data-preset", p.id, big, name, desc[p.key], p.id === state.level);
   }).join("");
   $("topic-picker").hidden = state.mode !== "topics";
   if (state.mode === "topics") renderTopics();
@@ -581,12 +594,12 @@ function renderTopics() {
 }
 function setYear(y) {
   state.year = y; state.mode = "ready";
-  state.level = state.lastPreset[y] ?? presetsFor(y)[0] ?? null;
+  state.level = state.lastPreset[y] ?? presetIds(y)[0] ?? null;
   renderPanel(); update();
 }
 function setMode(m) {
   state.mode = m;
-  state.level = m === "ready" ? (state.lastPreset[state.year] ?? presetsFor(state.year)[0]) : topicSpec();
+  state.level = m === "ready" ? (state.lastPreset[state.year] ?? presetIds(state.year)[0]) : topicSpec();
   renderPanel(); update();
 }
 $("years").addEventListener("click", (e) => { const b = e.target.closest("[data-year]"); if (b) setYear(b.dataset.year); });
@@ -627,13 +640,13 @@ $("tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-t
 function renderTitle() {
   if (isTopics(state.level) || state.level === null) {
     const title = t("stageTitle", { stage: `${UI[state.ui].years[state.year][0]} · ${t("topicsShort")}`, seed: state.seed });
-    $("title").textContent = title; document.title = `${title} — LET'S PRACTICE!`;
+    $("title").textContent = title; document.title = `${title} — Let's Practice!`;
     return;
   }
   const stage = isStage(state.level) ? UI[state.ui].stages[state.level][0] : null;
   const title = stage ? t("stageTitle", { stage, seed: state.seed }) : t("title", state);
   $("title").textContent = title;
-  document.title = stage ? `${title} — LET'S PRACTICE!` : t("docTitle", state);
+  document.title = stage ? `${title} — Let's Practice!` : t("docTitle", state);
 }
 
 let buildNo = 0;

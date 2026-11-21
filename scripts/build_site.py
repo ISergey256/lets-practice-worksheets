@@ -25,15 +25,15 @@ def check(seeds=100):
     import i18n
     i18n.check()
     for lang in i18n.LANGS:
-        for level in (1, 2, 3):
+        for level in ("1a", "1b", "2a", "2b", "3a", "3b", "R", "Y1A"):
             for seed in range(seeds):
                 pages, answers = g.build(level, seed, lang, lang)
-                assert len(pages) == 4 and answers, (lang, level, seed)
+                assert 1 <= len(pages) <= 4 and answers, (lang, level, seed, len(pages))  # STANDARDS L7
     for lang in i18n.LANGS:  # cheat sheets: every card of both stages
         for stage in ("R", "Y1A"):
             for seed in range(seeds // 5):
                 assert g.cheats(stage, seed, lang), (lang, stage, seed)
-    print(f"  generator ok: {len(i18n.LANGS)} languages x 5 levels x {seeds} worksheets, plus cheat sheets")
+    print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets")
 
 
 def build():

@@ -113,7 +113,7 @@ def _sides_uk(n):
 # ---------------------------------------------------------------- worksheet texts
 W = {
     "en": {
-        "title": "LET'S PRACTICE!", "badge": "Level {level} · No. {seed}", "name": "Name:", "date": "Date:",
+        "title": "Let's Practice!", "badge": "Level {level} · No. {seed}", "name": "Name:", "date": "Date:",
         "what": {"fish": "fish", "apple": "apples", "star": "stars", "flower": "flowers", "ball": "balls", "heart": "hearts"},
         "t1": "Count the {what}. Write the number in the box.",
         "t2": "Estimate first. Then count the {what}.", "estimate": "My estimate:", "counted": "My count:",
@@ -142,12 +142,12 @@ W = {
         "pos": {"in": "in", "on": "on", "above": "above", "behind": "behind", "in front of": "in front of",
                 "next to": "next to", "under": "under"},
         "items": {"ball": "The ball", "bird": "The bird", "cat": "The cat", "dog": "The dog", "teddy": "The teddy"},
-        "sent": "{item} is {blank} the box.", "blank": 120, "letters": "abcd",
+        "sent": "{item} is {blank} the box.", "blank": 100, "letters": "abcd",
         "t18": "Write the ordinal number for each duck.", "t18_sub": "The duck nearest the pond is {first}.",
         "pond": "pond",
     },
     "ru": {
-        "title": "ПОТРЕНИРУЕМСЯ!", "badge": "Уровень {level} · №{seed}", "name": "Имя:", "date": "Дата:",
+        "title": "Потренируемся!", "badge": "Уровень {level} · №{seed}", "name": "Имя:", "date": "Дата:",
         "what": {"fish": "рыбок", "apple": "яблоки", "star": "звёздочки", "flower": "цветы", "ball": "мячи", "heart": "сердечки"},
         "t1": "Посчитай {what}. Запиши число в окошко.",
         "t2": "Сначала прикинь на глаз, потом посчитай {what}.", "estimate": "Примерно:", "counted": "Точно:",
@@ -181,7 +181,7 @@ W = {
         "pond": "пруд",
     },
     "uk": {
-        "title": "ПОТРЕНУЙМОСЯ!", "badge": "Рівень {level} · №{seed}", "name": "Ім’я:", "date": "Дата:",
+        "title": "Потренуймося!", "badge": "Рівень {level} · №{seed}", "name": "Ім’я:", "date": "Дата:",
         "what": {"fish": "рибок", "apple": "яблука", "star": "зірочки", "flower": "квіти", "ball": "м’ячі", "heart": "сердечка"},
         "t1": "Порахуй {what}. Запиши число в клітинку.",
         "t2": "Спочатку прикинь на око, потім порахуй {what}.", "estimate": "Приблизно:", "counted": "Точно:",
@@ -215,7 +215,7 @@ W = {
         "pond": "ставок",
     },
     "el": {
-        "title": "ΑΣ ΕΞΑΣΚΗΘΟΥΜΕ!", "badge": "Επίπεδο {level} · αρ. {seed}", "name": "Όνομα:", "date": "Ημερομηνία:",
+        "title": "Ας εξασκηθούμε!", "badge": "Επίπεδο {level} · αρ. {seed}", "name": "Όνομα:", "date": "Ημερομηνία:",
         "what": {"fish": "τα ψάρια", "apple": "τα μήλα", "star": "τα αστέρια", "flower": "τα λουλούδια",
                  "ball": "τις μπάλες", "heart": "τις καρδιές"},
         "t1": "Μέτρησε {what}. Γράψε τον αριθμό στο κουτάκι.",
@@ -251,7 +251,7 @@ W = {
         "pond": "λίμνη",
     },
     "de": {
-        "title": "LASS UNS ÜBEN!", "badge": "Stufe {level} · Nr. {seed}", "name": "Name:", "date": "Datum:",
+        "title": "Lass uns üben!", "badge": "Stufe {level} · Nr. {seed}", "name": "Name:", "date": "Datum:",
         "what": {"fish": "Fische", "apple": "Äpfel", "star": "Sterne", "flower": "Blumen", "ball": "Bälle", "heart": "Herzen"},
         "t1": "Zähle die {what}. Schreibe die Zahl in das Kästchen.",
         "t2": "Schätze zuerst. Dann zähle die {what}.", "estimate": "Geschätzt:", "counted": "Gezählt:",
@@ -285,7 +285,7 @@ W = {
         "pond": "Teich",
     },
     "fr": {
-        "title": "ON S’ENTRAÎNE !", "badge": "Niveau {level} · n° {seed}", "name": "Prénom :", "date": "Date :",
+        "title": "On s’entraîne !", "badge": "Niveau {level} · n° {seed}", "name": "Prénom :", "date": "Date :",
         "what": {"fish": "poissons", "apple": "pommes", "star": "étoiles", "flower": "fleurs", "ball": "ballons", "heart": "cœurs"},
         "t1": "Compte les {what}. Écris le nombre dans la case.",
         "t2": "Estime d’abord. Puis compte les {what}.", "estimate": "J’estime :", "counted": "Je compte :",
@@ -319,7 +319,7 @@ W = {
         "pond": "mare",
     },
     "es": {
-        "title": "¡A PRACTICAR!", "badge": "Nivel {level} · n.º {seed}", "name": "Nombre:", "date": "Fecha:",
+        "title": "¡A practicar!", "badge": "Nivel {level} · n.º {seed}", "name": "Nombre:", "date": "Fecha:",
         "what": {"fish": "los peces", "apple": "las manzanas", "star": "las estrellas", "flower": "las flores",
                  "ball": "las pelotas", "heart": "los corazones"},
         "t1": "Cuenta {what}. Escribe el número en la casilla.",

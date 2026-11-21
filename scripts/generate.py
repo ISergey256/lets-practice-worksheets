@@ -54,31 +54,34 @@ FONT_LINK = ('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
 CSS = """
 @page{size:794px 1123px;margin:0}
 body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line-height:1.36;color:#111;background:#fff}
-.page{width:794px;height:1123px;box-sizing:border-box;padding:40px;display:flex;flex-direction:column;gap:9px;background:#fff;overflow:hidden}
+.page{position:relative;width:794px;height:1123px;box-sizing:border-box;padding:40px;display:flex;flex-direction:column;gap:9px;background:#fff;overflow:hidden}
 .sec{border:2.5px solid #111;border-radius:18px;padding:8px 16px 10px;box-sizing:border-box}
-.q{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;margin:0 0 6px}
+.q{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800;line-height:1.3;margin:0 0 6px}
+.qt{flex:1}
+.done{margin-left:auto;width:26px;height:26px;border:2.5px solid #111;border-radius:7px;box-sizing:border-box;flex:none}
+.pgno{position:absolute;right:40px;bottom:12px;font-size:14px;font-weight:800}
 .sub{margin:-4px 0 10px 40px;font-size:16px;font-weight:700}
 .n{width:30px;height:30px;border-radius:50%;background:#111;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;flex:none}
 .box{display:inline-block;width:46px;height:46px;border:2.5px solid #111;border-radius:10px;box-sizing:border-box;background:#fff;flex:none}
 .num{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:48px;border:2.5px solid #111;border-radius:10px;font-size:24px;font-weight:800;padding:0 6px;box-sizing:border-box;flex:none}
 .line{border-bottom:2.5px solid #111;flex:1;height:30px}
-.th{font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;height:38px;border-right:2px solid #111}
-.td{display:flex;align-items:center;justify-content:center;border-top:2px solid #111;border-right:2px solid #111;font-size:19px;font-weight:800}
-.pill{border:2.5px solid #111;border-radius:20px;padding:4px 12px;font-size:17px;font-weight:800;text-align:center}
-.bond{display:flex;align-items:center;gap:5px;font-size:22px;font-weight:800;white-space:nowrap}
+.th{font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;height:38px;border-right:2px solid #111}
+.td{display:flex;align-items:center;justify-content:center;border-top:2px solid #111;border-right:2px solid #111;font-size:22px;font-weight:800}
+.pill{border:2.5px solid #111;border-radius:20px;padding:4px 12px;font-size:20px;font-weight:800;text-align:center}
+.bond{display:flex;align-items:center;gap:5px;font-size:24px;font-weight:800;white-space:nowrap}
 .bond .box{width:40px;height:40px}
 .eq{display:flex;align-items:center;justify-content:center;gap:8px;font-size:28px;font-weight:800;height:62px;border-top:2px solid #111;border-right:2px solid #111;white-space:nowrap}
 .eq .box{width:44px;height:44px}
 .brick{height:48px;border:2.5px solid #111;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;box-sizing:border-box;background:#fff}
 .row{display:flex;justify-content:center;gap:2px}
-.sent{font-size:19px;font-weight:700;line-height:1.5;margin:0}
+.sent{font-size:23px;font-weight:700;line-height:1.4;margin:0}
 .blank{display:inline-block;width:120px;border-bottom:2.5px solid #111}
 .a{display:flex;gap:12px;align-items:baseline;font-size:16px;font-weight:600;line-height:1.4;padding:5px 0;border-bottom:1.5px solid #bbb}
 .a .n{width:28px;height:28px;font-size:15px;transform:translateY(6px)}
 .a b{font-weight:900}
 .ih{display:flex;align-items:center;gap:12px;margin:0 0 8px}
 .ih .n{width:34px;height:34px;font-size:18px}
-.ih .it{font-size:15px;font-weight:700;color:#444;line-height:1.3}
+.ih .it{flex:1;font-size:16px;font-weight:700;color:#333;line-height:1.3}
 .opt{position:relative;display:inline-flex;width:56px;height:56px;align-items:center;justify-content:center;font-size:32px;font-weight:900}
 .trace{font-size:62px;font-weight:900;line-height:1;color:#c2c2c2;width:52px;text-align:center}
 .stretch>.q+:not(.sub),.stretch>.sub+*,.stretch>.ih+*{margin-top:auto}
@@ -104,14 +107,38 @@ S = 'fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round" stroke
 SN = 'fill="none" stroke="#111" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"'
 
 
+EX_BG = "#e9e9e9"  # background of the worked example: grey = "do it like this" (STANDARDS D1)
+SHADE = "#bdbdbd"  # grey used where an example is coloured in
+DONE = '<span class="done"></span>'  # the child ticks it when the task is done (STANDARDS D6)
+# action icon of each Year 1 review task (STANDARDS I1); icons are drawn in stages.py
+TASK_ACTION = {1: "write", 2: "count", 3: "circle", 4: "write", 5: "write", 6: "write", 7: "write", 8: "count",
+               9: "circle", 10: "colour", 11: "tick", 12: "circle", 13: "write", 14: "write", 15: "write",
+               16: "write", 17: "write", 18: "write"}
+
+
+def ring(html, pad=3):
+    """A worked example answer: circled, on grey."""
+    return (f'<span style="display:inline-flex;align-items:center;justify-content:center;border:3px solid #111;'
+            f'border-radius:999px;padding:{pad}px;background:{EX_BG}">{html}</span>')
+
+
+def number_pages(pages):
+    """'1 / 4' at the bottom right of every page (STANDARDS L5)."""
+    n = len(pages)
+    return [p[:-6] + f'<div class="pgno">{i} / {n}</div></div>' for i, p in enumerate(pages, 1)]
+
+
 def sec(num, title, body, sub="", grow=False):
+    import stages  # the action icons live there
+    icon = stages.action(TASK_ACTION[num], 40) if num in TASK_ACTION else ""
     s = f'<p class="sub">{sub}</p>' if sub else ""
     if grow:  # the last section fills the rest of the page; centre its content in the spare height
         st = ' style="flex:1;display:flex;flex-direction:column"'
         body = f'<div style="flex:1;display:flex;flex-direction:column;justify-content:center">{body}</div>'
     else:
         st = ""
-    return f'<section class="sec"{st}><p class="q"><span class="n">{num}</span>{title}</p>{s}{body}</section>'
+    return (f'<section class="sec"{st}><p class="q"><span class="n">{num}</span>{icon}<span class="qt">{title}</span>{DONE}</p>'
+            f'{s}{body}</section>')
 
 
 def box(w=46, h=None, r=10):
@@ -119,10 +146,11 @@ def box(w=46, h=None, r=10):
     return f'<span class="box" style="width:{w}px;height:{h}px;border-radius:{r}px"></span>'
 
 
-def filled(v, w=46):
-    """An answer box with the number already written in (a worked example)."""
+def filled(v, w=46, ex=False):
+    """An answer box with the answer already written in (a worked example; ex=True puts it on grey)."""
+    bg = f";background:{EX_BG}" if ex else ""
     return (f'<span class="box" style="width:{w}px;height:{w}px;display:inline-flex;align-items:center;'
-            f'justify-content:center;font-size:22px;font-weight:800">{v}</span>')
+            f'justify-content:center;font-size:22px;font-weight:800{bg}">{v}</span>')
 
 
 def num(v):
@@ -168,7 +196,7 @@ def icon_defs(key, pid):
 def task_count(rng, lvl, L, key):
     n = {1: rng.randint(4, 9), 2: rng.randint(6, 12), 3: rng.randint(12, 20)}[lvl]
     _, w, h = ICONS[key]
-    W = 470
+    W = 380
     rows = 2 if n <= 10 else 3
     per = [n // rows + (1 if i < n % rows else 0) for i in range(rows)]
     cols = max(per)
@@ -187,8 +215,11 @@ def task_count(rng, lvl, L, key):
             uses.append(f'<use href="#c1" transform="translate({x:.1f},{y:.1f}) scale({sc:.2f})"/>')
     svg = (f'<svg width="{W}" height="{H:.0f}" viewBox="0 0 {W} {H:.0f}">{icon_defs(key, "c1")}'
            + "".join(uses) + "</svg>")
-    body = (f'<div style="display:flex;align-items:center;justify-content:space-between;padding:0 6px">'
-            f'{svg}{box(76, r=14)}</div>')
+    import stages
+    example = (f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px;background:{EX_BG};'
+               f'border-radius:12px;padding:8px 10px">{stages.objects(key, 3, 24)}{filled(3, 40)}</div>')
+    body = (f'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 6px">'
+            f'{example}{svg}{box(76, r=14)}</div>')
     return sec(1, text(L.w["t1"], what=L.w["what"][key]), body), f'{L.a["what"][key]}: <b>{n}</b>'
 
 
@@ -216,8 +247,13 @@ def task_estimate(rng, lvl, L, key):
     sc = 0.9 if shelves == 2 else 0.62
     svg = (f'<svg width="{W * sc:.0f}" height="{H * sc:.0f}" viewBox="0 0 {W} {H}">{icon_defs(key, "c2")}'
            + "".join(parts) + "</svg>")
-    lab = 'display:flex;flex-direction:column;align-items:center;gap:8px;font-size:18px;font-weight:800'
-    body = (f'<div style="display:flex;align-items:center;justify-content:space-between">{svg}'
+    import stages
+    lab = 'display:flex;flex-direction:column;align-items:center;gap:8px;font-size:20px;font-weight:800'
+    lab_s = 'display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px;font-weight:800'
+    example = (f'<div style="display:flex;align-items:center;gap:14px;background:{EX_BG};border-radius:12px;padding:6px 12px;'
+               f'margin-bottom:8px;width:max-content">{stages.objects(key, 6, 22, 6, 4)}'
+               f'<div style="{lab_s}">{L.w["estimate"]}{filled(5, 36)}</div><div style="{lab_s}">{L.w["counted"]}{filled(6, 36)}</div></div>')
+    body = (f'{example}<div style="display:flex;align-items:center;justify-content:space-between">{svg}'
             f'<div style="display:flex;gap:22px;border-left:2.5px solid #111;padding-left:20px">'
             f'<div style="{lab}">{L.w["estimate"]}{box(70, r=14)}</div><div style="{lab}">{L.w["counted"]}{box(70, r=14)}</div>'
             f'</div></div>')
@@ -233,10 +269,10 @@ def task_odd_even(rng, lvl, L):
         hits = [x for x in xs if (x % 2 == 1) == want_odd]
         if 3 <= len(hits) <= 7:
             break
-    body = ('<div style="display:flex;justify-content:space-between;padding:0 4px">'
-            + "".join(num(x) for x in xs) + "</div>")
+    body = ('<div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">'
+            + "".join(ring(num(x)) if x == hits[0] else num(x) for x in xs) + "</div>")
     title = L.w["t3_odd"] if want_odd else L.w["t3_even"]
-    return sec(3, title, body), f'{L.a["odd" if want_odd else "even"]}: <b>{join_list(hits)}</b>'
+    return sec(3, title, body), f'{L.a["odd" if want_odd else "even"]}: <b>{join_list(hits[1:])}</b>'
 
 
 # ---------------------------------------------------------------- task 4: number line
@@ -261,15 +297,17 @@ def task_number_line(rng, lvl, L):
             break
     xs = [40 + 62 * i for i in range(11)]
     dots = "".join(f'<circle cx="{x}" cy="22" r="6"/>' for x in xs)
-    texts = "".join(f'<text x="{xs[i]}" y="70">{vals[i]}</text>' for i in range(11) if i not in miss)
-    rects = "".join(f'<rect x="{xs[i] - 24}" y="42" width="48" height="40" rx="9"/>' for i in miss)
+    ex = miss[0]  # worked example
+    rects = "".join(f'<rect x="{xs[i] - 24}" y="42" width="48" height="40" rx="9"{" fill=" + chr(34) + EX_BG + chr(34) if i == ex else ""}/>'
+                    for i in miss)
+    texts = "".join(f'<text x="{xs[i]}" y="70">{vals[i]}</text>' for i in range(11) if i not in miss or i == ex)
     svg = ('<svg width="672" height="88" viewBox="0 0 704 92" style="font-weight:800">'
            '<line x1="12" y1="22" x2="692" y2="22" stroke="#111" stroke-width="3"/>'
            '<path d="M4 22 L18 14 L18 30 Z" fill="#111"/><path d="M700 22 L686 14 L686 30 Z" fill="#111"/>'
-           f'<g fill="#111">{dots}</g><g font-size="24" text-anchor="middle" fill="#111">{texts}</g>'
-           f'<g fill="#fff" stroke="#111" stroke-width="2.5">{rects}</g></svg>')
+           f'<g fill="#111">{dots}</g><g fill="#fff" stroke="#111" stroke-width="2.5">{rects}</g>'
+           f'<g font-size="24" text-anchor="middle" fill="#111">{texts}</g></svg>')
     return (sec(4, L.w["t4"], svg),
-            f"<b>{join_list(vals[i] for i in miss)}</b>" + (f' ({text(L.a["step"], s=step)})' if step > 1 else ""))
+            f"<b>{join_list(vals[i] for i in miss[1:])}</b>" + (f' ({text(L.a["step"], s=step)})' if step > 1 else ""))
 
 
 # ---------------------------------------------------------------- task 5: compare
@@ -289,23 +327,26 @@ def task_compare(rng, lvl, L):
                 b = rng.randint(lo, hi)
         pairs.append((a, b))
     sep = '<span style="width:2.5px;height:48px;background:#111"></span>'
-    items = [f'<div style="display:flex;gap:6px">{num(a)}{box(48)}{num(b)}</div>' for a, b in pairs]
+    sym = lambda a, b: "&lt;" if a < b else ("&gt;" if a > b else "=")
+    items = [f'<div style="display:flex;gap:6px">{num(a)}{filled(sym(a, b), 48, ex=True) if i == 0 else box(48)}{num(b)}</div>'
+             for i, (a, b) in enumerate(pairs)]
     body = ('<div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">'
             + sep.join(items) + "</div>")
-    sym = lambda a, b: "&lt;" if a < b else ("&gt;" if a > b else "=")
     return (sec(5, L.w["t5"], body),
-            "<b>" + ", ".join(f"{a} {sym(a, b)} {b}" for a, b in pairs) + "</b>")
+            "<b>" + ", ".join(f"{a} {sym(a, b)} {b}" for a, b in pairs[1:]) + "</b>")
 
 
 # ---------------------------------------------------------------- task 6: words
 def task_words(rng, lvl, L):
     lo, hi = {1: (0, 10), 2: (3, 20), 3: (13, 99)}[lvl]
-    xs = rng.sample(range(lo, hi + 1), 4)
-    cell = '<div style="display:flex;align-items:flex-end;gap:12px">{}<span class="line"></span></div>'
+    xs = sorted(rng.sample(range(lo, hi + 1), 4))  # easy to harder (STANDARDS D2)
+    cell = '<div style="display:flex;align-items:flex-end;gap:12px">{}{}</div>'
+    written = (f'<span style="flex:1;border-bottom:2.5px solid #111;background:{EX_BG};border-radius:8px 8px 0 0;'
+               f'padding:0 8px;font-size:22px;font-weight:800">{i18n.numwords(L.wl, xs[0])}</span>')
     body = ('<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;row-gap:10px">'
-            + "".join(cell.format(num(x)) for x in xs) + "</div>")
+            + "".join(cell.format(num(x), written if i == 0 else '<span class="line"></span>') for i, x in enumerate(xs)) + "</div>")
     return (sec(6, L.w["t6"], body, grow=True),  # the child writes the words in the worksheet language
-            "<b>" + ", ".join(i18n.numwords(L.wl, x) for x in xs) + "</b>")
+            "<b>" + ", ".join(i18n.numwords(L.wl, x) for x in xs[1:]) + "</b>")
 
 
 # ---------------------------------------------------------------- task 7: 3D shapes
@@ -335,8 +376,15 @@ def task_3d(rng, lvl, L):
     pool = ["cube", "sphere", "cylinder", "cone"] if lvl == 1 else list(SHAPES3D)
     picks = rng.sample(pool, 3)
     rows = []
-    for k in picks:
+    for i, k in enumerate(picks):
         svg = f'<svg width="64" height="56" viewBox="0 0 80 70">{SHAPES3D[k][0]}</svg>'
+        if i == 0:  # worked example
+            bg = f"background:{EX_BG};"
+            rows.append(f'<div class="td" style="height:58px;{bg}">{svg}</div>'
+                        f'<div class="td" style="{bg}font-size:20px">{L.w["shapes3d"][k]}</div>'
+                        f'<div class="td" style="{bg}">{filled(SHAPES3D[k][1], 40)}</div>'
+                        f'<div class="td" style="{bg}border-right:none">{filled(SHAPES3D[k][2], 40)}</div>')
+            continue
         rows.append(f'<div class="td" style="height:58px">{svg}</div>'
                     '<div class="td" style="padding:0 16px 16px;align-items:flex-end"><span style="border-bottom:2.5px solid #111;width:100%"></span></div>'
                     f'<div class="td">{box(40)}</div><div class="td" style="border-right:none">{box(40)}</div>')
@@ -349,7 +397,7 @@ def task_3d(rng, lvl, L):
 
     def pill(word):  # long names get a smaller font; very long ones break at a soft hyphen (&shy;) in i18n
         n = len(word.replace(SHY, ""))
-        fs = 17 if n <= 9 else 14 if n <= 12 else 13
+        fs = 19 if n <= 9 else 16 if n <= 12 else 14
         return f'<div class="pill" style="padding:2px 6px;font-size:{fs}px;line-height:1.15;hyphens:manual">{word}</div>'
     body = ('<div style="display:flex;gap:14px;align-items:stretch">'
             '<div style="flex:1;border:2.5px solid #111;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:110px 1fr 86px 86px">'
@@ -359,7 +407,7 @@ def task_3d(rng, lvl, L):
             '<div style="width:130px;border:2.5px solid #111;border-radius:12px;padding:6px 8px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;justify-content:center">'
             f'<div style="background:#111;color:#fff;border-radius:20px;padding:4px 8px;font-size:15px;font-weight:900;text-align:center">{L.w["bank"]}</div>'
             + "".join(pill(names[b]) for b in bank) + "</div></div>")
-    ans = "; ".join(f'<b>{names[k]}</b> — {L.a["faces"][k]}' for k in picks)
+    ans = "; ".join(f'<b>{names[k]}</b> — {L.a["faces"][k]}' for k in picks[1:])
     if lvl >= 2:
         ans += " (" + text(L.a["extra"], w=names[[b for b in bank if b not in picks][0]]) + ")"
     return sec(7, L.w["t7"], body), ans
@@ -426,10 +474,12 @@ def task_2d_picture(rng, lvl, L):
            '</g><line x1="4" y1="231" x2="316" y2="231" stroke="#111" stroke-width="3"/></svg>')
     kinds = ("circle", "triangle", "square", "rect")
     h_shape, h_many = L.w["th2"]
-    table = ('<div style="flex:1;border:2.5px solid #111;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 110px">'
+    table = ('<div style="flex:1;border:2.5px solid #111;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 140px">'
              f'<div class="th">{h_shape}</div><div class="th" style="border-right:none">{h_many}</div>'
-             + "".join(f'<div class="td" style="height:36px">{n}</div><div class="td" style="border-right:none">{box(32, 30)}</div>'
-                       for n in L.w["shapes2d"]) + "</div>")
+             + "".join(f'<div class="td" style="height:36px{";background:" + EX_BG if i == 0 else ""}">{n}</div>'
+                       f'<div class="td" style="border-right:none{";background:" + EX_BG if i == 0 else ""}">'
+                       f'{filled(len(c[kinds[0]]), 32) if i == 0 else box(32, 30)}</div>'
+                       for i, n in enumerate(L.w["shapes2d"])) + "</div>")
     body = f'<div style="display:flex;align-items:center;gap:24px">{svg}{table}</div>'
 
     def expl(k):
@@ -458,15 +508,19 @@ def task_sides(rng, lvl, L):
     order = others + [target]
     rng.shuffle(order)
     svgs = "".join(f'<svg width="74" height="74" viewBox="0 0 90 90"><path d="{polygon(n)}" {SN}/></svg>' for n in order)
-    body = f'<div style="display:flex;justify-content:space-around;align-items:center">{svgs}</div>'
+    tri = f'<svg width="46" height="46" viewBox="0 0 90 90"><path d="{polygon(3)}" {SN}/></svg>'
+    example = (f'<div style="display:flex;align-items:center;gap:8px;background:{EX_BG};border-radius:12px;padding:6px 12px">'
+               f'<span style="font-size:24px;font-weight:900">3</span>{ring(tri, 2)}</div>')
+    body = (f'<div style="display:flex;justify-content:space-around;align-items:center">{example}'
+            f'<span style="width:2.5px;align-self:stretch;background:#111"></span>{svgs}</div>')
     ans = text(L.a["poly_ans"], name=L.a["poly"][target], nth=L.a["nth"][order.index(target)])
     return sec(9, text(L.w["t9"], n=target), body), ans[0].upper() + ans[1:]
 
 
 # ---------------------------------------------------------------- fraction shapes
-def frac_shape(kind, d, equal=True, rng=None):
-    """Return svg for a shape cut into d parts (equal or not)."""
-    lines = []
+def frac_shape(kind, d, equal=True, rng=None, shade=0):
+    """Return svg for a shape cut into d parts (equal or not); the first `shade` parts of an equal shape are shaded."""
+    lines, regions = [], []
     if kind == "circle":
         if equal:
             angs = [-90 + 360 * i / d for i in range(d)]
@@ -479,22 +533,35 @@ def frac_shape(kind, d, equal=True, rng=None):
             for a in angs:
                 t = math.radians(a)
                 lines.append(f'<line x1="50" y1="50" x2="{50 + 44 * math.cos(t):.1f}" y2="{50 + 44 * math.sin(t):.1f}"/>')
-        return f'<svg width="86" height="86" viewBox="0 0 100 100"><g {SN}><circle cx="50" cy="50" r="44"/>{"".join(lines)}</g></svg>'
+            pt = lambda a: f"{50 + 44 * math.cos(math.radians(a)):.1f} {50 + 44 * math.sin(math.radians(a)):.1f}"
+            for i in range(shade):
+                a0, a1 = angs[i], angs[i] + 360 / d
+                regions.append(f'<path d="M50 50 L{pt(a0)} A44 44 0 0 1 {pt(a1)} Z"/>')
+        return (f'<svg width="86" height="86" viewBox="0 0 100 100"><g fill="{SHADE}" stroke="none">{"".join(regions)}</g>'
+                f'<g {SN}><circle cx="50" cy="50" r="44"/>{"".join(lines)}</g></svg>')
     if kind == "square":
         if d == 4 and equal:
             lines = ['<line x1="50" y1="6" x2="50" y2="94"/>', '<line x1="6" y1="50" x2="94" y2="50"/>']
+            quads = [(6, 6), (50, 6), (50, 50), (6, 50)]
+            regions = [f'<rect x="{x}" y="{y}" width="44" height="44"/>' for x, y in quads[:shade]]
         elif d == 4:
             a, b = rng.choice([(30, 62), (64, 36), (34, 34)])
             lines = [f'<line x1="{a}" y1="6" x2="{a}" y2="94"/>', f'<line x1="6" y1="{b}" x2="94" y2="{b}"/>']
         elif d == 2 and equal:
-            lines = [rng.choice(['<line x1="50" y1="6" x2="50" y2="94"/>', '<line x1="6" y1="6" x2="94" y2="94"/>'])]
+            diagonal = rng.random() < 0.5
+            lines = ['<line x1="6" y1="6" x2="94" y2="94"/>' if diagonal else '<line x1="50" y1="6" x2="50" y2="94"/>']
+            if shade:
+                regions = ['<path d="M6 6 L94 94 L6 94 Z"/>' if diagonal else '<rect x="6" y="6" width="44" height="88"/>']
         elif d == 2:
             lines = ['<line x1="30" y1="6" x2="30" y2="94"/>']
         else:
             # unequal: part widths clearly differ (e.g. 16/26/46), so the child can see it at a glance
             xs = [6 + 88 * i / d for i in range(1, d)] if equal else list(rng.choice([(22, 48), (52, 78), (28, 72)]))[:d - 1]
             lines = [f'<line x1="{x:.1f}" y1="6" x2="{x:.1f}" y2="94"/>' for x in xs]
-        return f'<svg width="86" height="86" viewBox="0 0 100 100"><g {SN}><rect x="6" y="6" width="88" height="88"/>{"".join(lines)}</g></svg>'
+            if equal:
+                regions = [f'<rect x="{6 + 88 * i / d:.1f}" y="6" width="{88 / d:.1f}" height="88"/>' for i in range(shade)]
+        return (f'<svg width="86" height="86" viewBox="0 0 100 100"><g fill="{SHADE}" stroke="none">{"".join(regions)}</g>'
+                f'<g {SN}><rect x="6" y="6" width="88" height="88"/>{"".join(lines)}</g></svg>')
     # rectangle strips
     if equal:
         xs = [6 + 176 * i / d for i in range(1, d)]
@@ -505,14 +572,18 @@ def frac_shape(kind, d, equal=True, rng=None):
             if min(widths) > 16 and max(widths) - min(widths) > 30:
                 break
     lines = [f'<line x1="{x:.1f}" y1="14" x2="{x:.1f}" y2="86"/>' for x in xs]
-    return f'<svg width="150" height="80" viewBox="0 0 190 100"><g {SN}><rect x="6" y="14" width="176" height="72"/>{"".join(lines)}</g></svg>'
+    if equal:
+        regions = [f'<rect x="{6 + 176 * i / d:.1f}" y="14" width="{176 / d:.1f}" height="72"/>' for i in range(shade)]
+    return (f'<svg width="150" height="80" viewBox="0 0 190 100"><g fill="{SHADE}" stroke="none">{"".join(regions)}</g>'
+            f'<g {SN}><rect x="6" y="14" width="176" height="72"/>{"".join(lines)}</g></svg>')
 
 
 def task_shade(rng, lvl, L):
     f = {1: (1, 2), 2: (1, 4), 3: rng.choice([(1, 3), (3, 4)])}[lvl]
     d = f[1]
     kinds = ["square", "circle", "rect"]
-    svgs = "".join(frac_shape(k, d, True, rng) for k in kinds)
+    svgs = "".join(f'<span style="background:{EX_BG};border-radius:12px;padding:6px;display:inline-flex">{frac_shape(k, d, True, rng, f[0])}</span>'
+                   if i == 0 else frac_shape(k, d, True, rng) for i, k in enumerate(kinds))  # the first shape is the worked example
     body = f'<div style="display:flex;justify-content:space-around;align-items:center">{svgs}</div>'
     key = f"{f[0]}/{f[1]}"
     return sec(10, text(L.w["t10"], frac=L.w["frac"][key]), body), text(L.a["shade"], part=L.a["shade_part"][key])
@@ -521,16 +592,16 @@ def task_shade(rng, lvl, L):
 def task_equal_parts(rng, lvl, L):
     d = {1: 2, 2: 4, 3: rng.choice([3, 4])}[lvl]
     kinds = ["square", "circle", "rect", "rect"]
-    while True:
-        eq = [rng.random() < 0.5 for _ in kinds]
-        if 1 <= sum(eq) <= 3:
+    while True:  # the first shape is the worked example: always equal, already ticked
+        eq = [True] + [rng.random() < 0.5 for _ in kinds[1:]]
+        if sum(eq) <= 3:
             break
     cells = []
-    for k, e in zip(kinds, eq):
-        if k == "square" and d == 3:
-            pass
-        cells.append('<div style="display:flex;flex-direction:column;align-items:center;gap:8px">'
-                     f'{frac_shape(k, d, e, rng)}{box(42)}</div>')
+    for i, (k, e) in enumerate(zip(kinds, eq)):
+        tick = filled("✓", 42) if i == 0 else box(42)
+        bg = f"background:{EX_BG};border-radius:12px;padding:6px;" if i == 0 else ""
+        cells.append(f'<div style="display:flex;flex-direction:column;align-items:center;gap:8px;{bg}">'
+                     f'{frac_shape(k, d, e, rng)}{tick}</div>')
     body = f'<div style="display:flex;justify-content:space-around;align-items:flex-end">{"".join(cells)}</div>'
     yes = [n for n, e in zip(L.a["eq_names"], eq) if e]
     no = [n for n, e in zip(L.a["eq_names"], eq) if not e]
@@ -569,9 +640,19 @@ def task_lengths(rng, lvl, L):
     q1 = L.w["pencil_short"] if short_q else L.w["pencil_long"]
     q2 = L.w["tower_tall"] if tall_q else L.w["tower_low"]
     col = 'flex:1;display:flex;flex-direction:column;gap:10px'
-    p = lambda q: f'margin:0;font-size:{20 if len(q) <= 24 else 18}px;font-weight:800'  # keep each question on one line
-    body = (f'<div style="display:flex;gap:18px"><div style="{col}"><p style="{p(q1)}">{q1}</p>{pen_svg}</div>'
-            f'<div style="width:2.5px;background:#111"></div><div style="{col}"><p style="{p(q2)}">{q2}</p>{tw_svg}</div></div>')
+    p = 'margin:0;font-size:23px;font-weight:800;line-height:1.25'
+    # worked examples (not the answers): two short bars and two small towers, the right one circled
+    bar = lambda ln: f'<svg width="{ln + 6}" height="16"><rect x="3" y="3" width="{ln}" height="10" rx="3" fill="#fff" stroke="#111" stroke-width="2.5"/></svg>'
+    bars = [bar(34), bar(78)]
+    bars[0 if short_q else 1] = ring(bars[0 if short_q else 1], 2)
+    tower = lambda t: ('<svg width="18" height="' + str(14 * t + 4) + '">' + "".join(
+        f'<rect x="2" y="{2 + 14 * j}" width="14" height="14" fill="#fff" stroke="#111" stroke-width="2"/>' for j in range(t)) + '</svg>')
+    tws = [tower(2), tower(4)]
+    tws[1 if tall_q else 0] = ring(tws[1 if tall_q else 0], 2)
+    ex = lambda parts: (f'<div style="display:flex;align-items:flex-end;gap:16px;background:{EX_BG};border-radius:10px;'
+                        f'padding:6px 12px;width:max-content">{"".join(parts)}</div>')
+    body = (f'<div style="display:flex;gap:18px"><div style="{col}"><p style="{p}">{q1}</p>{ex(bars)}{pen_svg}</div>'
+            f'<div style="width:2.5px;background:#111"></div><div style="{col}"><p style="{p}">{q2}</p>{ex(tws)}{tw_svg}</div></div>')
     pi = lens.index(min(lens) if short_q else max(lens))
     ti = tw.index(max(tw) if tall_q else min(tw))
     a = L.a
@@ -605,11 +686,11 @@ def task_steps(rng, lvl, L):
     vals = [start + i * step for i in range(10)]
     k = 5 if lvl == 3 else 4
     miss = sorted(rng.sample(range(2, 10), k))
-    cells = "".join(box(48) if i in miss else num(v) for i, v in enumerate(vals))
+    cells = "".join((filled(v, 48, ex=True) if i == miss[0] else box(48)) if i in miss else num(v) for i, v in enumerate(vals))
     body = f'<div style="display:flex;justify-content:space-between;padding:0 4px">{cells}</div>'
     # curriculum depends on the step: 1s within 20 = Y1 spring, 2s / 5s / 10s = Y1 summer, 3s = Year 2
     period = {1: "Y1Sp", 2: "Y1Su", 5: "Y1Su", 10: "Y1Su", 3: "Y2"}[step]
-    return sec(14, text(L.w["t14"], s=step), body), f"<b>{join_list(vals[i] for i in miss)}</b>", period
+    return sec(14, text(L.w["t14"], s=step), body), f"<b>{join_list(vals[i] for i in miss[1:])}</b>", period
 
 
 # ---------------------------------------------------------------- task 15: equations
@@ -649,6 +730,12 @@ def task_equations(rng, lvl, L):
             cells[2].append(f"{s} −{box(44)}= {a}"); ans_cols[2].append(b)
         else:
             cells[2].append(f"{box(44)}− {b} = {a}"); ans_cols[2].append(s)
+    for c in range(3):  # easy to harder: smaller answers first in every column (STANDARDS D2)
+        order = sorted(range(4), key=lambda r: ans_cols[c][r])
+        cells[c] = [cells[c][r] for r in order]
+        ans_cols[c] = [ans_cols[c][r] for r in order]
+    cells[0][0] = cells[0][0].replace(box(44), filled(ans_cols[0][0], 44, ex=True), 1)  # worked example
+    ans_cols[0] = ans_cols[0][1:]
     out = []
     for r in range(4):
         for c in range(3):
@@ -707,14 +794,16 @@ def make_wall(rng, lvl):
 def task_walls(rng, lvl, L):
     bw = 54 if lvl == 3 else 66
     walls, ans = [], []
-    for w in range(3):
-        rows, known = make_wall(rng, lvl)
+    made = sorted((make_wall(rng, lvl) for _ in range(3)), key=lambda rk: rk[0][-1][0])  # smaller top first (D2)
+    for w, (rows, known) in enumerate(made):
         html = []
         for r in range(len(rows) - 1, -1, -1):
-            bricks = "".join(f'<span class="brick" style="width:{bw}px">{rows[r][i] if (r, i) in known else ""}</span>'
-                             for i in range(len(rows[r])))
+            bricks = "".join(f'<span class="brick" style="width:{bw}px{"" if (r, i) in known or w else ";background:" + EX_BG}">'
+                             f'{rows[r][i] if (r, i) in known or w == 0 else ""}</span>' for i in range(len(rows[r])))
             html.append(f'<div class="row">{bricks}</div>')
         walls.append(f'<div style="display:flex;flex-direction:column;gap:2px">{"".join(html)}</div>')
+        if w == 0:  # the first wall is the worked example
+            continue
         miss = []
         for r in range(len(rows) - 1, -1, -1):
             vs = [str(rows[r][i]) for i in range(len(rows[r])) if (r, i) not in known]
@@ -795,7 +884,7 @@ def task_positions(rng, lvl, L):
         flaps = ('<path d="M110 165 L138 143 L122 118 L94 140 Z"/><path d="M230 165 L258 143 L262 112 L234 134 Z"/>'
                  if "in" in pos else "")
         scene = "".join(layer_back) + flaps + box_top + "".join(layer_mid) + box_front + "".join(layer_front)
-    svg = (f'<svg width="300" height="250" viewBox="0 0 340 280">'
+    svg = (f'<svg width="250" height="206" viewBox="0 0 340 280">'
            '<line x1="4" y1="250" x2="336" y2="250" stroke="#111" stroke-width="3"/>'
            f'<g {S}>{scene}</g></svg>')
     # with "on" the item stands on the top face; with "in" the item is drawn inside
@@ -805,13 +894,15 @@ def task_positions(rng, lvl, L):
     rng.shuffle(bank)
     w = L.w
     letters, blank = w["letters"], f'<span class="blank" style="width:{w["blank"]}px"></span>'
-    sents = "".join(f'<p class="sent">{letters[i]}) {text(w["sent"], item=w["items"][it], blank=blank)}</p>'
+    done_blank = (f'<span class="blank" style="width:auto;min-width:{w["blank"]}px;background:{EX_BG};text-align:center;'
+                  f'font-weight:800;padding:0 6px">{w["pos"][pos[0]]}</span>')
+    sents = "".join(f'<p class="sent">{letters[i]}) {text(w["sent"], item=w["items"][it], blank=done_blank if i == 0 else blank)}</p>'
                     for i, it in enumerate(items))
     pills = "".join(f'<span class="pill">{w["pos"][p]}</span>' for p in bank)
     body = (f'<div style="display:flex;flex-wrap:wrap;justify-content:space-around;gap:8px 10px;margin-bottom:10px">{pills}</div>'
-            f'<div style="display:flex;gap:20px;align-items:center">{svg}'
-            f'<div style="flex:1;display:flex;flex-direction:column;gap:16px;border-left:2.5px solid #111;padding-left:20px">{sents}</div></div>')
-    ans = " · ".join(f'{letters[i]}) <b>{w["pos"][p]}</b>' for i, p in enumerate(pos))
+            f'<div style="display:flex;gap:12px;align-items:center">{svg}'
+            f'<div style="flex:1;display:flex;flex-direction:column;gap:14px;border-left:2.5px solid #111;padding-left:14px">{sents}</div></div>')
+    ans = " · ".join(f'{letters[i]}) <b>{w["pos"][p]}</b>' for i, p in enumerate(pos) if i)
     return sec(17, w["t17"], body), ans
 
 
@@ -844,7 +935,7 @@ def task_ordinals(rng, lvl, L):
         else:
             parts.append(f'<use href="#dk" transform="translate({x + 64 * sc:.1f},{40 + (1 - sc) * 66:.1f}) scale({-sc:.2f},{sc:.2f})"/>')
         cx = x + 32 * sc
-        circ.append(f'<circle cx="{cx:.1f}" cy="152" r="{min(26, sp / 2 - 3):.1f}"/>')
+        circ.append(f'<circle cx="{cx:.1f}" cy="152" r="{min(26, sp / 2 - 3):.1f}"{" fill=" + chr(34) + EX_BG + chr(34) if rank in given else ""}/>')
         if rank in given:
             txt.append(f'<text x="{cx:.1f}" y="159">{i18n.ordinal(L.wl, rank)}</text>')
     px = 656 if pond_right else 58
@@ -915,60 +1006,30 @@ def parse_level(level):
     or chosen topics "T:r1_v4a_..." (see topics.py)."""
     if str(level) in ("R", "Y1A"):
         return str(level)
+    import topics
     if str(level).startswith("T:"):
-        import topics
         return "T:" + "_".join(topics.parse(str(level)))
-    level = int(level)
-    if level not in (1, 2, 3):
-        raise ValueError("level must be 1, 2, 3, R or Y1A")
-    return level
+    # Year 1 review: 1, 2, 3 (= part 1) or 1a/1b, 2a/2b, 3a/3b; each part is a sheet of 9 topics (STANDARDS L7)
+    m = str(level).strip().lower()
+    if m[:1] in ("1", "2", "3") and m[1:] in ("", "a", "b"):
+        return topics.review_spec(int(m[0]), 2 if m[1:] == "b" else 1)
+    raise ValueError("level must be 1, 2, 3 (1a ... 3b), R, Y1A or T:<topics>")
 
 
 def build(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):
     """Return (worksheet pages, answer page) as HTML. Numbers and pictures depend only on level and seed."""
     L = Lang(lang, answers_lang)
     level = parse_level(level)
-    if isinstance(level, str) and level.startswith("T:"):
-        import topics  # a sheet made of the topics the parent or teacher picked
+    if level.startswith("T:"):
+        import topics  # a sheet made of chosen topics (also the Year 1 review sheets)
         return topics.build(level, seed, L)
-    if isinstance(level, str):
-        import stages  # Reception / Year 1 autumn: icon-led tasks for children who cannot read yet
-        return stages.build(level, seed, L)
-    rng = random.Random(seed)
-    k1, k2 = rng.sample(list(ICONS), 2)
-    if k2 == "fish":
-        k1, k2 = k2, k1
-    t = [task_count(rng, level, L, k1), task_estimate(rng, level, L, k2)]
-    for task in (task_odd_even, task_number_line, task_compare, task_words, task_3d, task_2d_picture, task_sides,
-                 task_shade, task_equal_parts, task_lengths, task_bonds, task_steps, task_equations, task_walls,
-                 task_positions, task_ordinals):
-        t.append(task(rng, level, L))
-    w = L.w
-    header_html = header(L, text(w["badge"], level=level, seed=seed))
-    pages = [
-        page(header_html + "".join(x[0] for x in t[0:6]), "padding-bottom:36px"),
-        page("".join(x[0] for x in t[6:11])),
-        page("".join(x[0] for x in t[11:15])),
-        page("".join(x[0] for x in t[15:18])),
-    ]
-    # a task may return a third value: its own curriculum period (when it depends on what was generated)
-    ans = "".join(f'<div class="a"{' style="border-bottom:none"' if i == 17 else ""}><span class="n">{i + 1}</span>'
-                  f'<span style="flex:1">{x[1]}</span>'
-                  f'<span class="tag">{L.a["period"][x[2] if len(x) > 2 else curriculum(i + 1, level)]}</span></div>'
-                  for i, x in enumerate(t))
-    a = L.a
-    answers = page(f'<h1 style="margin:0 0 2px;font-size:32px;font-weight:900">{a["answers"]}</h1>'
-                   f'<p style="margin:0 0 8px;font-size:15px;font-weight:600">'
-                   f'{text(a["sub"], seed=seed, level=level, lname=a["levels"][level])}<br>{a["legend"]}</p>' + ans,
-                   "padding:40px 52px;gap:0")
-    return pages, answers
+    import stages  # Reception / Year 1 autumn: icon-led tasks for children who cannot read yet
+    return stages.build(level, seed, L)
 
 
 def cheats(level, seed, lang=i18n.DEFAULT, which=None):
     """Cheat-sheet pages (two cards per A4) for the chosen task numbers; for the stages R, Y1A and topic sheets."""
     level = parse_level(level)
-    if not isinstance(level, str):
-        raise ValueError("cheat sheets exist for the stages R and Y1A and for topic sheets")
     import cheats as c
     return c.build(level, seed, Lang(lang, lang), which)
 
@@ -991,10 +1052,10 @@ def html_doc(body, lang=i18n.DEFAULT):
 
 def stem_of(level, seed, lang=i18n.DEFAULT):
     level = parse_level(level)
-    if isinstance(level, str) and level.startswith("T:"):
+    if level.startswith("T:"):
         import topics
         return f"Worksheet_T{topics.short_id(topics.parse(level))}_{seed}_{lang}"
-    return f"Worksheet_{'L' if isinstance(level, int) else ''}{level}_{seed}_{lang}"
+    return f"Worksheet_{level}_{seed}_{lang}"
 
 
 def answers_stem(level, seed, lang=i18n.DEFAULT, answers_lang=i18n.DEFAULT):

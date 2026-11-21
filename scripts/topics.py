@@ -98,9 +98,18 @@ def catalog(lang=i18n.DEFAULT):
             "max": MAX_TOPICS, "presets": presets()}
 
 
+def review_spec(level, part):
+    """Year 1 review at level 1-3, part 1 (tasks 1-9) or part 2 (tasks 10-18): a topic sheet of 9 topics."""
+    tasks = range(1, 10) if part == 1 else range(10, 19)
+    return "T:" + "_".join(f"v{t}{LEVEL_LETTER[level]}" for t in tasks)
+
+
 def presets():
-    """Ready-made sheets per year (what the site offers before anyone picks topics)."""
-    return {"R": ["R"], "Y1": ["Y1A", 1, 2, 3], "Y2": ["T:" + "_".join(year_topics("Y2"))]}
+    """Ready-made sheets per year: [{"id": level for build(), "key": label key on the site, "part": 1 | 2 | None}]."""
+    review = [{"id": review_spec(lv, part), "key": str(lv), "part": part} for lv in (1, 2, 3) for part in (1, 2)]
+    return {"R": [{"id": "R", "key": "R", "part": None}],
+            "Y1": [{"id": "Y1A", "key": "Y1A", "part": None}] + review,
+            "Y2": [{"id": "T:" + "_".join(year_topics("Y2")), "key": "Y2", "part": None}]}
 
 
 def year_topics(year):
@@ -160,16 +169,23 @@ def heights():
 
 
 PAGE_INNER = 1123 - 80   # A4 height minus the 40 px padding top and bottom
+MAX_PER_PAGE = {"R": 2, "Y1": 3, "Y2": 4}  # STANDARDS L3
 GAP = 9                  # gap between sections (.page gap)
 SAFETY = 6
 
 
+def sheet_year(ids):
+    """The youngest year among the topics decides the page rules."""
+    return min((META[t]["year"] for t in ids), key=YEARS.index)
+
+
 def pack(ids, H):
-    """Group topic ids into pages using measured heights; keeps the chosen order."""
+    """Group topic ids into pages using measured heights and the per-page limit; keeps the chosen order."""
+    limit = MAX_PER_PAGE[sheet_year(ids)]
     pages, cur, used = [], [], H.get("_header", 120)
     for tid in ids:
         h = H.get(tid, PAGE_INNER) + SAFETY
-        if cur and used + GAP + h > PAGE_INNER:
+        if cur and (used + GAP + h > PAGE_INNER or len(cur) >= limit):
             pages.append(cur)
             cur, used = [], 0
         used += (GAP if cur else 0) + h
@@ -184,7 +200,7 @@ def build(spec, seed, L):
     rng = random.Random(f"topics-{'_'.join(ids)}-{seed}")  # str seed: same in CPython and Pyodide
     made = {tid: make(tid, rng, L, i + 1) for i, tid in enumerate(ids)}
     H = heights()
-    year = META[ids[0]]["year"]
+    year = sheet_year(ids)
     badge = text(L.w["badge_stage"], stage={"R": "Reception", "Y1": "Year 1", "Y2": "Year 2"}[year], seed=seed)
     pages = []
     for pi, group in enumerate(pack(ids, H)):
@@ -192,6 +208,7 @@ def build(spec, seed, L):
         secs[-1] = stretch(secs[-1])
         head = g.header(L, badge) if pi == 0 else ""
         pages.append(g.page(head + "".join(secs), "padding-bottom:36px" if pi == 0 else ""))
+    pages = g.number_pages(pages)
     a = L.a
     rows = [f'<div class="a"><span class="n">{i + 1}</span><span style="flex:1">{made[t][1]}</span>'
             f'<span class="tag">{a["period"][made[t][2]]}</span></div>' for i, t in enumerate(ids)]

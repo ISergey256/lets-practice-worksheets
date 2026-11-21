@@ -52,7 +52,7 @@ English, Українська, Русский, Ελληνικά, Deutsch, Franç
 |---|---|---|
 | **Reception** | ages 4–5, no reading needed | ladybird spots (subitising), count and circle, more / fewer, ten frames, part + part, tracing dotted numbers, patterns, colouring shapes |
 | **Year 1 · Autumn** | ages 5–6, first term | count and write, ten frames, 1 more / 1 less, &lt; &gt; =, number lines, part–whole, adding and taking away within 10, make 10, naming shapes |
-| **Year 1 review** (levels 1–3) | Year 1 | the full 18-task sheet below, easy / medium / hard |
+| **Year 1 review** (levels 1–3, parts 1 and 2) | Year 1 | the 18 tasks below as two sheets of 9, easy / medium / hard |
 
 On the Reception and Year 1 Autumn sheets every task has an **action icon** (count, circle, match, colour, trace, write, tick,
 cross out, draw) and its **first item is already done on a grey background**: grey means “do it like this”.
@@ -89,7 +89,7 @@ Links like `…/#L2-123` or `…/#L2-123-uk-ru` (tasks in Ukrainian, answers in 
 pip install playwright pypdf
 playwright install chromium
 python scripts/server.py                          # the same website at http://127.0.0.1:8000, plus PDF download
-python scripts/generate.py --level 2 --seed 123 --lang en --answers-lang en   # command line, PDFs go to out/
+python scripts/generate.py --level 2b --seed 123 --lang en --answers-lang en  # review level 2, part 2; PDFs go to out/
 ```
 
 On Windows you can also double-click `start_site.bat`.

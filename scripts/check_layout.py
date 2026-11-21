@@ -17,14 +17,14 @@ import generate as g  # noqa: E402
 import i18n  # noqa: E402
 import topics  # noqa: E402
 
-LEVELS = (1, 2, 3, "R", "Y1A")
+LEVELS = ("1a", "1b", "2a", "2b", "3a", "3b", "R", "Y1A")
 OVER = "Math.max(...[...document.querySelectorAll('.page')].map(p => p.scrollHeight - p.clientHeight))"
 
 
 def topic_specs(n=6):
     """Random topic sheets per year (fixed random seed): a few small and some with the maximum number of topics."""
     rng = random.Random(2026)
-    specs = [topics.presets()["Y2"][0]]
+    specs = [topics.presets()["Y2"][0]["id"]]
     for year in topics.YEARS:
         ids = [t for t, m in topics.META.items() if m["year"] == year]
         for i in range(n):
