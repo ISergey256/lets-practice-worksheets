@@ -104,5 +104,10 @@
     "en": "\"Show task labels\": tap the task with a problem and send its details, or report it on GitHub in one click.",
     "uk": "«Показати позначки завдань»: торкніться завдання з помилкою й надішліть його дані або повідомте на GitHub одним натиском.",
     "ru": "«Показать метки заданий»: нажмите на задание с ошибкой и отправьте его данные или сообщите на GitHub в один клик."
+  },
+  "Planned subjects: languages, nature, people and society": {
+    "en": "The plan for new subjects: languages, nature, and people and society — built on the official programmes.",
+    "uk": "План нових предметів: мови, природа, люди і суспільство — на основі офіційних програм.",
+    "ru": "План новых предметов: языки, природа, люди и общество — на основе официальных программ."
   }
 }

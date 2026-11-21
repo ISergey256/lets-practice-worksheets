@@ -36,6 +36,23 @@ Want to help? Pick an item and open an issue first.
 - [ ] Solve on a tablet: draw and type on the sheet on screen (for now the sheets are for printing).
 - [ ] Installable site that works offline (an icon on the home screen, no app store).
 
+## Subjects (plan)
+
+Maths first; the other subjects follow the same rules (STANDARDS.md): no reading needed in Reception, an icon for
+every action, a worked example in grey, cheat sheets for a parent or teacher. Each subject is built on the official
+programmes (England: EYFS areas of learning and the National Curriculum; Ukraine: НУШ) and only open sources.
+
+| Subject on the site | Reception (EYFS area) | Year 1–2 (National Curriculum) | Ukraine (НУШ, 1–2) |
+|---|---|---|---|
+| **Maths** — now | Mathematics | Mathematics | Математична галузь |
+| **Languages** — planned | Communication and language; Literacy | English (phonics, reading, writing) | Мовно-літературна галузь |
+| **Nature** — planned | Understanding the world: the natural world | Science (plants, animals, materials, seasons) | Природнича галузь |
+| **People and society** — planned | Understanding the world: past and present, people and communities; Personal, social and emotional development | History, Geography, PSHE | Громадянська та історична, соціальна і здоров’язбережувальна галузі |
+| Later | Expressive arts and design | Art, Music, D&T, Computing | Мистецька, технологічна, інформатична галузі |
+
+- [ ] Choose the first non-maths subject and collect its official sources in `reference/` (with licences).
+- [ ] Explanation library for maths (Reception, Year 1) → cheat sheets for every topic.
+
 ## 3. Checking the standard itself
 
 - [ ] Verify the Russian SanPiN numbers against the primary text (only a secondary summary was available).
