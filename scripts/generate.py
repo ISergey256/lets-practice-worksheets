@@ -65,9 +65,9 @@ body{margin:0;font-family:'Nunito','M PLUS Rounded 1c',system-ui,sans-serif;line
 .box{display:inline-block;width:46px;height:46px;border:2.5px solid #111;border-radius:10px;box-sizing:border-box;background:#fff;flex:none}
 .num{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:48px;border:2.5px solid #111;border-radius:10px;font-size:24px;font-weight:800;padding:0 6px;box-sizing:border-box;flex:none}
 .line{border-bottom:2.5px solid #111;flex:1;height:30px}
-.th{font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;height:38px;border-right:2px solid #111}
-.td{display:flex;align-items:center;justify-content:center;border-top:2px solid #111;border-right:2px solid #111;font-size:22px;font-weight:800}
-.pill{border:2.5px solid #111;border-radius:20px;padding:4px 12px;font-size:20px;font-weight:800;text-align:center}
+.th{font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;height:38px;border-right:2px solid #111}
+.td{display:flex;align-items:center;justify-content:center;border-top:2px solid #111;border-right:2px solid #111;font-size:23px;font-weight:800}
+.pill{border:2.5px solid #111;border-radius:20px;padding:4px 12px;font-size:22px;font-weight:800;text-align:center}
 .bond{display:flex;align-items:center;gap:5px;font-size:24px;font-weight:800;white-space:nowrap}
 .bond .box{width:40px;height:40px}
 .eq{display:flex;align-items:center;justify-content:center;gap:8px;font-size:28px;font-weight:800;height:62px;border-top:2px solid #111;border-right:2px solid #111;white-space:nowrap}
@@ -248,7 +248,7 @@ def task_estimate(rng, lvl, L, key):
     svg = (f'<svg width="{W * sc:.0f}" height="{H * sc:.0f}" viewBox="0 0 {W} {H}">{icon_defs(key, "c2")}'
            + "".join(parts) + "</svg>")
     import stages
-    lab = 'display:flex;flex-direction:column;align-items:center;gap:8px;font-size:20px;font-weight:800'
+    lab = 'display:flex;flex-direction:column;align-items:center;gap:8px;font-size:23px;font-weight:800'
     lab_s = 'display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px;font-weight:800'
     example = (f'<div style="display:flex;align-items:center;gap:14px;background:{EX_BG};border-radius:12px;padding:6px 12px;'
                f'margin-bottom:8px;width:max-content">{stages.objects(key, 6, 22, 6, 4)}'
@@ -326,6 +326,7 @@ def task_compare(rng, lvl, L):
             while b == a:
                 b = rng.randint(lo, hi)
         pairs.append((a, b))
+    pairs.sort(key=lambda ab: (ab[0] == ab[1], -abs(ab[0] - ab[1])))  # big differences first, equal last (STANDARDS D2)
     sep = '<span style="width:2.5px;height:48px;background:#111"></span>'
     sym = lambda a, b: "&lt;" if a < b else ("&gt;" if a > b else "=")
     items = [f'<div style="display:flex;gap:6px">{num(a)}{filled(sym(a, b), 48, ex=True) if i == 0 else box(48)}{num(b)}</div>'
@@ -342,7 +343,7 @@ def task_words(rng, lvl, L):
     xs = sorted(rng.sample(range(lo, hi + 1), 4))  # easy to harder (STANDARDS D2)
     cell = '<div style="display:flex;align-items:flex-end;gap:12px">{}{}</div>'
     written = (f'<span style="flex:1;border-bottom:2.5px solid #111;background:{EX_BG};border-radius:8px 8px 0 0;'
-               f'padding:0 8px;font-size:22px;font-weight:800">{i18n.numwords(L.wl, xs[0])}</span>')
+               f'padding:0 8px;font-size:23px;font-weight:800">{i18n.numwords(L.wl, xs[0])}</span>')
     body = ('<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;row-gap:10px">'
             + "".join(cell.format(num(x), written if i == 0 else '<span class="line"></span>') for i, x in enumerate(xs)) + "</div>")
     return (sec(6, L.w["t6"], body, grow=True),  # the child writes the words in the worksheet language
@@ -381,7 +382,7 @@ def task_3d(rng, lvl, L):
         if i == 0:  # worked example
             bg = f"background:{EX_BG};"
             rows.append(f'<div class="td" style="height:58px;{bg}">{svg}</div>'
-                        f'<div class="td" style="{bg}font-size:20px">{L.w["shapes3d"][k]}</div>'
+                        f'<div class="td" style="{bg}font-size:22px">{L.w["shapes3d"][k]}</div>'
                         f'<div class="td" style="{bg}">{filled(SHAPES3D[k][1], 40)}</div>'
                         f'<div class="td" style="{bg}border-right:none">{filled(SHAPES3D[k][2], 40)}</div>')
             continue

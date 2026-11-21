@@ -92,6 +92,18 @@
   .about p { margin:6px 0 0; font-size:15px; font-weight:700; line-height:1.5; }
   footer { margin-top:34px; color:var(--muted); font-size:14px; font-weight:700; line-height:1.6; }
   .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:#fff; border-radius:14px; padding:12px 20px; font-size:15px; font-weight:800; max-width:min(640px,90vw); z-index:50; }
+  .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-6px 0 14px; }
+  .listen { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .listen .chip { display:inline-flex; align-items:center; gap:5px; }
+  .listen .chip svg { width:18px; height:18px; }
+  .tools .lab2 { font-size:14px; font-weight:800; color:var(--muted); }
+  .harder { margin-left:auto; }
+  /* touch screens: every control at least 44 px (STANDARDS A2) */
+  @media (pointer:coarse) {
+    .chip, .pick, .btn, .select, .nav { min-height:44px; }
+    .vchips .chip { font-size:14px; padding:4px 14px; min-width:44px; }
+    .pick .tickbox { width:28px; height:28px; }
+  }
   #printframe { position:fixed; right:0; bottom:0; width:794px; height:10px; border:0; opacity:0; pointer-events:none; }
 </style>
 </head>
@@ -192,6 +204,11 @@
           <button class="chip" data-tab="cheats" aria-pressed="false" id="tab-cheats" hidden data-t="tabCheats"></button>
         </div>
       </div>
+      <div class="tools" id="tools" hidden>
+        <div class="listen" id="listen" hidden><span class="lab2" data-t="listen"></span><span id="listen-btns" class="listen"></span></div>
+        <button class="chip" id="cream" type="button" aria-pressed="false" data-t="cream"></button>
+        <button class="btn dark harder" id="harder" type="button" hidden></button>
+      </div>
       <div id="view"><div class="loading"><div class="spinner"></div><span data-t="loading"></span></div></div>
     </main>
   </div>
@@ -230,6 +247,7 @@ const UI = {
     helpTitle: "Help make it better", suggest: "Suggest a task", report: "Report a problem", ghNote: "Opens GitHub (a free account is needed).", why: "Why black and white?",
     partWord: "part",
     thanksTitle: "Made with the help of", joinUs: "Want to help? Your name can be here.", roles: {"idea": "idea and development", "teacher": "teaching advice", "translation": "translations", "code": "code", "testing": "testing with children", "design": "design"},
+    listen: "Listen to the task", noVoice: "This device has no voice for this language.", cream: "Cream background", harder: "Next: a bit harder",
     level: "Level", levels: [["Easy", "numbers to 10, adding within 10, halves"], ["Medium", "numbers to 20, quarters"], ["Hard", "to 100, crossing ten, thirds and ¾"]],
     number: "Worksheet number", random: "New random worksheet", prev: "Previous worksheet", next: "Next worksheet",
     numberHint: "The same number on the same level always gives the same worksheet. Note the number to make it again, or share the link.",
@@ -255,6 +273,7 @@ const UI = {
     helpTitle: "Допоможіть зробити краще", suggest: "Запропонувати завдання", report: "Повідомити про помилку", ghNote: "Відкриється GitHub (потрібен безкоштовний акаунт).", why: "Чому все чорно-біле?",
     partWord: "частина",
     thanksTitle: "Над проєктом працювали", joinUs: "Хочете допомогти? Тут може бути ваше ім’я.", roles: {"idea": "ідея та розробка", "teacher": "поради вчителя", "translation": "переклади", "code": "код", "testing": "перевірка з дітьми", "design": "дизайн"},
+    listen: "Послухати завдання", noVoice: "На цьому пристрої немає голосу для цієї мови.", cream: "Кремовий фон", harder: "Далі: трохи складніше",
     level: "Рівень", levels: [["Легкий", "числа до 10, додавання в межах 10, половинки"], ["Середній", "числа до 20, чверті"], ["Складний", "до 100, перехід через десяток, третини і ¾"]],
     number: "Номер аркуша", random: "Новий випадковий аркуш", prev: "Попередній аркуш", next: "Наступний аркуш",
     numberHint: "Той самий номер на тому самому рівні завжди дає той самий аркуш. Запишіть номер, щоб зробити аркуш ще раз, або поділіться посиланням.",
@@ -280,6 +299,7 @@ const UI = {
     helpTitle: "Помогите сделать лучше", suggest: "Предложить задание", report: "Сообщить об ошибке", ghNote: "Откроется GitHub (нужен бесплатный аккаунт).", why: "Почему всё чёрно-белое?",
     partWord: "часть",
     thanksTitle: "Над проектом работали", joinUs: "Хотите помочь? Здесь может быть ваше имя.", roles: {"idea": "идея и разработка", "teacher": "советы учителя", "translation": "переводы", "code": "код", "testing": "проверка с детьми", "design": "дизайн"},
+    listen: "Послушать задание", noVoice: "На этом устройстве нет голоса для этого языка.", cream: "Кремовый фон", harder: "Дальше: чуть сложнее",
     level: "Уровень", levels: [["Лёгкий", "числа до 10, сложение до 10, половинки"], ["Средний", "числа до 20, четверти"], ["Сложный", "до 100, переход через десяток, трети и ¾"]],
     number: "Номер листа", random: "Новый случайный лист", prev: "Предыдущий лист", next: "Следующий лист",
     numberHint: "Один и тот же номер на одном уровне всегда даёт один и тот же лист. Запишите номер, чтобы сделать лист ещё раз, или поделитесь ссылкой.",
@@ -305,6 +325,7 @@ const UI = {
     helpTitle: "Βοηθήστε να γίνει καλύτερο", suggest: "Προτείνετε άσκηση", report: "Αναφέρετε πρόβλημα", ghNote: "Ανοίγει το GitHub (χρειάζεται δωρεάν λογαριασμός).", why: "Γιατί όλα είναι ασπρόμαυρα;",
     partWord: "μέρος",
     thanksTitle: "Συνεισφέρουν", joinUs: "Θέλετε να βοηθήσετε; Εδώ μπορεί να είναι το όνομά σας.", roles: {"idea": "ιδέα και ανάπτυξη", "teacher": "συμβουλές εκπαιδευτικού", "translation": "μεταφράσεις", "code": "κώδικας", "testing": "δοκιμές με παιδιά", "design": "σχεδιασμός"},
+    listen: "Άκου την άσκηση", noVoice: "Αυτή η συσκευή δεν έχει φωνή για αυτή τη γλώσσα.", cream: "Κρεμ φόντο", harder: "Επόμενο: λίγο πιο δύσκολο",
     level: "Επίπεδο", levels: [["Εύκολο", "αριθμοί έως 10, πρόσθεση έως 10, μισά"], ["Μέτριο", "αριθμοί έως 20, τέταρτα"], ["Δύσκολο", "έως 100, με κρατούμενο, τρίτα και ¾"]],
     number: "Αριθμός φύλλου", random: "Νέο τυχαίο φύλλο", prev: "Προηγούμενο φύλλο", next: "Επόμενο φύλλο",
     numberHint: "Ο ίδιος αριθμός στο ίδιο επίπεδο δίνει πάντα το ίδιο φύλλο. Σημειώστε τον αριθμό για να το ξαναφτιάξετε ή μοιραστείτε τον σύνδεσμο.",
@@ -330,6 +351,7 @@ const UI = {
     helpTitle: "Helfen Sie mit", suggest: "Aufgabe vorschlagen", report: "Fehler melden", ghNote: "Öffnet GitHub (ein kostenloses Konto ist nötig).", why: "Warum alles schwarz-weiß ist",
     partWord: "Teil",
     thanksTitle: "Mitgewirkt haben", joinUs: "Möchten Sie helfen? Hier kann Ihr Name stehen.", roles: {"idea": "Idee und Entwicklung", "teacher": "Rat von Lehrkräften", "translation": "Übersetzungen", "code": "Code", "testing": "Tests mit Kindern", "design": "Gestaltung"},
+    listen: "Aufgabe anhören", noVoice: "Dieses Gerät hat keine Stimme für diese Sprache.", cream: "Cremefarbener Hintergrund", harder: "Weiter: etwas schwerer",
     level: "Stufe", levels: [["Leicht", "Zahlen bis 10, Plus bis 10, Hälften"], ["Mittel", "Zahlen bis 20, Viertel"], ["Schwer", "bis 100, mit Zehnerübergang, Drittel und ¾"]],
     number: "Blatt-Nummer", random: "Neues zufälliges Blatt", prev: "Vorheriges Blatt", next: "Nächstes Blatt",
     numberHint: "Dieselbe Nummer auf derselben Stufe ergibt immer dasselbe Blatt. Notieren Sie die Nummer oder teilen Sie den Link.",
@@ -355,6 +377,7 @@ const UI = {
     helpTitle: "Aidez à l’améliorer", suggest: "Proposer un exercice", report: "Signaler un problème", ghNote: "Ouvre GitHub (un compte gratuit est nécessaire).", why: "Pourquoi tout est en noir et blanc ?",
     partWord: "partie",
     thanksTitle: "Ont contribué", joinUs: "Envie d’aider ? Votre nom peut figurer ici.", roles: {"idea": "idée et développement", "teacher": "conseils d’enseignant", "translation": "traductions", "code": "code", "testing": "tests avec des enfants", "design": "design"},
+    listen: "Écouter la consigne", noVoice: "Cet appareil n’a pas de voix pour cette langue.", cream: "Fond crème", harder: "Suivant : un peu plus dur",
     level: "Niveau", levels: [["Facile", "nombres jusqu’à 10, additions jusqu’à 10, moitiés"], ["Moyen", "nombres jusqu’à 20, quarts"], ["Difficile", "jusqu’à 100, passage de la dizaine, tiers et ¾"]],
     number: "Numéro de fiche", random: "Nouvelle fiche au hasard", prev: "Fiche précédente", next: "Fiche suivante",
     numberHint: "Le même numéro au même niveau donne toujours la même fiche. Notez le numéro pour la refaire, ou partagez le lien.",
@@ -380,6 +403,7 @@ const UI = {
     helpTitle: "Ayude a mejorarlo", suggest: "Proponer un ejercicio", report: "Informar de un problema", ghNote: "Abre GitHub (hace falta una cuenta gratuita).", why: "¿Por qué todo es en blanco y negro?",
     partWord: "parte",
     thanksTitle: "Han colaborado", joinUs: "¿Quiere ayudar? Su nombre puede estar aquí.", roles: {"idea": "idea y desarrollo", "teacher": "consejos docentes", "translation": "traducciones", "code": "código", "testing": "pruebas con niños", "design": "diseño"},
+    listen: "Escuchar la tarea", noVoice: "Este dispositivo no tiene voz para este idioma.", cream: "Fondo crema", harder: "Siguiente: un poco más difícil",
     level: "Nivel", levels: [["Fácil", "números hasta 10, sumas hasta 10, mitades"], ["Medio", "números hasta 20, cuartos"], ["Difícil", "hasta 100, llevando, tercios y ¾"]],
     number: "Número de ficha", random: "Nueva ficha al azar", prev: "Ficha anterior", next: "Ficha siguiente",
     numberHint: "El mismo número en el mismo nivel siempre da la misma ficha. Apunte el número para repetirla o comparta el enlace.",
@@ -518,7 +542,7 @@ function translateUI() {
   document.documentElement.lang = state.ui;
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
-  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks();
+  renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks(); if (state.sheet) renderTools();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -536,7 +560,10 @@ function fillLangSelects() {
 const catalogs = {};  // UI language -> topic catalogue from scripts/topics.py
 const catalog = () => catalogs[state.ui];
 async function loadCatalog() {
-  if (!catalogs[state.ui]) catalogs[state.ui] = await backend.catalog(state.ui);
+  if (!catalogs[state.ui]) {
+    catalogs[state.ui] = await backend.catalog(state.ui);
+    if (state.sheet) renderTools();  // "a bit harder" needs the catalogue
+  }
   return catalogs[state.ui];
 }
 function topicYear(id) {
@@ -740,6 +767,7 @@ const scalers = new ResizeObserver((entries) => {
 let viewNo = 0;
 async function renderView() {
   if (!state.sheet) return;
+  renderTools();
   $("tabs").querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === state.tab));
   const no = ++viewNo;
   if (state.tab === "cheats") {
@@ -762,12 +790,99 @@ function showPages(bodies, labelOf, lang) {
     const pg = document.createElement("div"); pg.className = "pg";
     const fr = document.createElement("iframe"); fr.title = label.textContent; fr.loading = "lazy";
     fr.srcdoc = doc([body], state.sheet.css, stem(), lang);
+    fr.addEventListener("load", () => paintCream(fr));
     pg.appendChild(fr); cell.append(label, pg); wrap.appendChild(cell);
   });
   scalers.disconnect();
   $("view").replaceChildren(wrap);
   wrap.querySelectorAll(".pg").forEach((p) => scalers.observe(p));
 }
+
+/* ================================================================ screen tools: listen, cream, a bit harder */
+const CREAM = "#fbf6e6";
+state.cream = localStorage.cream === "1";
+function paintCream(fr) {
+  try {
+    const d = fr.contentDocument; let st = d.getElementById("cream-style");
+    if (!st) { st = d.createElement("style"); st.id = "cream-style"; d.head.appendChild(st); }
+    st.textContent = state.cream ? `html,body,.page{background:${CREAM} !important}` : "";
+  } catch { /* not ready yet */ }
+}
+$("cream").addEventListener("click", () => {
+  state.cream = !state.cream; localStorage.cream = state.cream ? "1" : "0";
+  $("cream").setAttribute("aria-pressed", state.cream);
+  document.querySelectorAll(".pg iframe").forEach(paintCream);
+  document.querySelectorAll(".pg").forEach((p) => { p.style.background = state.cream ? CREAM : "#fff"; });
+});
+
+// read the task instructions aloud with the browser's own voices: nothing is sent anywhere
+const VOICE_LANG = { en: "en-GB", uk: "uk-UA", ru: "ru-RU", el: "el-GR", de: "de-DE", fr: "fr-FR", es: "es-ES" };
+const SPEAKER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const hasSpeech = "speechSynthesis" in window;
+function voiceFor(lang) {
+  const all = speechSynthesis.getVoices(), want = VOICE_LANG[lang];
+  const norm = (v) => v.lang.replace("_", "-").toLowerCase();
+  return all.find((v) => norm(v) === want.toLowerCase()) || all.find((v) => norm(v).startsWith(lang));
+}
+function taskTexts(bodies) {
+  const out = [];
+  for (const body of bodies) {
+    const d = new DOMParser().parseFromString(body, "text/html");
+    d.querySelectorAll(".q, .ih").forEach((h) => {
+      const n = h.querySelector(".n")?.textContent.trim(), tx = h.querySelector(".qt, .it")?.textContent.trim();
+      if (n && tx) out.push([n, tx]);
+    });
+  }
+  return out;
+}
+function speak(text, lang) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = VOICE_LANG[lang]; u.rate = 0.85;
+  const v = voiceFor(lang); if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function renderListen() {
+  const show = hasSpeech && state.sheet && state.tab === "sheet";
+  $("listen").hidden = !show;
+  if (!show) return;
+  const voices = speechSynthesis.getVoices();
+  if (voices.length && !voiceFor(state.lang)) {
+    $("listen-btns").textContent = t("noVoice"); return;
+  }
+  $("listen-btns").innerHTML = taskTexts(state.sheet.pages).map(([n, tx], i) =>
+    `<button class="chip" type="button" data-say="${i}" aria-label="${t("listen")} ${n}">${SPEAKER}${n}</button>`).join("");
+  $("listen-btns").dataset.texts = JSON.stringify(taskTexts(state.sheet.pages).map((x) => x[1]));
+}
+if (hasSpeech) speechSynthesis.addEventListener?.("voiceschanged", renderListen);
+$("listen-btns").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-say]"); if (!b) return;
+  speak(JSON.parse($("listen-btns").dataset.texts)[+b.dataset.say], state.lang);
+});
+
+// "Next: a bit harder" (STANDARDS D8): the next ready-made sheet, or the same topics one level up
+function harderLevel(level) {
+  if (!catalog()) return null;
+  const chain = ["R", "Y1", "Y2"].flatMap((y) => presetIds(y));
+  const i = chain.indexOf(level);
+  if (i >= 0) return chain[i + 1] ?? null;
+  if (typeof level !== "string" || !level.startsWith("T:")) return null;
+  const up = level.replace(/v(\d+)([ab])/g, (m, n, l) => `v${n}${l === "a" ? "b" : "c"}`);
+  return up !== level ? up : null;
+}
+function renderTools() {
+  $("tools").hidden = !state.sheet;
+  $("cream").setAttribute("aria-pressed", state.cream);
+  const next = state.sheet ? harderLevel(state.level) : null;
+  $("harder").hidden = !next;
+  $("harder").textContent = t("harder") + " →";
+  renderListen();
+}
+$("harder").addEventListener("click", () => {
+  const next = harderLevel(state.level); if (!next) return;
+  state.level = next; syncFromLevel(); renderPanel(); update();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 /* ================================================================ print, pdf, link */
 async function printBodies(bodies, title, lang) {

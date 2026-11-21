@@ -13,15 +13,19 @@ Want to help? Pick an item and open an issue first.
 - [x] **D6** — "done" box next to every task title.
 - [x] **T4** — adult instruction text is 16 px.
 - [x] **T7** — title "Let's Practice!" without capitals (worksheets and website).
+- [x] **W1** — instructions shortened to at most 8 words per sentence in all 7 languages.
+- [x] **D2** — easy → harder also in "compare" (big differences first, equal last).
+- [x] **D8** — "Next: a bit harder →" on the site: the next ready-made sheet, or the same topics one level up.
+- [x] **A2** — on touch screens every control is at least 44 px.
+- [x] **A3** — "Cream background" switch for the on-screen preview (printing stays white).
+- [x] Read aloud: "Listen to the task" buttons use the device's own voices (nothing is sent anywhere);
+      if the device has no voice for the language, the site says so.
 
 ## 1. Still open on the worksheets
 
-- [ ] **T2** — task titles and sentences are now 23 px, but some child-facing text is still smaller:
-      tables 20–22 px, word banks and positional words 19–20 px, the estimate labels 20 px.
-- [ ] **D2** — easy → harder is done for numbers in words, equations, number walls and the Reception / Year 1 autumn
-      lists; other tasks (compare, number line, odd and even …) still use random order.
-- [ ] **W1** — several instructions are longer than 8 words per sentence (e.g. task 17); shorten in all languages.
-- [ ] **D8** — "Next: a bit harder" on the answer page and on the site.
+- [ ] **T2** — almost all child-facing text is 22–23 px; still smaller: table headers (22 px), the word-bank label
+      and the small labels of worked examples (15 px).
+- [ ] **D8** — "Next: a bit harder" also printed on the answer page.
 - [ ] **T6** — the Greek word "παραλληλεπίπεδο" is split with a hyphen in the word bank.
 
 ## 2. New features from the standard
@@ -29,9 +33,8 @@ Want to help? Pick an item and open an issue first.
 - [ ] **D4** — optional challenge item ★ at the end of a task.
 - [ ] **G4** — objects on cheat-sheet cards are 17–20 px; make them ≥ 22 px.
 - [ ] **C1** — cheat-sheet cards for the review topics.
-- [ ] **A2** — difficulty buttons in the topic picker are smaller than 44 px; bigger touch targets on phones.
-- [ ] **A3** — off-white background option for the on-screen preview.
-- [ ] Read instructions aloud on the site (for children who cannot read yet).
+- [ ] Solve on a tablet: draw and type on the sheet on screen (for now the sheets are for printing).
+- [ ] Installable site that works offline (an icon on the home screen, no app store).
 
 ## 3. Checking the standard itself
 
