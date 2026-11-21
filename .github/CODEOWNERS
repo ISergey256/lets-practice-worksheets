@@ -3,3 +3,7 @@
 /.github/         @ISergey256
 /scripts/         @ISergey256
 /site/index.html  @ISergey256
+# Files that give instructions to AI assistants: only the maintainer may add or change them.
+**/CLAUDE*.md     @ISergey256
+**/AGENTS*.md     @ISergey256
+**/.claude/       @ISergey256

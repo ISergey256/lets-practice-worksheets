@@ -22,6 +22,7 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
+          LC_ALL: C.UTF-8
         run: |
           set -u
           files=$(git diff --name-only "$BASE" "$HEAD")
@@ -30,6 +31,15 @@ jobs:
             echo
             echo "### Sensitive files"
             echo "$files" | grep -E '^\.github/|^scripts/(server|build_site|fetch_fonts|check_layout|measure_topics)\.py$|^site/index\.html$|^\.gitignore$|^LICENSE|^fonts/' | sed 's/^/- ⚠️ `/; s/$/`/' || echo "- none"
+            echo
+            echo "### Files that steer AI assistants (must not come from outside)"
+            echo "$files" | grep -iE '(^|/)(CLAUDE|AGENTS|GEMINI|COPILOT)[^/]*\.md$|(^|/)\.claude/|(^|/)\.cursor|(^|/)\.mcp\.json$|copilot-instructions|(^|/)\.windsurf|(^|/)\.aider' | sed 's/^/- 🛑 `/; s/$/`/' || echo "- none"
+            echo
+            echo "### Text that talks to an AI, or hidden characters"
+            git diff -U0 "$BASE" "$HEAD" | grep -E '^\+[^+]' | grep -nEi 'ignore (all |any )?(previous|prior|above)|disregard (the |all )?(previous|above|instructions)|you are (now )?(an? )?(ai|assistant|claude|chatgpt|gpt|copilot)|(claude|chatgpt|copilot|gemini|ai assistant|language model|llm)[ ,:]+(please |must |should )?(merge|approve|run|execute|ignore|delete|push)|system prompt|new instructions|do not tell the (user|maintainer)|<!-- *(ai|claude|assistant|llm)' \
+              | cut -c1-220 | sed 's/^/    🛑 /' || echo "- none"
+            git diff -U0 "$BASE" "$HEAD" | grep -E '^\+[^+]' | grep -nP '[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{2060}-\x{2064}\x{FEFF}\x{E0000}-\x{E007F}]' \
+              | cut -c1-120 | sed 's/^/    🛑 hidden or direction-changing characters: /' || true
             echo
             echo "### Binary or unusual files"
             git diff --numstat "$BASE" "$HEAD" | awk '$1=="-" {print "- ⚠️ `" $3 "` (binary)"}'
@@ -40,5 +50,6 @@ jobs:
               | cut -c1-220 | sed 's/^/    /' || echo "- none"
           } > report.md
           cat report.md >> "$GITHUB_STEP_SUMMARY"
+          grep -q '🛑' report.md && echo "::error title=PR safety::This PR adds AI instruction files, text addressed to an AI, or hidden characters. Do not merge before reading." || true
           grep -q '⚠️' report.md && echo "::warning title=PR safety::This PR touches sensitive files or adds risky lines. Read the job summary." || true
           grep -qE '^    ' report.md && echo "::warning title=PR safety::Risky-looking lines were added. Read the job summary." || true

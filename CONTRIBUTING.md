@@ -103,6 +103,9 @@ The site is used by children and families, so code changes are reviewed with ext
 - **Do not change `.github/` (workflows, templates, CODEOWNERS), `scripts/server.py` or the build scripts**
   unless the issue asks for it. Such PRs are reviewed line by line and may be closed.
 - **No binary or minified files** (except fonts agreed in an issue), no obfuscated or encoded code.
+- **No instructions for AI tools.** Do not add `CLAUDE.md`, `AGENTS.md`, `.claude/`, `.cursor*`, `.mcp.json` or similar
+  files, and no text addressed to an AI assistant (also not in comments, translations or hidden HTML), and no
+  invisible or direction-changing Unicode characters. Such PRs are closed.
 - Keep a PR small and about one thing; big mixed PRs are hard to check and will be asked to split.
 - Every PR gets an automatic "PR safety report" (which risky files and lines it touches). It is a help for the review,
   not a replacement for it.
