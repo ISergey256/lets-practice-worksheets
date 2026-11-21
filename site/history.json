@@ -89,5 +89,10 @@
     "en": "This list: the project history on the site, with a link to every change.",
     "uk": "Цей список: історія проєкту на сайті з посиланням на кожну зміну.",
     "ru": "Этот список: история проекта на сайте со ссылкой на каждое изменение."
+  },
+  "Clearer \"1 less, 1 more\"; pictures stay inside the frame": {
+    "en": "\"1 less, 1 more\" is now drawn with arrows from the number and a small number track; pictures no longer stick out of the frame.",
+    "uk": "«На 1 менше, на 1 більше» тепер зі стрілками від числа і маленькою числовою доріжкою; картинки більше не виходять за рамку.",
+    "ru": "«На 1 меньше, на 1 больше» теперь со стрелками от числа и маленькой числовой дорожкой; картинки больше не вылезают за рамку."
   }
 }

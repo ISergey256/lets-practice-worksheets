@@ -149,10 +149,8 @@ def pictures(key, rng, obj, L):
         return look, flex(s.tenframe(k, 26), opts(k))
     if key == "Y3":
         k = rng.randint(2, 9)
-        lab = lambda t: f'<span style="font-size:16px;font-weight:900">{t}</span>'
-        mid = lambda v: f'<span class="num" style="min-width:52px;height:52px;font-size:28px;border-width:3px">{v}</span>'
-        return (flex(g.filled(3, 48), lab("−1"), mid(4), lab("+1"), g.filled(5, 48), gap=6),
-                flex(g.box(46), lab("−1"), mid(k), lab("+1"), g.box(46), gap=6))
+        return (s.more_less(4, g.filled(3, 48), g.filled(5, 48), True, 52),
+                s.more_less(k, g.box(46), g.box(46), False, 52))
     if key == "Y4":
         a, b = rng.sample(range(1, 11), 2)
         sym_box = lambda t: (f'<span class="box" style="width:46px;height:46px;display:inline-flex;align-items:center;'

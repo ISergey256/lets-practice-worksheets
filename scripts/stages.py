@@ -316,27 +316,55 @@ def r_colour(rng, L, num):
 # ================================================================ Year 1 autumn
 def y_count_write(rng, L, num, key):
     ks = easy_first(rng.sample(range(1, 11), 3))
-    rows = [row(f'<div style="width:220px;display:flex;justify-content:center">{objects(key, k, 34)}</div>'
-                + (g.filled(k, 56) if i == 0 else g.box(56)), i == 0, 60) for i, k in enumerate(ks)]
+    rows = [row(f'<div style="width:220px;display:flex;justify-content:center">{objects(key, k, 30)}</div>'
+                + (g.filled(k, 52) if i == 0 else g.box(52)), i == 0, 60) for i, k in enumerate(ks)]
     return isec(num, "write", L.w["y1"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
 def y_tenframe_circle(rng, L, num):
     ks = easy_first(rng.sample(range(3, 11), 3))
-    rows = [row(tenframe(k, 36) + choice_row(options(rng, k), k if i == 0 else None), i == 0, 50) for i, k in enumerate(ks)]
+    rows = [row(tenframe(k, 32) + choice_row(options(rng, k), k if i == 0 else None), i == 0, 50) for i, k in enumerate(ks)]
     return isec(num, "circle", L.w["y2"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
+
+
+def side_arrow(label, to_left, w=70):
+    """An arrow that goes FROM the middle number to a box, with -1 or +1 above it."""
+    head = "M14 22 L4 30 L14 38" if to_left else f"M{w - 14} 22 L{w - 4} 30 L{w - 14} 38"
+    return (f'<svg width="{w}" height="42" style="flex:none"><text x="{w / 2}" y="15" font-size="18" font-weight="900" '
+            f'text-anchor="middle" fill="#111">{label}</text><g fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" '
+            f'stroke-linejoin="round"><path d="M4 30 L{w - 4} 30"/><path d="{head}"/></g></svg>')
+
+
+def track(k, lo=None, hi=None, cell=25):
+    """A small number track around k: the neighbours (1 less, 1 more) are grey, k is circled."""
+    lo = max(0, k - 3) if lo is None else lo
+    hi = lo + 6 if hi is None else hi
+    cells = []
+    for v in range(lo, hi + 1):
+        bg = "#bdbdbd" if abs(v - k) == 1 else "#fff"
+        ring = "border-radius:50%;" if v == k else "border-radius:6px;"
+        cells.append(f'<span style="width:{cell}px;height:{cell}px;display:inline-flex;align-items:center;justify-content:center;'
+                     f'border:2px solid #111;{ring}background:{bg};font-size:14px;font-weight:900">{v}</span>')
+    return f'<div style="display:flex;gap:3px;justify-content:center">{"".join(cells)}</div>'
+
+
+def more_less(k, left, right, with_track=False, mid_size=56):
+    """1 less / 1 more: the number in the middle, arrows from it to the two boxes (no '2 -1 3 +1 4' reading)."""
+    mid = big_num(k, mid_size)
+    row_ = (f'<div style="display:flex;align-items:center;gap:2px">{left}{side_arrow("−1", True)}{mid}'
+            f'{side_arrow("+1", False)}{right}</div>')
+    if with_track:
+        return f'<div style="display:flex;flex-direction:column;align-items:center;gap:2px">{row_}{track(k)}</div>'
+    return row_
 
 
 def y_more_less(rng, L, num):
     ks = easy_first(rng.sample(range(1, 10), 4))
-    lab = lambda t: f'<span style="font-size:18px;font-weight:900;width:34px;text-align:center">{t}</span>'
     items, ans = [], []
     for i, k in enumerate(ks):
         left = g.filled(k - 1, 50) if i == 0 else g.box(50)
         right = g.filled(k + 1, 50) if i == 0 else g.box(50)
-        mid = f'<span class="num" style="min-width:56px;height:56px;font-size:30px;border-width:3px">{k}</span>'
-        items.append(f'<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;{EX if i == 0 else ""}">'
-                     f'{left}{lab("−1")}{mid}{lab("+1")}{right}</div>')
+        items.append(f'<div style="padding:6px 10px;{EX if i == 0 else ""}">{more_less(k, left, right, i == 0)}</div>')
         if i:
             ans.append(f"{k - 1} | {k} | {k + 1}")
     body = f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;justify-items:center">{"".join(items)}</div>'
@@ -354,10 +382,10 @@ def y_compare(rng, L, num, key):
         mid = (f'<span class="box" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;'
                f'font-size:28px;font-weight:900">{sym}</span>') if i == 0 else g.box(48)
         if i < 2:  # pictures first, then numbers
-            l, r = objects(key, a, 26, 5, 4), objects(key, b, 26, 5, 4)
+            l, r = objects(key, a, 22, 5, 3), objects(key, b, 22, 5, 3)
         else:
             l, r = g.num(a), g.num(b)
-        items.append(f'<div style="display:flex;align-items:center;gap:12px;padding:8px 12px;{EX if i == 0 else ""}">{l}{mid}{r}</div>')
+        items.append(f'<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;{EX if i == 0 else ""}">{l}{mid}{r}</div>')
         if i:
             ans.append(f"{a} {sym} {b}")
     body = f'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;justify-items:center;align-items:center">{"".join(items)}</div>'
@@ -504,7 +532,8 @@ def build(stage, seed, L):
             args = (rng, L, num) + ((keys[num % 4],) if task in NEEDS_OBJECT else ())
             html, ans = task(*args)
             if j == len(group_) - 1:  # last section on the page fills the rest of it
-                html = html.replace('<section class="sec">', '<section class="sec" style="flex:1;display:flex;flex-direction:column;justify-content:space-around">', 1)
+                # the title stays on top; the spare space is shared above and below the task (CSS .stretch, as in topics)
+                html = html.replace('<section class="sec">', '<section class="sec stretch" style="flex:1;display:flex;flex-direction:column">', 1)
             secs.append(html)
             answers.append(ans)
         head = g.header(L, text(L.w["badge_stage"], stage=L.w["stages"][stage], seed=seed)) if pi == 0 else ""
