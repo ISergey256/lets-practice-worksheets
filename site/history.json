@@ -119,5 +119,10 @@
     "en": "Choose any year from Reception to Year 11 and its subjects (they change with age, like at school). Maths for Reception–Year 2 is ready; the rest is coming.",
     "uk": "Оберіть будь-який клас від Reception до Year 11 і його предмети (змінюються з віком, як у школі). Математика Reception–Year 2 готова, решта буде.",
     "ru": "Выберите любой класс от Reception до Year 11 и его предметы (меняются с возрастом, как в школе). Математика Reception–Year 2 готова, остальное будет."
+  },
+  "Help cards: swap the groups to check adding": {
+    "en": "The Adding help cards now teach a new check: swap the groups, the answer stays the same (3 + 2 = 2 + 3).",
+    "uk": "Картки «Додавання» вчать нової перевірки: поміняй групи місцями, відповідь та сама (3 + 2 = 2 + 3).",
+    "ru": "Карточки «Сложение» учат новой проверке: поменяй группы местами, ответ тот же (3 + 2 = 2 + 3)."
   }
 }
