@@ -621,6 +621,7 @@ function translateUI() {
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
   renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks(); renderHistory(); if (state.sheet) renderTools();
   if (window.LP) LP.render();
+  if (window.LO) LO.ensureTab();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -898,6 +899,7 @@ async function renderView() {
   setTimeout(renderDebug, debugOn() ? 1200 : 0);  // after the preview frames have loaded (or hide the panel)
   $("tabs").querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.tab === state.tab));
   const no = ++viewNo;
+  if (state.tab === "online" && window.LO) return LO.render();  // solve on screen, one task at a time (online.js)
   if (state.tab === "cheats") {
     const pages = await cheatPages();
     if (no !== viewNo) return;
@@ -1219,5 +1221,6 @@ localBackend().catch(() => pyodideBackend()).then(async (b) => {
 });
 </script>
 <script src="practice.js"></script>
+<script src="online.js"></script>
 </body>
 </html>

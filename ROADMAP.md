@@ -21,6 +21,10 @@ Want to help? Pick an item and open an issue first.
 - [x] **C1** — help cards ("cheat sheets") for every topic, including the 18 Year 1 review tasks, in 7 languages.
 - [x] Read aloud: "Listen to the task" buttons use the device's own voices (nothing is sent anywhere);
       if the device has no voice for the language, the site says so.
+- [x] Progress on the device (no account): children by nickname, marks easy / so-so / hard, topic map,
+      "Today's sheet" (hard topics, then new ones, one to keep fresh), save / load a file.
+- [x] Solve on screen: one task at a time with a keypad, tap to circle / tick / colour / cross out / join; second try,
+      then the answer in grey; results go to the progress.
 
 ## 1. Still open on the worksheets
 
@@ -33,7 +37,8 @@ Want to help? Pick an item and open an issue first.
 
 - [ ] **D4** — optional challenge item ★ at the end of a task.
 - [ ] **G4** — objects on cheat-sheet cards are 17–20 px; make them ≥ 22 px.
-- [ ] Solve on a tablet: draw and type on the sheet on screen (for now the sheets are for printing).
+- [ ] Solve on screen, next: trace digits with a finger, shade fractions by tapping (now the child checks these),
+      bigger tasks on phones.
 - [ ] Installable site that works offline (an icon on the home screen, no app store).
 
 ## Subjects (plan)

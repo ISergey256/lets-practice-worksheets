@@ -63,3 +63,23 @@ every task has an action icon, a worked example in grey and one clear answer (ST
    `site/index.html` (`for (const f of [...])`).
 5. Run `python scripts/build_site.py`, `python scripts/measure_topics.py`, `python scripts/check_layout.py`,
    and open the site: the subject appears in its years by itself.
+
+## Answers for solving online
+
+Besides printing, a child can solve a sheet on the site ("Solve on screen", `site/online.js`), one task at a time with a
+big keypad. For that every task marks its answers with data attributes. They change nothing on paper (the sheets are
+pixel-identical) and are added with `generate.ans_attr()`:
+
+| Attribute | Meaning |
+|---|---|
+| `data-a="7"` | a box to fill; `data-k="sign"` (<, >, =), `"word"` (typed), `"bank"` (a word from the `.pill` bank of the task), `"shape"` (one of the `data-shape` pictures); `data-a="*"` = any answer (an estimate) |
+| `data-p="1"` / `"0"` | something to pick (circle, tick, colour): right / wrong; `data-look="tick"` or `"fill"` changes how a pick looks |
+| `data-n="4"` + `data-cell` | tap this many cells (draw dots in a ten frame, cross out objects) |
+| `data-ml` / `data-mr` | the two ends of a "join with a line" pair have the same key |
+| `data-sum="10"` | a row of two boxes (`data-a="?"`) that make 10; every pair once |
+| `data-self` | the child checks it (tracing digits, shading) |
+
+Worked examples (grey) are never marked. `scripts/build_site.py` (`check_online`) checks every topic in three languages.
+The child's results go to the progress on the device (`site/practice.js`, `localStorage` key `lp-progress`):
+first try = easy, at least half right = so-so, else hard. Nothing is sent anywhere.
+

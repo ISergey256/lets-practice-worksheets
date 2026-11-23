@@ -76,8 +76,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_file(SITE / "index.html")
         if path == "/contributors.json":
             return self.send_file(SITE / "contributors.json")
-        if path == "/practice.js":
-            return self.send_file(SITE / "practice.js")
+        if path in ("/practice.js", "/online.js"):
+            return self.send_file(SITE / path[1:])
         if path == "/changelog.json":
             import build_site
             return self.send_json(build_site.changelog())
