@@ -146,9 +146,25 @@ def sec(num, title, body, sub="", grow=False):
             f'{s}{body}</section>')
 
 
-def box(w=46, h=None, r=10):
+def ans_attr(a=None, k=None, p=None, look=None):
+    """Data attributes that let the website check an answer online (STANDARDS: nothing changes on paper).
+    a: the answer of an input slot ("*" = any answer); k: "sign" | "word" | "bank" | "shape" (default: a number);
+    p: 1 / 0 for an item the child picks (circle, tick, colour) that is right / wrong; look: "tick" | "fill"."""
+    out = ""
+    if a is not None:
+        out += f' data-a="{a}"'
+    if k:
+        out += f' data-k="{k}"'
+    if p is not None:
+        out += f' data-p="{1 if p else 0}"'
+    if look:
+        out += f' data-look="{look}"'
+    return out
+
+
+def box(w=46, h=None, r=10, a=None, k=None, p=None, look=None):
     h = h or w
-    return f'<span class="box" style="width:{w}px;height:{h}px;border-radius:{r}px"></span>'
+    return f'<span class="box"{ans_attr(a, k, p, look)} style="width:{w}px;height:{h}px;border-radius:{r}px"></span>'
 
 
 def filled(v, w=46, ex=False):
@@ -158,8 +174,8 @@ def filled(v, w=46, ex=False):
             f'justify-content:center;font-size:22px;font-weight:800{bg}">{v}</span>')
 
 
-def num(v):
-    return f'<span class="num">{v}</span>'
+def num(v, p=None):
+    return f'<span class="num"{ans_attr(p=p)}>{v}</span>'
 
 
 def join_list(xs):
@@ -224,7 +240,7 @@ def task_count(rng, lvl, L, key):
     example = (f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px;background:{EX_BG};'
                f'border-radius:12px;padding:8px 10px">{stages.objects(key, 3, 24)}{filled(3, 40)}</div>')
     body = (f'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 6px">'
-            f'{example}{svg}{box(76, r=14)}</div>')
+            f'{example}{svg}{box(76, r=14, a=n)}</div>')
     return sec(1, text(L.w["t1"], what=L.w["what"][key]), body), f'{L.a["what"][key]}: <b>{n}</b>'
 
 
@@ -260,7 +276,7 @@ def task_estimate(rng, lvl, L, key):
                f'<div style="{lab_s}">{L.w["estimate"]}{filled(5, 36)}</div><div style="{lab_s}">{L.w["counted"]}{filled(6, 36)}</div></div>')
     body = (f'{example}<div style="display:flex;align-items:center;justify-content:space-between">{svg}'
             f'<div style="display:flex;gap:22px;border-left:2.5px solid #111;padding-left:20px">'
-            f'<div style="{lab}">{L.w["estimate"]}{box(70, r=14)}</div><div style="{lab}">{L.w["counted"]}{box(70, r=14)}</div>'
+            f'<div style="{lab}">{L.w["estimate"]}{box(70, r=14, a="*")}</div><div style="{lab}">{L.w["counted"]}{box(70, r=14, a=n)}</div>'
             f'</div></div>')
     return sec(2, text(L.w["t2"], what=L.w["what"][key]), body), f'{L.a["what"][key]}: <b>{n}</b>'
 
@@ -275,7 +291,7 @@ def task_odd_even(rng, lvl, L):
         if 3 <= len(hits) <= 7:
             break
     body = ('<div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">'
-            + "".join(ring(num(x)) if x == hits[0] else num(x) for x in xs) + "</div>")
+            + "".join(ring(num(x)) if x == hits[0] else num(x, p=x in hits) for x in xs) + "</div>")
     title = L.w["t3_odd"] if want_odd else L.w["t3_even"]
     return sec(3, title, body), f'{L.a["odd" if want_odd else "even"]}: <b>{join_list(hits[1:])}</b>'
 
@@ -303,7 +319,7 @@ def task_number_line(rng, lvl, L):
     xs = [40 + 62 * i for i in range(11)]
     dots = "".join(f'<circle cx="{x}" cy="22" r="6"/>' for x in xs)
     ex = miss[0]  # worked example
-    rects = "".join(f'<rect x="{xs[i] - 24}" y="42" width="48" height="40" rx="9"{" fill=" + chr(34) + EX_BG + chr(34) if i == ex else ""}/>'
+    rects = "".join(f'<rect x="{xs[i] - 24}" y="42" width="48" height="40" rx="9"{" fill=" + chr(34) + EX_BG + chr(34) if i == ex else ans_attr(vals[i])}/>'
                     for i in miss)
     texts = "".join(f'<text x="{xs[i]}" y="70">{vals[i]}</text>' for i in range(11) if i not in miss or i == ex)
     svg = ('<svg width="672" height="88" viewBox="0 0 704 92" style="font-weight:800">'
@@ -334,7 +350,7 @@ def task_compare(rng, lvl, L):
     pairs.sort(key=lambda ab: (ab[0] == ab[1], -abs(ab[0] - ab[1])))  # big differences first, equal last (STANDARDS D2)
     sep = '<span style="width:2.5px;height:48px;background:#111"></span>'
     sym = lambda a, b: "&lt;" if a < b else ("&gt;" if a > b else "=")
-    items = [f'<div style="display:flex;gap:6px">{num(a)}{filled(sym(a, b), 48, ex=True) if i == 0 else box(48)}{num(b)}</div>'
+    items = [f'<div style="display:flex;gap:6px">{num(a)}{filled(sym(a, b), 48, ex=True) if i == 0 else box(48, a=sym(a, b), k="sign")}{num(b)}</div>'
              for i, (a, b) in enumerate(pairs)]
     body = ('<div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">'
             + sep.join(items) + "</div>")
@@ -350,7 +366,8 @@ def task_words(rng, lvl, L):
     written = (f'<span style="flex:1;border-bottom:2.5px solid #111;background:{EX_BG};border-radius:8px 8px 0 0;'
                f'padding:0 8px;font-size:23px;font-weight:800">{i18n.numwords(L.wl, xs[0])}</span>')
     body = ('<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;row-gap:10px">'
-            + "".join(cell.format(num(x), written if i == 0 else '<span class="line"></span>') for i, x in enumerate(xs)) + "</div>")
+            + "".join(cell.format(num(x), written if i == 0 else f'<span class="line"{ans_attr(i18n.numwords(L.wl, x), "word")}></span>')
+                      for i, x in enumerate(xs)) + "</div>")
     return (sec(6, L.w["t6"], body, grow=True),  # the child writes the words in the worksheet language
             "<b>" + ", ".join(i18n.numwords(L.wl, x) for x in xs[1:]) + "</b>")
 
@@ -392,8 +409,8 @@ def task_3d(rng, lvl, L):
                         f'<div class="td" style="{bg}border-right:none">{filled(SHAPES3D[k][2], 40)}</div>')
             continue
         rows.append(f'<div class="td" style="height:58px">{svg}</div>'
-                    '<div class="td" style="padding:0 16px 16px;align-items:flex-end"><span style="border-bottom:2.5px solid #111;width:100%"></span></div>'
-                    f'<div class="td">{box(40)}</div><div class="td" style="border-right:none">{box(40)}</div>')
+                    f'<div class="td" style="padding:0 16px 16px;align-items:flex-end"><span{ans_attr(L.w["shapes3d"][k], "bank")} style="border-bottom:2.5px solid #111;width:100%"></span></div>'
+                    f'<div class="td">{box(40, a=SHAPES3D[k][1])}</div><div class="td" style="border-right:none">{box(40, a=SHAPES3D[k][2])}</div>')
     bank = picks[:]
     if lvl >= 2:
         bank.append(rng.choice([k for k in SHAPES3D if k not in picks]))
@@ -484,7 +501,7 @@ def task_2d_picture(rng, lvl, L):
              f'<div class="th">{h_shape}</div><div class="th" style="border-right:none">{h_many}</div>'
              + "".join(f'<div class="td" style="height:36px{";background:" + EX_BG if i == 0 else ""}">{n}</div>'
                        f'<div class="td" style="border-right:none{";background:" + EX_BG if i == 0 else ""}">'
-                       f'{filled(len(c[kinds[0]]), 32) if i == 0 else box(32, 30)}</div>'
+                       f'{filled(len(c[kinds[0]]), 32) if i == 0 else box(32, 30, a=len(c[kinds[i]]))}</div>'
                        for i, n in enumerate(L.w["shapes2d"])) + "</div>")
     body = f'<div style="display:flex;align-items:center;gap:24px">{svg}{table}</div>'
 
@@ -513,7 +530,7 @@ def task_sides(rng, lvl, L):
     others = rng.sample([p for p in pool if p != target], 3)
     order = others + [target]
     rng.shuffle(order)
-    svgs = "".join(f'<svg width="74" height="74" viewBox="0 0 90 90"><path d="{polygon(n)}" {SN}/></svg>' for n in order)
+    svgs = "".join(f'<svg{ans_attr(p=n == target)} width="74" height="74" viewBox="0 0 90 90"><path d="{polygon(n)}" {SN}/></svg>' for n in order)
     tri = f'<svg width="46" height="46" viewBox="0 0 90 90"><path d="{polygon(3)}" {SN}/></svg>'
     example = (f'<div style="display:flex;align-items:center;gap:8px;background:{EX_BG};border-radius:12px;padding:6px 12px">'
                f'<span style="font-size:24px;font-weight:900">3</span>{ring(tri, 2)}</div>')
@@ -590,7 +607,7 @@ def task_shade(rng, lvl, L):
     kinds = ["square", "circle", "rect"]
     svgs = "".join(f'<span style="background:{EX_BG};border-radius:12px;padding:6px;display:inline-flex">{frac_shape(k, d, True, rng, f[0])}</span>'
                    if i == 0 else frac_shape(k, d, True, rng) for i, k in enumerate(kinds))  # the first shape is the worked example
-    body = f'<div style="display:flex;justify-content:space-around;align-items:center">{svgs}</div>'
+    body = f'<div data-self style="display:flex;justify-content:space-around;align-items:center">{svgs}</div>'
     key = f"{f[0]}/{f[1]}"
     return sec(10, text(L.w["t10"], frac=L.w["frac"][key]), body), text(L.a["shade"], part=L.a["shade_part"][key])
 
@@ -604,7 +621,7 @@ def task_equal_parts(rng, lvl, L):
             break
     cells = []
     for i, (k, e) in enumerate(zip(kinds, eq)):
-        tick = filled("✓", 42) if i == 0 else box(42)
+        tick = filled("✓", 42) if i == 0 else box(42, p=e, look="tick")
         bg = f"background:{EX_BG};border-radius:12px;padding:6px;" if i == 0 else ""
         cells.append(f'<div style="display:flex;flex-direction:column;align-items:center;gap:8px;{bg}">'
                      f'{frac_shape(k, d, e, rng)}{tick}</div>')
@@ -631,15 +648,20 @@ def task_lengths(rng, lvl, L):
         pencils.append(f'<rect x="0" y="{y}" width="18" height="24" rx="5"/><rect x="18" y="{y}" width="10" height="24"/>'
                        f'<rect x="28" y="{y}" width="{ln}" height="24"/><path d="M{28 + ln} {y} L{58 + ln} {y + 12} L{28 + ln} {y + 24} Z"/>'
                        f'<path d="M{48 + ln} {y + 8} L{58 + ln} {y + 12} L{48 + ln} {y + 16} Z" fill="#111"/>')
+    pick = lens.index(min(lens) if short_q else max(lens))
+    pencils = [f'<g{ans_attr(p=i == pick)}>{x}</g>' for i, x in enumerate(pencils)]  # the child picks one online
     ph = 6 + k * (36 if k == 4 else 52)
     tw = rng.sample(range(2, 8 if lvl > 1 else 7), k)
     tall_q = rng.random() < 0.5
     towers = []
     gap = 300 / k
+    pick_t = tw.index(max(tw) if tall_q else min(tw))
     for i, t in enumerate(tw):
         x = gap * i + (gap - 36) / 2
+        towers.append(f'<g{ans_attr(p=i == pick_t)}>')
         for j in range(t):
             towers.append(f'<rect x="{x:.0f}" y="{194 - 32 * j}" width="32" height="32"/>')
+        towers.append("</g>")
     tw_svg = (f'<svg width="270" height="212" viewBox="0 0 300 236"><g {S}>{"".join(towers)}</g>'
               '<line x1="4" y1="227" x2="296" y2="227" stroke="#111" stroke-width="3"/></svg>')
     pen_svg = f'<svg width="340" height="{ph}" viewBox="0 0 340 {ph}"><g transform="translate(10,0)" {S}>{"".join(pencils)}</g></svg>'
@@ -672,7 +694,7 @@ def task_bonds(rng, lvl, L):
     n = {1: rng.choice([5, 6, 7]), 2: rng.choice([8, 9, 10]), 3: rng.choice([10, 11, 12])}[lvl]
     # the first bond (0 + n) is filled in as a model, so the child sees where to start and why there are n + 1 rows
     cells = (f'<div class="bond">{filled(0, 40)}+{filled(n, 40)}= {n}</div>'
-             + "".join(f'<div class="bond">{box(40)}+{box(40)}= {n}</div>' for _ in range(n)))
+             + "".join(f'<div class="bond" data-sum="{n}">{box(40, a="?")}+{box(40, a="?")}= {n}</div>' for _ in range(n)))
     body = f'<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));row-gap:12px;column-gap:8px">{cells}</div>'
     return (sec(13, text(L.w["t13"], n=n), body, sub=L.w["t13_sub"]),
             "<b>" + ", ".join(f"{i}+{n - i}" for i in range(n + 1)) + "</b>")
@@ -692,7 +714,7 @@ def task_steps(rng, lvl, L):
     vals = [start + i * step for i in range(10)]
     k = 5 if lvl == 3 else 4
     miss = sorted(rng.sample(range(2, 10), k))
-    cells = "".join((filled(v, 48, ex=True) if i == miss[0] else box(48)) if i in miss else num(v) for i, v in enumerate(vals))
+    cells = "".join((filled(v, 48, ex=True) if i == miss[0] else box(48, a=v)) if i in miss else num(v) for i, v in enumerate(vals))
     body = f'<div style="display:flex;justify-content:space-between;padding:0 4px">{cells}</div>'
     # curriculum depends on the step: 1s within 20 = Y1 spring, 2s / 5s / 10s = Y1 summer, 3s = Year 2
     period = {1: "Y1Sp", 2: "Y1Su", 5: "Y1Su", 10: "Y1Su", 3: "Y2"}[step]
@@ -719,28 +741,28 @@ def task_equations(rng, lvl, L):
     cells, ans_cols = [[], [], []], [[], [], []]
     for _ in range(4):
         a, b = gen_add(rng, lvl)
-        cells[0].append(f"{a} + {b} ={box(44)}")
+        cells[0].append(f"{a} + {b} ={box(44, a=a + b)}")
         ans_cols[0].append(a + b)
         a, b = gen_add(rng, lvl)
         s = a + b
-        cells[1].append(f"{s} − {b} ={box(44)}")
+        cells[1].append(f"{s} − {b} ={box(44, a=a)}")
         ans_cols[1].append(a)
         a, b = gen_add(rng, lvl)
         s = a + b
         form = rng.randrange(4)
         if form == 0:
-            cells[2].append(f"{a} +{box(44)}= {s}"); ans_cols[2].append(b)
+            cells[2].append(f"{a} +{box(44, a=b)}= {s}"); ans_cols[2].append(b)
         elif form == 1:
-            cells[2].append(f"{box(44)}+ {b} = {s}"); ans_cols[2].append(a)
+            cells[2].append(f"{box(44, a=a)}+ {b} = {s}"); ans_cols[2].append(a)
         elif form == 2:
-            cells[2].append(f"{s} −{box(44)}= {a}"); ans_cols[2].append(b)
+            cells[2].append(f"{s} −{box(44, a=b)}= {a}"); ans_cols[2].append(b)
         else:
-            cells[2].append(f"{box(44)}− {b} = {a}"); ans_cols[2].append(s)
+            cells[2].append(f"{box(44, a=s)}− {b} = {a}"); ans_cols[2].append(s)
     for c in range(3):  # easy to harder: smaller answers first in every column (STANDARDS D2)
         order = sorted(range(4), key=lambda r: ans_cols[c][r])
         cells[c] = [cells[c][r] for r in order]
         ans_cols[c] = [ans_cols[c][r] for r in order]
-    cells[0][0] = cells[0][0].replace(box(44), filled(ans_cols[0][0], 44, ex=True), 1)  # worked example
+    cells[0][0] = cells[0][0].replace(box(44, a=ans_cols[0][0]), filled(ans_cols[0][0], 44, ex=True), 1)  # worked example
     ans_cols[0] = ans_cols[0][1:]
     out = []
     for r in range(4):
@@ -804,7 +826,7 @@ def task_walls(rng, lvl, L):
     for w, (rows, known) in enumerate(made):
         html = []
         for r in range(len(rows) - 1, -1, -1):
-            bricks = "".join(f'<span class="brick" style="width:{bw}px{"" if (r, i) in known or w else ";background:" + EX_BG}">'
+            bricks = "".join(f'<span class="brick"{ans_attr(rows[r][i]) if w and (r, i) not in known else ""} style="width:{bw}px{"" if (r, i) in known or w else ";background:" + EX_BG}">'
                              f'{rows[r][i] if (r, i) in known or w == 0 else ""}</span>' for i in range(len(rows[r])))
             html.append(f'<div class="row">{bricks}</div>')
         walls.append(f'<div style="display:flex;flex-direction:column;gap:2px">{"".join(html)}</div>')
@@ -902,8 +924,8 @@ def task_positions(rng, lvl, L):
     letters, blank = w["letters"], f'<span class="blank" style="width:{w["blank"]}px"></span>'
     done_blank = (f'<span class="blank" style="width:auto;min-width:{w["blank"]}px;background:{EX_BG};text-align:center;'
                   f'font-weight:800;padding:0 6px">{w["pos"][pos[0]]}</span>')
-    sents = "".join(f'<p class="sent">{letters[i]}) {text(w["sent"], item=w["items"][it], blank=done_blank if i == 0 else blank)}</p>'
-                    for i, it in enumerate(items))
+    sents = "".join(f'<p class="sent">{letters[i]}) {text(w["sent"], item=w["items"][it], blank=done_blank if i == 0 else blank.replace(" style=", ans_attr(w["pos"][p], "bank") + " style=", 1))}</p>'
+                    for i, (it, p) in enumerate(zip(items, pos)))
     pills = "".join(f'<span class="pill">{w["pos"][p]}</span>' for p in bank)
     body = (f'<div style="display:flex;flex-wrap:wrap;justify-content:space-around;gap:8px 10px;margin-bottom:10px">{pills}</div>'
             f'<div style="display:flex;gap:12px;align-items:center">{svg}'
@@ -941,7 +963,7 @@ def task_ordinals(rng, lvl, L):
         else:
             parts.append(f'<use href="#dk" transform="translate({x + 64 * sc:.1f},{40 + (1 - sc) * 66:.1f}) scale({-sc:.2f},{sc:.2f})"/>')
         cx = x + 32 * sc
-        circ.append(f'<circle cx="{cx:.1f}" cy="152" r="{min(26, sp / 2 - 3):.1f}"{" fill=" + chr(34) + EX_BG + chr(34) if rank in given else ""}/>')
+        circ.append(f'<circle cx="{cx:.1f}" cy="152" r="{min(26, sp / 2 - 3):.1f}"{" fill=" + chr(34) + EX_BG + chr(34) if rank in given else ans_attr(rank)}/>')
         if rank in given:
             txt.append(f'<text x="{cx:.1f}" y="159">{i18n.ordinal(L.wl, rank)}</text>')
     px = 656 if pond_right else 58

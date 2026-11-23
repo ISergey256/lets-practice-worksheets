@@ -41,7 +41,35 @@ def check(seeds=100):
             mod = importlib.import_module(sub["module"])
             have = {r["year"] for r in mod.catalog()["rows"]}
             assert set(sub["ready"]) <= have, (sub["id"], set(sub["ready"]) - have)
-    print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets")
+    check_online(seeds // 5)
+    print(f"  generator ok: {len(i18n.LANGS)} languages x 8 sheets x {seeds} worksheets, plus cheat sheets and online answers")
+
+
+def check_online(seeds=20):
+    """Every task can be solved on the site: each section marks its answers (data-a, data-p, data-n, data-ml/mr,
+    data-sum) or asks the child to check it (data-self). See ARCHITECTURE.md, "Answers for solving online"."""
+    import re
+    import generate as g
+    import i18n
+    import topics
+    specs = ["R", "Y1A"] + ["T:" + tid for tid in topics.META]
+    for lang in ("en", "ru", "el"):
+        for spec in specs:
+            for seed in range(seeds):
+                for page in g.build(spec, seed, lang, lang)[0]:
+                    for sec in re.split(r"(?=<section )", page)[1:]:
+                        task = re.search(r'data-task="(\w+)"', sec).group(1)
+                        where = (lang, spec, seed, task)
+                        assert re.search(r"data-(a|p|n|ml|sum|self)\b", sec), ("no online answers", where)
+                        picks = re.findall(r'data-p="([01])"', sec)  # "tick the equal ones" may have none to tick
+                        assert not picks or "1" in picks or 'data-look="tick"' in sec, ("nothing right to pick", where)
+                        left, right = re.findall(r'data-ml="([^"]+)"', sec), re.findall(r'data-mr="([^"]+)"', sec)
+                        assert sorted(left) == sorted(right), ("match ends differ", where)
+                        for a in re.findall(r'data-a="([^"]*)" data-k="bank"', sec):  # a word from the bank must be in it
+                            assert f">{a}</" in sec or f">{a.replace('&shy;', '')}</" in sec.replace("&shy;", ""), ("not in bank", where, a)
+                        for a in re.findall(r'data-a="([^"]*)" data-k="shape"', sec):
+                            assert f'data-shape="{a}"' in sec, ("shape not shown", where, a)
+    assert i18n.LANGS
 
 
 def changelog():

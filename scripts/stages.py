@@ -69,25 +69,29 @@ def obj(key, x, y, size):
     return f'<g transform="translate({x + (size - w * s) / 2:.1f},{y + (size - h * s) / 2:.1f}) scale({s:.3f})">{body}</g>'
 
 
-def objects(key, k, size=30, per_row=5, gap=6, crossed=0):
-    """k objects in rows of five (rows of 5 help counting); the last `crossed` ones are crossed out."""
+def objects(key, k, size=30, per_row=5, gap=6, crossed=0, tap=None):
+    """k objects in rows of five (rows of 5 help counting); the last `crossed` ones are crossed out.
+    tap: online, the child taps (crosses out) this many of them (data-n; each object is a data-cell)."""
     rows = max(1, (k + per_row - 1) // per_row)
     cols = min(k, per_row) if k else 1
     W, H = cols * (size + gap) - gap + 4, rows * (size + gap) - gap + 4
     parts = []
     for i in range(k):
         x, y = 2 + (i % per_row) * (size + gap), 2 + (i // per_row) * (size + gap)
-        parts.append(obj(key, x, y, size))
+        parts.append(obj(key, x, y, size) if tap is None else f'<g data-cell>{obj(key, x, y, size)}</g>')
         if i >= k - crossed:
             parts.append(f'<path d="M{x} {y} L{x + size} {y + size} M{x + size} {y} L{x} {y + size}" fill="none" stroke-width="3.5"/>')
-    return f'<svg width="{W}" height="{H}" style="flex:none"><g {ST}>{"".join(parts)}</g></svg>'
+    tap_attr = f' data-n="{tap}"' if tap is not None else ""
+    return f'<svg{tap_attr} width="{W}" height="{H}" style="flex:none"><g {ST}>{"".join(parts)}</g></svg>'
 
 
-def tenframe(k, cell=38):
-    cells = "".join(f'<rect x="{2 + (i % 5) * cell}" y="{2 + (i // 5) * cell}" width="{cell}" height="{cell}" fill="#fff"/>' for i in range(10))
+def tenframe(k, cell=38, tap=None):
+    cell_attr = " data-cell" if tap is not None else ""
+    cells = "".join(f'<rect{cell_attr} x="{2 + (i % 5) * cell}" y="{2 + (i // 5) * cell}" width="{cell}" height="{cell}" fill="#fff"/>' for i in range(10))
     dots = "".join(f'<circle cx="{2 + (i % 5) * cell + cell / 2}" cy="{2 + (i // 5) * cell + cell / 2}" r="{cell * 0.32:.1f}" fill="#111"/>'
                    for i in range(k))
-    return f'<svg width="{5 * cell + 4}" height="{2 * cell + 4}" style="flex:none"><g stroke="#111" stroke-width="2.5">{cells}</g>{dots}</svg>'
+    tap_attr = f' data-n="{tap}"' if tap is not None else ""
+    return f'<svg{tap_attr} width="{5 * cell + 4}" height="{2 * cell + 4}" style="flex:none"><g stroke="#111" stroke-width="2.5">{cells}</g>{dots}</svg>'
 
 
 RING = ('<svg width="72" height="64" style="position:absolute;left:-8px;top:-4px">'
@@ -100,10 +104,10 @@ def options(rng, k, lo=1, hi=10, n=3):
     return sorted({k, *rng.sample(near, n - 1)})
 
 
-def choice_row(opts, answer=None):
-    """Numbers to circle; when answer is given (worked example) it is circled."""
+def choice_row(opts, answer=None, ok=None):
+    """Numbers to circle; when answer is given (worked example) it is circled. ok: the right one (checked online)."""
     return '<div style="display:flex;gap:22px">' + "".join(
-        f'<span class="opt">{o}{RING if o == answer else ""}</span>' for o in opts) + "</div>"
+        f'<span class="opt"{g.ans_attr(p=o == ok) if ok is not None else ""}>{o}{RING if o == answer else ""}</span>' for o in opts) + "</div>"
 
 
 def row(content, example, gap=34):
@@ -150,11 +154,13 @@ def r_ladybirds(rng, L, num):
     parts = []
     for i, k in enumerate(counts):
         y = top + i * rh
-        parts.append(ladybird(90, y, k) + f'<circle cx="136" cy="{y}" r="5" fill="#111" stroke="none"/>')
+        lb = ladybird(90, y, k) + f'<circle cx="136" cy="{y}" r="5" fill="#111" stroke="none"/>'
+        parts.append(lb if i == 0 else f'<g data-ml="{k}">{lb}</g>')
     for i, n in enumerate(nums):
         y = top + i * rh
-        parts.append(f'<circle cx="505" cy="{y}" r="5" fill="#111" stroke="none"/><circle cx="552" cy="{y}" r="27"/>'
-                     f'<text x="552" y="{y + 11}" font-size="32" font-weight="900" text-anchor="middle" fill="#111" stroke="none">{n}</text>')
+        nb = (f'<circle cx="505" cy="{y}" r="5" fill="#111" stroke="none"/><circle cx="552" cy="{y}" r="27"/>'
+              f'<text x="552" y="{y + 11}" font-size="32" font-weight="900" text-anchor="middle" fill="#111" stroke="none">{n}</text>')
+        parts.append(nb if n == counts[0] else f'<g data-mr="{n}">{nb}</g>')
     y2 = top + nums.index(counts[0]) * rh
     parts.append(f'<path d="M136 {top} C320 {top} 320 {y2} 505 {y2}" fill="none" stroke-width="3"/>')  # worked example
     ex_bg = f'<rect x="40" y="{top - 42}" width="120" height="84" rx="12" fill="#e9e9e9" stroke="none"/>'
@@ -174,7 +180,7 @@ def r_count_circle(rng, L, num, key):
     for i, k in enumerate(ks):
         opts = options(rng, k)
         rows.append(row(f'<div style="width:200px;display:flex;justify-content:center">{objects(key, k, 34)}</div>'
-                        + choice_row(opts, k if i == 0 else None), i == 0, 50))
+                        + choice_row(opts, k if i == 0 else None, None if i == 0 else k), i == 0, 50))
         ans.append(k)
     return isec(num, "circle", L.w["r2"], "".join(rows)), f'<b>{", ".join(map(str, ans[1:]))}</b> {L.a["top_down"]}'
 
@@ -193,7 +199,7 @@ def r_more(rng, L, num, key):
             if abs(a - b) >= 2:
                 break
         tick = '<path d="M9 22 L17 30 L33 11" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>'
-        boxes = [f'<svg width="42" height="42"><rect x="2" y="2" width="38" height="38" rx="9" fill="#fff" stroke="#111" stroke-width="2.5"/>'
+        boxes = [f'<svg{"" if i == 0 else g.ans_attr(p=v == max(a, b), look="tick")} width="42" height="42"><rect x="2" y="2" width="38" height="38" rx="9" fill="#fff" stroke="#111" stroke-width="2.5"/>'
                  f'{tick if i == 0 and (v == max(a, b)) else ""}</svg></div>' for v in (a, b)]
         rows.append(row(plate(key, a) + boxes[0] + plate(key, b) + boxes[1], i == 0, 60))
         ans.append(f'{a} {"&gt;" if a > b else "&lt;"} {b}')
@@ -212,7 +218,7 @@ def arrow():
 
 def r_draw_dots(rng, L, num):
     ks = easy_first(rng.sample(range(1, 11), 3))
-    rows = [row(big_num(k) + arrow() + tenframe(k if i == 0 else 0, 40), i == 0, 26) for i, k in enumerate(ks)]
+    rows = [row(big_num(k) + arrow() + tenframe(k if i == 0 else 0, 40, None if i == 0 else k), i == 0, 26) for i, k in enumerate(ks)]
     return isec(num, "draw", L.w["r4"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
@@ -226,7 +232,7 @@ def r_altogether(rng, L, num, key):
     for i in range(3):
         a = rng.randint(1, 4)
         b = rng.randint(1, 5 - a)
-        rows.append(row(group(key, a) + plus() + group(key, b) + plus("=") + choice_row(options(rng, a + b, 1, 6), a + b if i == 0 else None),
+        rows.append(row(group(key, a) + plus() + group(key, b) + plus("=") + choice_row(options(rng, a + b, 1, 6), a + b if i == 0 else None, None if i == 0 else a + b),
                         i == 0, 18))
         ans.append(a + b)
     return isec(num, "circle", L.w["r5"], "".join(rows)), f'<b>{", ".join(map(str, ans[1:]))}</b> {L.a["top_down"]}'
@@ -266,7 +272,7 @@ def r_trace(rng, L, num):
     rows = []
     for i, d in enumerate(ds):
         line = digit(d, False) + '<span style="width:14px"></span>' + "".join(digit(d, True) for _ in range(5))
-        rows.append(row(f'<div style="display:flex;align-items:center;gap:22px">{line}</div>', i == 0, 30))
+        rows.append(row(f'<div{"" if i == 0 else " data-self"} style="display:flex;align-items:center;gap:22px">{line}</div>', i == 0, 30))
     return isec(num, "trace", L.w["r6"], "".join(rows)), "<b>" + ", ".join(map(str, ds)) + "</b>"
 
 
@@ -278,13 +284,13 @@ def r_pattern(rng, L, num):
         unit = rng.choice([[a, b], [a, b], [a, a, b], [a, b, c]])
         seq = [unit[j % len(unit)] for j in range(8)]
         shown, missing = seq[:6], seq[6:]
-        cells = "".join(shape(s, 46) for s in shown)
+        cells = "".join(shape(s, 46).replace("<svg ", f'<svg data-shape="{s}" ', 1) for s in shown)
         if i == 0:
             blanks = "".join(f'<span style="border:2.5px dashed #111;border-radius:10px;padding:3px;display:inline-flex">{shape(s, 46)}</span>'
                              for s in missing)
         else:
-            blanks = "".join('<span style="border:2.5px dashed #111;border-radius:10px;width:58px;height:58px;display:inline-block"></span>'
-                             for _ in missing)
+            blanks = "".join(f'<span data-a="{s}" data-k="shape" style="border:2.5px dashed #111;border-radius:10px;width:58px;height:58px;display:inline-block"></span>'
+                             for s in missing)
         rows.append(row(f'<div style="display:flex;gap:12px;align-items:center">{cells}</div>'
                         f'<div style="display:flex;gap:10px">{blanks}</div>', i == 0, 26))
         if i:
@@ -306,7 +312,8 @@ def r_colour(rng, L, num):
         fill = "#fff"
         if kind == target and not example_done:  # worked example: one target already coloured grey
             fill, example_done = "#bdbdbd", True
-        parts.append(f'<g transform="translate({x},{y}) rotate({rot} 30 30) scale(1.36)" fill="{fill}">{SHAPE[kind]}</g>')
+        pick = "" if fill != "#fff" else g.ans_attr(p=kind == target, look="fill")
+        parts.append(f'<g{pick} transform="translate({x},{y}) rotate({rot} 30 30) scale(1.36)" fill="{fill}">{SHAPE[kind]}</g>')
     svg = f'<svg width="640" height="290"><g stroke="#111" stroke-width="2" stroke-linejoin="round">{"".join(parts)}</g></svg>'
     sample = f'<span style="margin-left:6px">{shape(target, 40)}</span>'
     body = f'<div style="display:flex;justify-content:center">{svg}</div>'
@@ -317,13 +324,13 @@ def r_colour(rng, L, num):
 def y_count_write(rng, L, num, key):
     ks = easy_first(rng.sample(range(1, 11), 3))
     rows = [row(f'<div style="width:220px;display:flex;justify-content:center">{objects(key, k, 30)}</div>'
-                + (g.filled(k, 52) if i == 0 else g.box(52)), i == 0, 60) for i, k in enumerate(ks)]
+                + (g.filled(k, 52) if i == 0 else g.box(52, a=k)), i == 0, 60) for i, k in enumerate(ks)]
     return isec(num, "write", L.w["y1"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
 def y_tenframe_circle(rng, L, num):
     ks = easy_first(rng.sample(range(3, 11), 3))
-    rows = [row(tenframe(k, 32) + choice_row(options(rng, k), k if i == 0 else None), i == 0, 50) for i, k in enumerate(ks)]
+    rows = [row(tenframe(k, 32) + choice_row(options(rng, k), k if i == 0 else None, None if i == 0 else k), i == 0, 50) for i, k in enumerate(ks)]
     return isec(num, "circle", L.w["y2"], "".join(rows)), f'<b>{", ".join(map(str, ks[1:]))}</b> {L.a["top_down"]}'
 
 
@@ -362,8 +369,8 @@ def y_more_less(rng, L, num):
     ks = easy_first(rng.sample(range(1, 10), 4))
     items, ans = [], []
     for i, k in enumerate(ks):
-        left = g.filled(k - 1, 50) if i == 0 else g.box(50)
-        right = g.filled(k + 1, 50) if i == 0 else g.box(50)
+        left = g.filled(k - 1, 50) if i == 0 else g.box(50, a=k - 1)
+        right = g.filled(k + 1, 50) if i == 0 else g.box(50, a=k + 1)
         items.append(f'<div style="padding:6px 10px;{EX if i == 0 else ""}">{more_less(k, left, right, i == 0)}</div>')
         if i:
             ans.append(f"{k - 1} | {k} | {k + 1}")
@@ -380,7 +387,7 @@ def y_compare(rng, L, num, key):
                 break
         sym = "&gt;" if a > b else "&lt;" if a < b else "="
         mid = (f'<span class="box" style="width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;'
-               f'font-size:28px;font-weight:900">{sym}</span>') if i == 0 else g.box(48)
+               f'font-size:28px;font-weight:900">{sym}</span>') if i == 0 else g.box(48, a=sym, k="sign")
         if i < 2:  # pictures first, then numbers
             l, r = objects(key, a, 22, 5, 3), objects(key, b, 22, 5, 3)
         else:
@@ -399,7 +406,8 @@ def numline(vals, miss, example):
         parts.append(f'<line x1="{x}" y1="14" x2="{x}" y2="30" stroke="#111" stroke-width="3"/>')
         if i in miss:
             fill = "#e9e9e9" if i == example else "#fff"
-            parts.append(f'<rect x="{x - 23}" y="40" width="46" height="40" rx="9" fill="{fill}" stroke="#111" stroke-width="2.5"/>')
+            slot = "" if i == example else g.ans_attr(v)
+            parts.append(f'<rect{slot} x="{x - 23}" y="40" width="46" height="40" rx="9" fill="{fill}" stroke="#111" stroke-width="2.5"/>')
             if i == example:
                 parts.append(f'<text x="{x}" y="69" font-size="24" text-anchor="middle">{v}</text>')
         else:
@@ -424,7 +432,8 @@ def cherry(whole, a, b, hide, example):
     def circ(x, y, v, hidden):
         txt = "" if hidden and not example else f'<text x="{x}" y="{y + 11}" font-size="30" text-anchor="middle" fill="#111">{v}</text>'
         fill = "#e9e9e9" if hidden and example else "#fff"
-        return f'<circle cx="{x}" cy="{y}" r="30" fill="{fill}" stroke="#111" stroke-width="2.5"/>{txt}'
+        slot = g.ans_attr(v) if hidden and not example else ""
+        return f'<circle{slot} cx="{x}" cy="{y}" r="30" fill="{fill}" stroke="#111" stroke-width="2.5"/>{txt}'
     return (f'<svg width="190" height="160" style="font-weight:900">'
             '<path d="M95 52 L45 112 M95 52 L145 112" stroke="#111" stroke-width="2.5"/>'
             f'{circ(95, 36, whole, hide == "whole")}{circ(45, 122, a, hide == "a")}{circ(145, 122, b, hide == "b")}</svg>')
@@ -448,7 +457,7 @@ def y_add_story(rng, L, num, key):
     for i in range(3):
         a = rng.randint(1, 6)
         b = rng.randint(1, 10 - a)
-        res = g.filled(a + b, 52) if i == 0 else g.box(52)
+        res = g.filled(a + b, 52) if i == 0 else g.box(52, a=a + b)
         rows.append(row(group(key, a, 26) + plus() + group(key, b, 26) + plus("=") + res, i == 0, 16))
         if i:
             ans.append(f"{a} + {b} = {a + b}")
@@ -460,9 +469,9 @@ def y_take_away(rng, L, num, key):
     for i in range(3):
         k = rng.randint(3, 10)
         b = rng.randint(1, k - 1)
-        pic = objects(key, k, 30, 5, 6, crossed=b if i == 0 else 0)
+        pic = objects(key, k, 30, 5, 6, crossed=b if i == 0 else 0, tap=None if i == 0 else b)
         eq = (f'<span style="font-size:30px;font-weight:900;white-space:nowrap">{k} − {b} =</span>'
-              + (g.filled(k - b, 52) if i == 0 else g.box(52)))
+              + (g.filled(k - b, 52) if i == 0 else g.box(52, a=k - b)))
         rows.append(row(f'<div style="width:200px;display:flex;justify-content:center">{pic}</div>' + eq, i == 0, 40))
         if i:
             ans.append(f"{k} − {b} = {k - b}")
@@ -474,7 +483,7 @@ def y_make_ten(rng, L, num):
     items, ans = [], []
     for i, k in enumerate(ks):
         eq = (f'<span style="font-size:26px;font-weight:900;white-space:nowrap">{k} +</span>'
-              + (g.filled(10 - k, 46) if i == 0 else g.box(46)) + '<span style="font-size:26px;font-weight:900">= 10</span>')
+              + (g.filled(10 - k, 46) if i == 0 else g.box(46, a=10 - k)) + '<span style="font-size:26px;font-weight:900">= 10</span>')
         items.append(f'<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 12px;{EX if i == 0 else ""}">'
                      f'{tenframe(k, 30)}<div style="display:flex;align-items:center;gap:8px">{eq}</div></div>')
         if i:
@@ -499,11 +508,13 @@ def y_shapes_match(rng, L, num):
         y = top + i * rh
         pic = (f'<g transform="translate(70,{y - 30}) scale(1.36)">{SHAPE[k]}</g>' if d == "2d"
                else f'<g transform="translate(60,{y - 36}) scale(1.05)">{SOLIDS[k]}</g>')
-        parts.append(pic + f'<circle cx="160" cy="{y}" r="5" fill="#111" stroke="none"/>')
+        pc = pic + f'<circle cx="160" cy="{y}" r="5" fill="#111" stroke="none"/>'
+        parts.append(pc if i == 0 else f'<g data-ml="{d}-{k}">{pc}</g>')
     for i, p in enumerate(names):
         y = top + i * rh
-        parts.append(f'<circle cx="400" cy="{y}" r="5" fill="#111" stroke="none"/>'
-                     f'<text x="420" y="{y + 8}" font-size="24" font-weight="800" fill="#111" stroke="none">{name(p)}</text>')
+        nm = (f'<circle cx="400" cy="{y}" r="5" fill="#111" stroke="none"/>'
+              f'<text x="420" y="{y + 8}" font-size="24" font-weight="800" fill="#111" stroke="none">{name(p)}</text>')
+        parts.append(nm if p == pics[0] else f'<g data-mr="{p[0]}-{p[1]}">{nm}</g>')
     y2 = top + names.index(pics[0]) * rh
     parts.append(f'<path d="M160 {top} C280 {top} 280 {y2} 400 {y2}" fill="none" stroke-width="3"/>')  # worked example
     ex_bg = f'<rect x="50" y="{top - 34}" width="124" height="68" rx="12" fill="#e9e9e9" stroke="none"/>'
