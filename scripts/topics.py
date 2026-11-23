@@ -102,7 +102,9 @@ def catalog(lang=i18n.DEFAULT):
             "years": [i18n.year_info(lang, y) for y in registry.YEAR_IDS],
             "subjects": [{"id": sub["id"], "name": names_[sub["id"]],
                           "years": {y: ("ready" if y in sub["ready"] else "soon") for y in sub["years"]}} for sub in registry.SUBJECTS],
-            "soon_year": i18n.REG[lang]["soon_year"]}
+            "soon_year": i18n.REG[lang]["soon_year"],
+            # Reception / Year 1 autumn sheets tag their sections with the task function: function name -> topic id
+            "stage_ids": {fn.__name__: tid for tid, (fn, *_) in STAGE_TASKS.items()}}
 
 
 def review_spec(level, part):

@@ -119,6 +119,15 @@
     .vchips .chip { font-size:14px; padding:4px 14px; min-width:44px; }
     .pick .tickbox { width:28px; height:28px; }
   }
+  .rate { border:var(--b); border-radius:var(--r); background:#fff; padding:12px 14px; margin:-6px 0 14px; display:flex; flex-direction:column; gap:8px; }
+  .rate-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .rate-head b { font-size:19px; font-weight:900; } .rate-head span { color:var(--muted); font-size:14px; font-weight:700; margin-right:auto; }
+  .rate-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-top:2px dashed #bbb; padding-top:8px; }
+  .rate-name { flex:1; min-width:160px; font-weight:800; } .rate-name small { color:var(--muted); }
+  .rate-btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .mapbox { margin-top:10px; } .mapbox summary { cursor:pointer; font-weight:800; font-size:15px; }
+  .maprow { display:flex; justify-content:space-between; gap:10px; font-size:14px; font-weight:700; padding:2px 0; }
+  .maprow .marks { display:flex; gap:6px; font-weight:900; flex:none; } .maprow .marks span { min-width:14px; text-align:center; }
   #printframe { position:fixed; right:0; bottom:0; width:794px; height:10px; border:0; opacity:0; pointer-events:none; }
 </style>
 </head>
@@ -153,6 +162,26 @@
           <p class="hint" style="margin:4px 0 8px;font-weight:900;color:var(--ink)" id="topic-count"></p>
           <div id="topic-list"></div>
         </div>
+      </div>
+
+      <div class="block" id="progress-block">
+        <p class="step"><span class="n">★</span><span data-pt="title"></span></p>
+        <div class="recent" id="kids"></div>
+        <form id="kid-form" class="seedrow" hidden style="margin-top:8px">
+          <input class="input" id="kid-name" maxlength="30" autocomplete="off" style="font-size:17px;height:44px">
+          <button class="btn dark" type="submit" data-pt="nameOk"></button>
+        </form>
+        <button class="btn dark big-btn wide" id="today" type="button" data-pt="today"></button>
+        <p class="hint" id="today-hint"></p>
+        <button class="btn wide" id="rate-open" type="button" data-pt="rateBtn"></button>
+        <details class="mapbox"><summary data-pt="map"></summary>
+          <p class="hint" id="map-legend" style="margin:6px 0"></p><div id="map"></div></details>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn" id="prog-save" type="button" data-pt="save"></button>
+          <button class="btn" id="prog-load" type="button" data-pt="load"></button>
+          <input type="file" id="prog-file" accept=".json,application/json" hidden>
+        </div>
+        <p class="hint"><span data-pt="hint"></span> <span data-pt="warn"></span></p>
       </div>
 
       <div class="block">
@@ -231,6 +260,7 @@
           <button class="chip" type="button" id="dbg-sheet" data-t="dbgCopy"></button>
           <button class="chip" type="button" id="dbg-off" data-t="dbgHide"></button></div>
       </div>
+      <div class="rate" id="rate" hidden></div>
       <div class="tools" id="tools" hidden>
         <div class="listen" id="listen" hidden><span class="lab2" data-t="listen"></span><span id="listen-btns" class="listen"></span></div>
         <button class="chip" id="cream" type="button" aria-pressed="false" data-t="cream"></button>
@@ -590,6 +620,7 @@ function translateUI() {
   document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
   $("prev").setAttribute("aria-label", t("prev")); $("next").setAttribute("aria-label", t("next"));
   renderPanel(); renderTitle(); renderRecent(); updateFeedbackLinks(); renderThanks(); renderHistory(); if (state.sheet) renderTools();
+  if (window.LP) LP.render();
   if (backend) loadCatalog().then(renderPanel);
   if (state.sheet) renderView();
 }
@@ -812,6 +843,7 @@ async function update() {
   remember();
   await refreshCheats();
   renderView();
+  if (window.LP) LP.onSheet();
 }
 
 /* ================================================================ cheat sheets (Reception, Year 1 autumn and topic sheets) */
@@ -1178,7 +1210,7 @@ localBackend().catch(() => pyodideBackend()).then(async (b) => {
   backend = b;
   $("pdf-sheet").hidden = $("pdf-answers").hidden = !b.pdf;
   await loadCatalog();
-  syncFromLevel(); renderPanel();
+  syncFromLevel(); renderPanel(); if (window.LP) LP.render();
   update();
 }).catch((err) => {
   console.error(err);
@@ -1186,5 +1218,6 @@ localBackend().catch(() => pyodideBackend()).then(async (b) => {
   $("view").firstChild.textContent = t("loadFail");
 });
 </script>
+<script src="practice.js"></script>
 </body>
 </html>
